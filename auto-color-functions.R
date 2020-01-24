@@ -23,7 +23,8 @@ getImageList <- function(path, ABSPATH=0) {
   else {return(list.files(path = path))}
 }
 
-##TODO: store list of cluster lists for each image
+##TODO: store list of cluster lists for each image, add color.space arg
+###default color lower and upper bins are for detecting uniform lime green
 executeKmeans <- function(imglist,minK=1,maxK=5,nstart=50,iter.max=15,lowerR=0,lowerG=0.6,lowerB=0,upperR=0.4,upperG=1,upperB=0.4) {
   outputList <- list()
   clusterList <- list()
