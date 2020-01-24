@@ -65,13 +65,10 @@ getWCSSList <- function(kmeanslist) {
 getExtremes <- function(k_values, wcss_values) {
   extreme_xx <- max(k_values)
   extreme_yy <- max(wcss_values)
-  
   extreme_xy <- wcss_values[which.max(k_values)]
   extreme_yx <- k_values[which.max(wcss_values)]
-  
   x = c(extreme_yx, extreme_xx)
   y = c(extreme_yy, extreme_xy)
-  
   return(data.frame(x,y))
 }
 
