@@ -62,6 +62,72 @@ getWCSSList <- function(kmeanslist) {
   return(wcssList)
 }
 
+getExtremes <- function(k_values, wcss_values) {
+  extreme_xx <- max(k_values)
+  extreme_yy <- max(wcss_values)
+  
+  extreme_xy <- wcss_values[which.max(k_values)]
+  extreme_yx <- k_values[which.max(wcss_values)]
+  
+  x = c(extreme_yx, extreme_xx)
+  y = c(extreme_yy, extreme_xy)
+  
+  return(data.frame(x,y))
+}
+
+fitExtremes <- function(extremes) {
+  return(lm(extremes$y ~ extremes$x))
+}
+
+computeDistances <- function(k_values, wcss_values, extremesFit) {
+  dists <- rep(NA, length(k_values))
+  for(ii in 1:length(k_values)) {
+    dists[ii] <- abs(coef(extremesFit)[2]*k_values[ii] - wcss_values[ii] + coef(extremesFit)[1]) / sqrt(coef(extremesFit)[2]^2 + 1^2)
+  }
+  return(dists)
+}
+
+getMaxDistances <- function(k_values, wcss_values, distances) {
+  max_x_distance <- k_values[which.max(distances)]
+  max_y_distance <- wcss_values[which.max(distances)]
+  return(c(max_x_distance, max_y_distance, max(distances)))
+}
+
+getElbow <- function(k_values, wcss_values, visualize=0) {
+  #inspired by http://www.semspirit.com/artificial-intelligence/machine-learning/clustering/k-means-clustering/k-means-clustering-in-r/
+  extremes <- getExtremes(k_values, wcss_values)
+  fit <- fitExtremes(extremes)
+  distances <- computeDistances(k_values, wcss_values, fit)
+  elbow_data <- getMaxDistances(k_values, wcss_values, distances)
+  if (visualize == 1) {
+    visualizeElbow(k_values, wcss_values, elbow_data)
+  }
+  return(elbow_data)
+}
+
+visualizeElbow <- function(k_values, wcss_values, elbow_data) {
+  wcss_len <- length(wcss_values)
+  extremes_line_coef <- (k_values[wcss_len] - k_values[1]) / (wcss_values[wcss_len] - wcss_values[1])
+  extremes_orthogonal_line_coef <- -1 / extremes_line_coef
+  elbowpoint_orthogonal <- c(elbow_data[1] + elbow_data[3]/2, elbow_data[2] + extremes_orthogonal_line_coef * (elbow_data[3]/2))
+  plot(k_values, wcss_values, type="b", main="WCSS vs. k", xlab="# clusters (k)", ylab = "WCSS value")
+  lines(x=c(k_values[1], k_values[wcss_len]), y=c(wcss_values[1], wcss_values[wcss_len]), type="b", col="blue")
+  lines(x=c(elbow_data[1], elbowpoint_orthogonal[1]), y=c(elbow_data[2], elbowpoint_orthogonal[2]), type="b", col="red")
+}
+
+bkstick <- function(k_values, wcss_values, psi) {
+  fit <- lm(wcss_values ~ k_values)
+  return(segmented(fit, seg.Z = ~k_values, psi=psi))
+}
+
+getBKStickValue <- function(model,round.type="DOWN") {
+  if(round.type == "DOWN") {return(floor(model$psi[2]))}
+  else if(round.type =="UP") {return(ceiling(model$psi[2]))}
+  else {return(NULL)}
+}
+
+
+
 testlist <- getImageList("testing",1)
 testclusterexecution <- executeKmeans(testlist)
 
