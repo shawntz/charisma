@@ -1,8 +1,8 @@
-###
+####
 # @Author: Shawn T. Schwartz
 # @Email: <shawnschwartz@ucla.edu>
-# Source Functions for Automatic Color Detection
-###
+# @Description: Source Functions for Automatic Color Detection
+####
 
 #### Install Required Libraries ####
 reqlibs <- c("colordistance", "segmented", "tidyverse")
@@ -14,11 +14,6 @@ if (length(setdiff(reqlibs, rownames(installed.packages()))) > 0) {
 library(colordistance)
 library(segmented)
 library(tidyverse)
-
-##temp##
-wd <- "~/Developer/automatic-color"
-setwd(wd)
-##temp##
 
 #### Helper Functions ####
 getImageList <- function(path, ABSPATH=0) {
@@ -50,7 +45,7 @@ getWCSSList <- function(kmeanslist) {
   wcssList <- list()
   allnames <- rep(NA, length(kmeanslist))
   for(images in 1:length(kmeanslist)) {
-    wcss <- rep(NA, length(kmeanslist))
+    wcss <- rep(NA, length(kmeanslist[[images]]))
     for(clusters in 1:length(kmeanslist[[images]])) {
       imgname <- names(kmeanslist[[images]][clusters][[1]])
       cat(paste0("Obtaining values for: ", imgname, " (k=",clusters,")\n"))
@@ -60,6 +55,7 @@ getWCSSList <- function(kmeanslist) {
     wcssList[[images]] <- wcss
   }
   names(wcssList) <- allnames
+  print(wcssList)
   return(wcssList)
 }
 
@@ -91,24 +87,24 @@ getMaxDistances <- function(k_values, wcss_values, distances) {
   return(c(max_x_distance, max_y_distance, max(distances)))
 }
 
-getElbowK <- function(k_values, wcss_values, visualize=0) {
+getElbowK <- function(k_values, wcss_values, imgnames, visualize=0) {
   #inspired by http://www.semspirit.com/artificial-intelligence/machine-learning/clustering/k-means-clustering/k-means-clustering-in-r/
   extremes <- getExtremes(k_values, wcss_values)
   fit <- fitExtremes(extremes)
   distances <- computeDistances(k_values, wcss_values, fit)
   elbow_data <- getMaxDistances(k_values, wcss_values, distances)
   if (visualize == 1) {
-    visualizeElbow(k_values, wcss_values, elbow_data)
+    visualizeElbow(k_values, wcss_values, elbow_data, imgnames)
   }
   return(elbow_data)
 }
 
-visualizeElbow <- function(k_values, wcss_values, elbow_data) {
+visualizeElbow <- function(k_values, wcss_values, elbow_data, imgnames) {
   wcss_len <- length(wcss_values)
   extremes_line_coef <- (k_values[wcss_len] - k_values[1]) / (wcss_values[wcss_len] - wcss_values[1])
   extremes_orthogonal_line_coef <- -1 / extremes_line_coef
   elbowpoint_orthogonal <- c(elbow_data[1] + elbow_data[3]/2, elbow_data[2] + extremes_orthogonal_line_coef * (elbow_data[3]/2))
-  plot(k_values, wcss_values, type="b", main="WCSS vs. k", xlab="# clusters (k)", ylab = "WCSS value")
+  plot(k_values, wcss_values, type="b", main=paste0("WCSS vs. k\n","(",imgnames,")"), xlab="# clusters (k)", ylab = "WCSS value")
   lines(x=c(k_values[1], k_values[wcss_len]), y=c(wcss_values[1], wcss_values[wcss_len]), type="b", col="blue")
   lines(x=c(elbow_data[1], elbowpoint_orthogonal[1]), y=c(elbow_data[2], elbowpoint_orthogonal[2]), type="b", col="red")
 }
@@ -128,9 +124,10 @@ getBKStickK <- function(model,round.type="DOWN") {
 computeK <- function(k_min, k_max, wcss_list, method="elbow", visualize=0, psi=5) {
   k_values <- k_min:k_max
   predicted_ks <- rep(NA, length(wcss_list))
+  imgnames <- names(wcss_list)
   for(ii in 1:length(wcss_list)) {
     if(method == "elbow") {
-      predicted_ks[ii] <- getElbowK(k_values, wcss_list[[ii]], visualize = visualize)
+      predicted_ks[ii] <- getElbowK(k_values, wcss_list[[ii]], imgnames[ii], visualize = visualize)
     } else if(method == "bkstickdown") {
       bkstick_model <- bkstick(k_values, wcss_list[[ii]], psi=psi)
       predicted_ks[ii] <- getBKStickK(bkstick_model, round.type = "DOWN")
@@ -150,4 +147,3 @@ run_all_ks <- function(path,min_k,max_k,nstart=50,iter.max=15,lowerR=0,lowerG=0.
   wcss_list <- getWCSSList(kmeanslist = kmeans_list)
   return(computeK(min_k, max_k, wcss_list, method, visualize = visualize, psi = psi))
 }
-
