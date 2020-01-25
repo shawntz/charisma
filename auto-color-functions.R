@@ -25,7 +25,7 @@ executeKmeans <- function(imglist,minK=1,maxK=5,nstart=50,iter.max=15,lowerR=0,l
   #default color lower and upper bins are for detecting uniform lime green
   outputList <- list()
   for (imgs in 1:length(imglist)) {
-    print(paste0("Analyzing Image #",imgs,": ",imglist[imgs]))
+    print(paste0("Analyzing Image (",imgs," of ",length(imglist),"): ",imglist[imgs]))
     clusterList <- list()
     for(ii in minK:maxK) {
       cat(paste0("\nTesting k=",ii," for: ",imglist[imgs],"\n"))
@@ -55,7 +55,6 @@ getWCSSList <- function(kmeanslist) {
     wcssList[[images]] <- wcss
   }
   names(wcssList) <- allnames
-  print(wcssList)
   return(wcssList)
 }
 
