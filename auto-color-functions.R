@@ -4,12 +4,13 @@
 # Source Functions for Automatic Color Detection
 ###
 
-#### Required Libraries ####
+#### Install Required Libraries ####
 reqlibs <- c("colordistance", "segmented", "tidyverse")
 if (length(setdiff(reqlibs, rownames(installed.packages()))) > 0) {
   install.packages(setdiff(reqlibs, rownames(installed.packages())))  
 }
 
+#### Load Required Libraries ####
 library(colordistance)
 library(segmented)
 library(tidyverse)
@@ -32,7 +33,7 @@ executeKmeans <- function(imglist,minK=1,maxK=5,nstart=50,iter.max=15,lowerR=0,l
     print(paste0("Analyzing Image #",imgs,": ",imglist[imgs]))
     clusterList <- list()
     for(ii in minK:maxK) {
-      cat(paste0("Testing k=",ii," for: ",imglist[imgs],"\n"))
+      cat(paste0("\nTesting k=",ii," for: ",imglist[imgs],"\n"))
       clusterList[[ii]] <- getKMeansList(imglist[imgs],bins=ii,nstart=nstart,iter.max=iter.max,lower=c(lowerR,lowerG,lowerB),upper=c(upperR,upperG,upperB),color.space=color.space)
     }
     outputList[[imgs]] <- clusterList
@@ -90,7 +91,7 @@ getMaxDistances <- function(k_values, wcss_values, distances) {
   return(c(max_x_distance, max_y_distance, max(distances)))
 }
 
-getElbow <- function(k_values, wcss_values, visualize=0) {
+getElbowK <- function(k_values, wcss_values, visualize=0) {
   #inspired by http://www.semspirit.com/artificial-intelligence/machine-learning/clustering/k-means-clustering/k-means-clustering-in-r/
   extremes <- getExtremes(k_values, wcss_values)
   fit <- fitExtremes(extremes)
@@ -117,14 +118,36 @@ bkstick <- function(k_values, wcss_values, psi) {
   return(segmented(fit, seg.Z = ~k_values, psi=psi))
 }
 
-getBKStickValue <- function(model,round.type="DOWN") {
+getBKStickK <- function(model,round.type="DOWN") {
   if(round.type == "DOWN") {return(floor(model$psi[2]))}
   else if(round.type =="UP") {return(ceiling(model$psi[2]))}
   else {return(NULL)}
 }
 
+#### Main Wrapper Functions ####
+computeK <- function(k_min, k_max, wcss_list, method="elbow", visualize=0, psi=5) {
+  k_values <- k_min:k_max
+  predicted_ks <- rep(NA, length(wcss_list))
+  for(ii in 1:length(wcss_list)) {
+    if(method == "elbow") {
+      predicted_ks[ii] <- getElbowK(k_values, wcss_list[[ii]], visualize = visualize)
+    } else if(method == "bkstickdown") {
+      bkstick_model <- bkstick(k_values, wcss_list[[ii]], psi=psi)
+      predicted_ks[ii] <- getBKStickK(bkstick_model, round.type = "DOWN")
+    } else if(method == "bkstickup") {
+      bkstick_model <- bkstick(k_values, wcss_list[[ii]], psi=psi)
+      predicted_ks[ii] <- getBKStickK(bkstick_model, round.type = "UP")
+    } else {
+      return(NULL)
+    }
+  }
+  return(data.frame(image = names(wcss_list), k = predicted_ks))
+}
 
-
-testlist <- getImageList("testing",1)
-testclusterexecution <- executeKmeans(testlist)
+run_all_ks <- function(path,min_k,max_k,nstart=50,iter.max=15,lowerR=0,lowerG=0.6,lowerB=0,upperR=0.4,upperG=1,upperB=0.4,color.space="rgb", method="elbow", psi=5, visualize=0) {
+  images_list <- getImageList(path = path, ABSPATH = 1)
+  kmeans_list <- executeKmeans(imglist = images_list, minK = min_k, maxK = max_k, nstart = nstart, iter.max = iter.max, lowerR = lowerR, lowerG = lowerG, lowerB = lowerB, upperR = upperR, upperG = upperG, upperB = upperB, color.space = color.space)
+  wcss_list <- getWCSSList(kmeanslist = kmeans_list)
+  return(computeK(min_k, max_k, wcss_list, method, visualize = visualize, psi = psi))
+}
 
