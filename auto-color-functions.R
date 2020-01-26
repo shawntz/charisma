@@ -25,7 +25,7 @@ executeKmeans <- function(imglist,minK=1,maxK=5,nstart=50,iter.max=15,lowerR=0,l
   #default color lower and upper bins are for detecting uniform lime green
   outputList <- list()
   for (imgs in 1:length(imglist)) {
-    print(paste0("Analyzing Image (",imgs," of ",length(imglist),"): ",imglist[imgs]))
+    print(paste0("\nAnalyzing Image (",imgs," of ",length(imglist),"): ",imglist[imgs]))
     clusterList <- list()
     for(ii in minK:maxK) {
       cat(paste0("\nTesting k=",ii," for: ",imglist[imgs],"\n"))
@@ -56,6 +56,31 @@ getWCSSList <- function(kmeanslist) {
   }
   names(wcssList) <- allnames
   return(wcssList)
+}
+
+getRGBsList <- function(kmeanslist) {
+  rgbList <- list()
+  allnames <- rep(NA, length(kmeanslist))
+  for(images in 1:length(kmeanslist)) {
+    rgbs <- list()
+    for(clusters in 1:length(kmeanslist[[images]])) {
+      imgname <- names(kmeanslist[[images]][clusters][[1]])
+      cat(paste0("Obtaining RGB values for: ", imgname, " (k=",clusters,")\n"))
+      rgbs_temp <- matrix(NA, nrow = clusters, ncol = 3)
+      for(kk in 1:clusters) {
+        coef_seq <- seq(from = 0, to = clusters*3, by = 3)
+        for(ii in 1:3) {
+          rgbs_temp[kk,ii] <- get(imgname,kmeanslist[[images]][clusters][[1]])$centers[kk,ii]
+        }
+      }
+      rgbs_temp <- as.vector(rgbs_temp)
+      rgbs[[clusters]] <- rgbs_temp
+    }
+    allnames[images] <- imgname
+    rgbList[[images]] <- rgbs
+  }
+  names(rgbList) <- allnames
+  return(rgbList)
 }
 
 getExtremes <- function(k_values, wcss_values) {
@@ -120,13 +145,15 @@ getBKStickK <- function(model,round.type="DOWN") {
 }
 
 #### Main Wrapper Functions ####
-computeK <- function(k_min, k_max, wcss_list, method="elbow", visualize=0, psi=5) {
+computeK <- function(k_min, k_max, wcss_list, rgb_list, method="elbow", visualize=0, psi=5, fileout="rgb_out.txt") {
   k_values <- k_min:k_max
   predicted_ks <- rep(NA, length(wcss_list))
+  rgb_extracted <- list()
   imgnames <- names(wcss_list)
   for(ii in 1:length(wcss_list)) {
     if(method == "elbow") {
       predicted_ks[ii] <- getElbowK(k_values, wcss_list[[ii]], imgnames[ii], visualize = visualize)
+      rgb_extracted[[ii]] <- rgb_list[[ii]][predicted_ks[ii]]
     } else if(method == "bkstickdown") {
       bkstick_model <- bkstick(k_values, wcss_list[[ii]], psi=psi)
       predicted_ks[ii] <- getBKStickK(bkstick_model, round.type = "DOWN")
@@ -137,12 +164,19 @@ computeK <- function(k_min, k_max, wcss_list, method="elbow", visualize=0, psi=5
       return(NULL)
     }
   }
-  return(data.frame(image = names(wcss_list), k = predicted_ks))
+  if(method == "elbow") {
+    names(rgb_extracted) <- imgnames
+    sink(fileout)
+    print(rgb_extracted)
+    sink()
+  }
+  return(data.frame(image = names(wcss_list), k = predicted_ks, rgbs = rgb_extracted))
 }
 
-run_all_ks <- function(path,min_k,max_k,nstart=50,iter.max=15,lowerR=0,lowerG=0.6,lowerB=0,upperR=0.4,upperG=1,upperB=0.4,color.space="rgb", method="elbow", psi=5, visualize=0) {
+run_all_ks <- function(path,min_k,max_k,nstart=50,iter.max=15,lowerR=0,lowerG=0.6,lowerB=0,upperR=0.4,upperG=1,upperB=0.4,color.space="rgb", method="elbow", psi=5, visualize=0, fileout="rgb_out.txt") {
   images_list <- getImageList(path = path, ABSPATH = 1)
   kmeans_list <- executeKmeans(imglist = images_list, minK = min_k, maxK = max_k, nstart = nstart, iter.max = iter.max, lowerR = lowerR, lowerG = lowerG, lowerB = lowerB, upperR = upperR, upperG = upperG, upperB = upperB, color.space = color.space)
   wcss_list <- getWCSSList(kmeanslist = kmeans_list)
-  return(computeK(min_k, max_k, wcss_list, method, visualize = visualize, psi = psi))
+  rgb_list <- getRGBsList(kmeanslist = kmeans_list)
+  return(computeK(min_k, max_k, wcss_list, rgb_list, method, visualize = visualize, psi = psi, fileout = fileout))
 }
