@@ -170,7 +170,7 @@ computeK <- function(k_min, k_max, wcss_list, rgb_list, method="elbow", visualiz
     print(rgb_extracted)
     sink()
   }
-  return(data.frame(image = names(wcss_list), k = predicted_ks, rgbs = rgb_extracted))
+  return(data.frame(image = names(wcss_list), k = predicted_ks))
 }
 
 run_all_ks <- function(path,min_k,max_k,nstart=50,iter.max=15,lowerR=0,lowerG=0.6,lowerB=0,upperR=0.4,upperG=1,upperB=0.4,color.space="rgb", method="elbow", psi=5, visualize=0, fileout="rgb_out.txt") {
