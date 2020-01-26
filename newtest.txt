@@ -1,0 +1,45 @@
+$`Chaetodon_Chaetodon falcula_1821335233_green`
+$`Chaetodon_Chaetodon falcula_1821335233_green`[[1]]
+[1] 0.2125747 0.7933735 0.1842291 0.7337726 0.1491330 0.6247331
+
+
+$`Chaetodon_Chaetodon guentheri_-184146759_green`
+$`Chaetodon_Chaetodon guentheri_-184146759_green`[[1]]
+[1] 0.8076796 0.5438034 0.7866246 0.4638984 0.7435344 0.3163996
+
+
+$Chaetodon_Chaetodon_baronessa_918345433_green
+$Chaetodon_Chaetodon_baronessa_918345433_green[[1]]
+[1] 0.1553799 0.6265613 0.1597952 0.6348222 0.1364395 0.5643137
+
+
+$Chaetodon_Chaetodon_collare_1403678122_green
+$Chaetodon_Chaetodon_collare_1403678122_green[[1]]
+[1] 0.16709768 0.66807756 0.13342919 0.63273240 0.08715361 0.54764396
+
+
+$`Chaetodon_Chaetodon_ephippium_-1179871461_green`
+$`Chaetodon_Chaetodon_ephippium_-1179871461_green`[[1]]
+[1] 0.8491630 0.1994656 0.8183687 0.1901842 0.7497843 0.1833508
+
+
+$colorful_green
+$colorful_green[[1]]
+[1] 0.07556543 0.12493501 0.64144117 0.38232207 0.13072371 0.51914062 0.71521556 0.20214789 0.29976033
+
+
+$`Labridae_Cetoscarus_bicolor_-1747897838_green`
+$`Labridae_Cetoscarus_bicolor_-1747897838_green`[[1]]
+[1] 0.3081936 0.7400797 0.3696701 0.6915018 0.2601576 0.4550868
+
+
+$Labridae_Scarus_frenatus_1874728220_green
+$Labridae_Scarus_frenatus_1874728220_green[[1]]
+[1] 0.3685637 0.7213318 0.1717455 0.3233890 0.1424575 0.2517626
+
+
+$Labridae_Scarus_schlegeli_1642018934_green
+$Labridae_Scarus_schlegeli_1642018934_green[[1]]
+[1] 0.4491133 0.1351522 0.5850253 0.1482723 0.6721953 0.1593184
+
+
