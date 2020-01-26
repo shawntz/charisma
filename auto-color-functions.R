@@ -145,7 +145,7 @@ getBKStickK <- function(model,round.type="DOWN") {
 }
 
 #### Main Wrapper Functions ####
-computeK <- function(k_min, k_max, wcss_list, rgb_list, method="elbow", visualize=0, psi=5, fileout="rgb_out.txt") {
+computeK <- function(k_min, k_max, wcss_list, rgb_list, method="elbow", visualize=0, psi=5, fileout="rgb_out.txt", color.space) {
   k_values <- k_min:k_max
   predicted_ks <- rep(NA, length(wcss_list))
   rgb_extracted <- list()
@@ -170,7 +170,7 @@ computeK <- function(k_min, k_max, wcss_list, rgb_list, method="elbow", visualiz
     print(rgb_extracted)
     sink()
   }
-  return(data.frame(image = names(wcss_list), k = predicted_ks))
+  return(data.frame(image = names(wcss_list), k = predicted_ks, method = method, colorspace = color.space))
 }
 
 run_all_ks <- function(path,min_k,max_k,nstart=50,iter.max=15,lowerR=0,lowerG=0.6,lowerB=0,upperR=0.4,upperG=1,upperB=0.4,color.space="rgb", method="elbow", psi=5, visualize=0, fileout="rgb_out.txt") {
@@ -178,5 +178,5 @@ run_all_ks <- function(path,min_k,max_k,nstart=50,iter.max=15,lowerR=0,lowerG=0.
   kmeans_list <- executeKmeans(imglist = images_list, minK = min_k, maxK = max_k, nstart = nstart, iter.max = iter.max, lowerR = lowerR, lowerG = lowerG, lowerB = lowerB, upperR = upperR, upperG = upperG, upperB = upperB, color.space = color.space)
   wcss_list <- getWCSSList(kmeanslist = kmeans_list)
   rgb_list <- getRGBsList(kmeanslist = kmeans_list)
-  return(computeK(min_k, max_k, wcss_list, rgb_list, method, visualize = visualize, psi = psi, fileout = fileout))
+  return(computeK(min_k, max_k, wcss_list, rgb_list, method, visualize = visualize, psi = psi, fileout = fileout, color.space = color.space))
 }
