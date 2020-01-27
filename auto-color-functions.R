@@ -157,19 +157,21 @@ computeK <- function(k_min, k_max, wcss_list, rgb_list, method="elbow", visualiz
     } else if(method == "bkstickdown") {
       bkstick_model <- bkstick(k_values, wcss_list[[ii]], psi=psi)
       predicted_ks[ii] <- getBKStickK(bkstick_model, round.type = "DOWN")
+      rgb_extracted[[ii]] <- rgb_list[[ii]][predicted_ks[ii]]
     } else if(method == "bkstickup") {
       bkstick_model <- bkstick(k_values, wcss_list[[ii]], psi=psi)
       predicted_ks[ii] <- getBKStickK(bkstick_model, round.type = "UP")
+      rgb_extracted[[ii]] <- rgb_list[[ii]][predicted_ks[ii]]
     } else {
       return(NULL)
     }
   }
-  if(method == "elbow") {
-    names(rgb_extracted) <- imgnames
-    sink(fileout)
-    print(rgb_extracted)
-    sink()
-  }
+  
+  names(rgb_extracted) <- imgnames
+  sink(fileout)
+  print(rgb_extracted)
+  sink()
+  
   return(data.frame(image = names(wcss_list), k = predicted_ks, method = method, colorspace = color.space))
 }
 
