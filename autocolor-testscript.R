@@ -14,3 +14,12 @@ k_out
 
 color_fishes_out_new <- run_all_ks("colors",1,4,method="elbow",visualize = 1, fileout = "newtest.txt")
 color_fishes_out_new
+
+testing_fishes <- run_all_ks("testing",1,4,method="elbow",visualize = 1, fileout = "newtest.txt")
+testing_fishes
+
+classes <- classify_by_k("testing", testing_fishes)
+classes
+
+testclass <- classify_color("testing", testing_fishes)
+testclass

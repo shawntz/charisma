@@ -5,13 +5,14 @@
 ####
 
 #### Install Required Libraries ####
-reqlibs <- c("colordistance", "segmented", "tidyverse")
+reqlibs <- c("colordistance", "pavo", "segmented", "tidyverse")
 if (length(setdiff(reqlibs, rownames(installed.packages()))) > 0) {
   install.packages(setdiff(reqlibs, rownames(installed.packages())))  
 }
 
 #### Load Required Libraries ####
 library(colordistance)
+library(pavo)
 library(segmented)
 library(tidyverse)
 
@@ -181,4 +182,104 @@ run_all_ks <- function(path,min_k,max_k,nstart=50,iter.max=15,lowerR=0,lowerG=0.
   wcss_list <- getWCSSList(kmeanslist = kmeans_list)
   rgb_list <- getRGBsList(kmeanslist = kmeans_list)
   return(computeK(min_k, max_k, wcss_list, rgb_list, method, visualize = visualize, psi = psi, fileout = fileout, color.space = color.space))
+}
+
+#### Color Classification Pipeline Helper Functions ####
+## adapted from Alfaro, Karan, Schwartz, Shultz (2019)
+classify_by_unique_k <- function(path, kdf) {
+  images_list <- getImageList(path = path, ABSPATH = 1)
+  classifications <- list()
+  for(image in 1:length(images_list)) {
+    pic <- getimg(images_list[image], max.size = 3)
+    cat(paste0("Image (",image,"/",length(images_list),"): ", images_list[image],"\n"))
+    classifications[[image]] <- classify(pic, kcols = kdf$k[image])
+    cat("\n")
+  }
+  names(classifications) <- kdf$image
+  return(classifications)
+}
+
+rgb_euc_dist <- function(rgb_table_altered, c1, c2) {
+  euc_dist <- sqrt((rgb_table_altered[c1,"col1"]-rgb_table_altered[c2,"col1"])^2+(rgb_table_altered[c1,"col2"]-rgb_table_altered[c2,"col2"])^2) %>%
+    .[1,1]
+  return(euc_dist)
+}
+
+rgb_lum_dist <- function(rgb_table_altered, c1, c2){
+  lum_dist <- sqrt((rgb_table_altered[c1,"lum"]-rgb_table_altered[c2,"lum"])^2) %>%
+    .[1,1]
+  return(lum_dist)
+}
+
+#input is a single classified image
+calc_euc_lum_dists <- function(classified_image){
+  #extract RGB values for n colors
+  class_rgb <- attr(classified_image, 'classRGB')
+  class_rgb_altered <- class_rgb %>%
+    rownames_to_column(var = "col_num") %>%
+    as.tibble %>%
+    mutate(col1 = (R-G)/(R+G), col2 = (G-B)/(G+B), lum = R+G+B) %>%
+    select(col1, col2, lum)
+  
+  #create a matrix to hold colors based on the number of possible color comparisons
+  euc_dists <- matrix(nrow=choose(nrow(class_rgb),2),ncol=4)
+  
+  combos_simple <- t(combn(rownames(class_rgb),2)) %>%
+    as.tibble %>%
+    transmute(c1 = as.numeric(V1), c2 = as.numeric(V2)) %>%
+    as.data.frame()
+  
+  combos <- matrix(nrow=nrow(combos_simple),ncol=4)
+  for (i in 1:nrow(combos_simple)) {
+    combos[i,1] <- combos_simple[i,1]
+    combos[i,2] <- combos_simple[i,2]
+    combos[i,3] <- rgb_euc_dist(class_rgb_altered,combos_simple[i,1],combos_simple[i,2])
+    combos[i,4] <- rgb_lum_dist(class_rgb_altered,combos_simple[i,1],combos_simple[i,2])
+  }
+  
+  combos <- combos %>%
+    as.data.frame %>%
+    as.tibble %>%
+    dplyr::rename(c1 = V1,
+                  c2 = V2,
+                  dS = V3,
+                  dL = V4) %>%
+    as.data.frame
+  
+  return(combos)
+}
+
+#get distance data frame for each picture
+get_img_class_k_dists <- function(classifications, euclidean_lum_dists) {
+  return(map(.x=classifications,.f=euclidean_lum_dists))
+}
+
+#calculate the adjacency stats for each image, using the calculated distances as proxies for dS and dL
+get_adj_stats <- function(classifications, img_class_k_dists, xpts=100, xscale=100) {
+  adj_k_dists_list <- list()
+  for(i in 1:length(classifications)) {
+    adj_k_dists_list[[i]] <- adjacent(classimg = classifications[[i]],coldists=img_class_k_dists[[i]],xpts=xpts,xscale=xscale)
+  }
+  return(adj_k_dists_list)
+}
+
+#clean up and select relevant stats
+get_cleanedup_stats <- function(adj_k_dists_list) {
+  img_adj_k_dists <- Reduce(rbind,adj_k_dists_list) %>%
+    rownames_to_column(var = "name") %>%
+    as.tibble()
+  
+  img_adj_k_dists_select <- img_adj_k_dists %>%
+    dplyr::select(name,m,m_r,m_c,A,Sc,St,Jc,Jt,m_dS,s_dS,cv_dS,m_dL,s_dL,cv_dL)
+  
+  return(img_adj_k_dists_select)
+}
+
+#### Color Classification Pipeline Wrapper Functions ####
+classify_color <- function(path, kdf) {
+  classifications <- classify_by_unique_k(path, kdf)
+  classified_k_dists <- get_img_class_k_dists(classifications, calc_euc_lum_dists)
+  adj_stats_raw <- get_adj_stats(classifications, classified_k_dists, 100, 100)
+  adj_stats <- get_cleanedup_stats(adj_stats_raw)
+  return(adj_stats)
 }
