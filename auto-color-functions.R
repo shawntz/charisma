@@ -283,3 +283,14 @@ classify_color <- function(path, kdf) {
   adj_stats <- get_cleanedup_stats(adj_stats_raw)
   return(adj_stats)
 }
+
+run_color_pca <- function(adj_stats) {
+  pca_input <- select(adj_stats, name, m, m_r, m_c, Sc, St, A, m_dS,s_dS,m_dL,s_dL) %>% as.data.frame %>%
+    column_to_rownames("name")
+  pca_res <- prcomp(pca_input, center = T, scale = T)
+  return(pca_res)
+}
+
+get_color_pca_summary <- function(pca_res) {
+  return(summary(pca_res))
+}

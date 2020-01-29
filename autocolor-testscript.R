@@ -23,3 +23,9 @@ classes
 
 testclass <- classify_color("testing", testing_fishes)
 testclass
+
+pca_k <- run_color_pca(testclass)
+pca_k
+
+pca_k_summary <- get_color_pca_summary(pca_k)
+pca_k_summary
