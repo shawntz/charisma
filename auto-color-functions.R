@@ -5,7 +5,7 @@
 ####
 
 #### Install Required Libraries ####
-reqlibs <- c("colordistance", "pavo", "segmented", "tidyverse")
+reqlibs <- c("colordistance", "pavo", "segmented", "tidyverse", "plyr")
 if (length(setdiff(reqlibs, rownames(installed.packages()))) > 0) {
   install.packages(setdiff(reqlibs, rownames(installed.packages())))  
 }
@@ -15,6 +15,7 @@ library(colordistance)
 library(pavo)
 library(segmented)
 library(tidyverse)
+library(plyr)
 
 #### Helper Functions ####
 getImageList <- function(path, ABSPATH=0) {
@@ -265,7 +266,7 @@ get_adj_stats <- function(classifications, img_class_k_dists, xpts=100, xscale=1
 
 #clean up and select relevant stats
 get_cleanedup_stats <- function(adj_k_dists_list) {
-  img_adj_k_dists <- Reduce(rbind,adj_k_dists_list) %>%
+  img_adj_k_dists <- Reduce(rbind.fill,adj_k_dists_list) %>%
     rownames_to_column(var = "name") %>%
     as.tibble()
   
@@ -285,7 +286,8 @@ classify_color <- function(path, kdf) {
 }
 
 run_color_pca <- function(adj_stats) {
-  pca_input <- select(adj_stats, name, m, m_r, m_c, Sc, St, A, m_dS,s_dS,m_dL,s_dL) %>% as.data.frame %>%
+  #pca_input <- select(adj_stats, name, m, m_r, m_c, Sc, St, A, m_dS,s_dS,m_dL,s_dL) %>% as.data.frame %>%
+  pca_input <- select(adj_stats, name, m, m_r, m_c, Sc, St, A, m_dS,m_dL) %>% as.data.frame %>%
     column_to_rownames("name")
   pca_res <- prcomp(pca_input, center = T, scale = T)
   return(pca_res)
