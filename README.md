@@ -84,6 +84,7 @@ $ Rscript charisma.R -m tanagers_masked
 
 To obtain debug plots, such as this...
 ![Example Debug Output](http://dev.shawntylerschwartz.com/charisma/debug_demo.png)
+
 use the following options:
 ```shell
 $ Rscript charisma.R -m tanagers_masked -d -q
