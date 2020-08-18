@@ -1,5 +1,6 @@
 #################################################################
 ##               Demo Implementation of charisma               ##
+##                  (charisma-demo-script.R)                   ##
 #################################################################
 
 #### Setup ####
@@ -26,8 +27,8 @@ lowerB <- 0.0
 upperR <- 0.0
 upperG <- 1.0
 upperB <- 0.0
-thresh <- .05 # (95%)
-method <- "GE"
+thresh <- .05 # (5% minimum threshold)
+method <- "GE" # greater than or equal to method (contrasted to "G" ~> greater than only for threshold comparison)
 
 #### Run Pipeline ####
 #This step uses the masked versions of the images
