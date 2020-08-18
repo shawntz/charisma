@@ -1,0 +1,123 @@
+#!/usr/bin/Rscript
+
+cat("\n\n#######################################################################
+##                              charisma                             ##
+##  Automatic Detection of Color Classes for Color Pattern Analysis  ##
+##                  Written by Shawn Schwartz, 2020                  ##
+##                      <shawnschwartz@ucla.edu>                     ##
+#######################################################################\n\n\n")
+
+## init
+ptm <- proc.time() #begin run timer
+wd <- getwd()
+source("charisma.source.R")
+
+## parameters
+option_list <- list(
+  make_option(c("-m", "--maskedPath"), default="NULL", help="path/to/background_masked_images, no default"),
+  make_option(c("-p", "--unmaskedPath"), default="NULL", help="path/to/transparent_bg_images, no default"),
+  make_option(c("-r", "--lowerRed"), type="double", default=0.0, help="Lower-bound Red value (0.0 to 1.0), default=0.0"),
+  make_option(c("-g", "--lowerGreen"), type="double", default=1.0, help="Lower-bound Green value (0.0 to 1.0), default=1.0"),
+  make_option(c("-b", "--lowerBlue"), type="double", default=0.0, help="Lower-bound Blue value (0.0 to 1.0), default=0.0"),
+  make_option(c("-y", "--upperRed"), type="double", default=0.0, help="Upper-bound Red value (0.0 to 1.0), default=0.0"),
+  make_option(c("-u", "--upperGreen"), type="double", default=1.0, help="Upper-bound Green value (0.0 to 1.0), default=1.0"),
+  make_option(c("-n", "--upperBlue"), type="double", default=0.0, help="Upper-bound Blue value (0.0 to 1.0), default=0.0"),
+  make_option(c("-t", "--threshold"), type="double", default=0.05, help="Minimum threshold of pixel percentage to count as a color, default=0.05"),
+  make_option(c("-z", "--method"), default="GE", help="Method for threshold cutoff. Type either 'GE' or 'G': (GE='>=' and G='>'), default=GE."),
+  make_option(c("-d", "--debug"), action="store_true", default=FALSE, help="Enable debug plotting mode, default=FALSE"),
+  make_option(c("-e", "--rgbDataOutput"), action="store_true", default=FALSE, help="Enable saving of RDS file with R list data of RGB values for each k, for each image, default=FALSE"),
+  make_option(c("-q", "--saveDebugPlots"), action="store_true", default=FALSE, help="Automatically save debug plots to directory, default=FALSE"),
+  make_option(c("-o", "--saveDebugPlotsPath"), default="debug_outputs", help="Location to automatically save debug plots to directory (-q)"),
+  make_option(c("-c", "--colorPatternAnalysis"), action="store_true", default=FALSE, help="Run color pattern analysis pipeline after automatic color classification, default=FALSE")
+)
+
+## parse command line args
+opt <- parse_args(OptionParser(option_list = option_list))
+
+images_masked <- opt$maskedPath
+images_notmasked <- opt$unmaskedPath
+lowerR <- opt$lowerRed
+lowerG <- opt$lowerGreen
+lowerB <- opt$lowerBlue
+upperR <- opt$upperRed
+upperG <- opt$upperGreen
+upperB <- opt$upperBlue
+thresh <- opt$threshold
+method <- opt$method
+debugMode <- opt$debug
+rgbOut <- opt$rgbDataOutput
+saveDebugPlots <- opt$saveDebugPlots
+plotOutputDirInput <- opt$saveDebugPlotsPath
+colorPatternAnalysis <- opt$colorPatternAnalysis
+
+## check if both masked/unmasked img dirs are provided if color pattern analysis option is selected
+if((colorPatternAnalysis == TRUE) & (images_notmasked == "NULL" | images_masked == "NULL"))
+{
+  stop("\n\n\n***charisma warning: Corresponding masked/unmasked directories must be provided to run color pattern analysis!***\n\n\n")
+}
+
+## setup output dir for data
+output_dir <- file.path(wd, format(Sys.time(), "charisma_%F_%H.%M.%S"))
+dir.create(output_dir)
+cat(paste("Created directory for charisma run output files at:"), output_dir, "\n")
+output_dir_root <- paste0(output_dir, "/")
+plot_output_dir <- paste0(output_dir, "/", plotOutputDirInput)
+images_masked_path <- paste0(wd, "/", images_masked)
+images_path <- paste0(wd, "/", images_notmasked)
+
+## begin automatic color class determination pipeline
+cat("\nRunning automatic color class determination now...\n")
+k_out <- autoComputeKPipeline(images_masked_path, debugMode = debugMode,
+                              lowerR = lowerR, lowerG = lowerG, lowerB = lowerB,
+                              upperR = upperR, upperG = upperG, upperB = upperB,
+                              thresh = thresh, method = method, rgbOut = rgbOut, rgbOutPath = output_dir_root,
+                              saveDebugPlots = saveDebugPlots, debugPlotsOutputDir = plot_output_dir)
+cat("\nSaving automatic color class determination results...\n")
+saveRDS(k_out, file.path(output_dir, "k-values.RDS"))
+write.csv(k_out, file.path(output_dir, "k-values.csv"))
+cat("\nFinished saving automatic color class determination results successfully!\n")
+
+## run pavo color pattern analysis pipeline
+if(colorPatternAnalysis == TRUE)
+{
+  cat("\nRunning color pattern analysis classification pipeline...\n\n")
+  color_classified <- classifyColorPipeline(images_path, k_out)
+  cat("\nSaving color pattern analysis classification results...")
+  saveRDS(color_classified, file.path(output_dir, "color-pattern-analysis.RDS"))
+  write.csv(color_classified, file.path(output_dir, "color-pattern-analysis.csv"))
+  cat("Finished saving color pattern analysis classification results successfully!\n\n")
+  
+  cat("\nRunning color pattern analysis classification PCA...\n")
+  pca_k <- runColorPCA(color_classified)
+  pca_k_summary <- getColorPCASummary(pca_k)
+  cat("\nSaving color pattern analysis classification PCA results... (2 files)")
+  saveRDS(pca_k, file.path(output_dir, "color-pattern-analysis-PCA.RDS"))
+  saveRDS(pca_k_summary, file.path(output_dir, "color-pattern-analysis-PCA_summary.RDS"))
+  cat("Finished saving color pattern analysis classification PCA results successfully! (2 files)\n\n")  
+}
+
+## clean up charisma's main path
+if(file.exists("Rplots.pdf"))
+{
+  cat("\nCleaning up directory...")
+  unlink("Rplots.pdf")
+  cat("Done!\n")
+}
+
+## sink final run time
+final_run_time <- proc.time() - ptm #end run timer
+
+if(colorPatternAnalysis == TRUE)
+{
+  sink(paste0(output_dir_root, "total_run_time_log.txt"))
+    cat(paste(final_run_time[[3]], "seconds to automatically classify k and run color pattern analysis on", nrow(k_out), "images."))
+  sink()
+} else if(colorPatternAnalysis == FALSE)
+{
+  sink(paste0(output_dir_root, "total_run_time_log.txt"))
+  cat(paste(final_run_time[[3]], "seconds to automatically classify k for", nrow(k_out), "images."))
+  sink()
+}
+
+## finishing message
+cat(paste("\ncharisma pipeline successfully completed in", final_run_time[[3]], "seconds.\n\n"))
