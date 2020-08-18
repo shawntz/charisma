@@ -1,4 +1,12 @@
-# charisma: script to automatically determine the number of color classes within an image for high-throughput color pattern analyses
+# charisma: script to automatically determine the number of color classes within an image for high-throughput color pattern analyses -- (in prep)
+
+Shawn T. Schwartz <sup>1*</sup>, Whitney L.E. Tsai<sup>1</sup>, Elizabeth A. Karan<sup>1</sup>, & Michael E. Alfaro<sup>1</sup>
+
+<sup>1</sup> Department of Ecology and Evolutionary Biology, Terasaki 2149, University of California, Los Angeles, Los Angeles, CA 90095, USA
+
+<sup>*</sup>Corresponding author. Email: shawnschwartz@ucla.edu
+
+---
 
 We present a standalone `R` script to perform high-throughput color pattern analyses inspired by `colordistance` [(Weller and Westneat, 2018)](https://peerj.com/articles/6398/) and `pavo` [(Maia _et al._, 2013)](https://besjournals.onlinelibrary.wiley.com/doi/full/10.1111/2041-210X.12069).
 
