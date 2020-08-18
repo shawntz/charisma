@@ -15,8 +15,8 @@ source("charisma.source.R")
 #### Constants ####
 #Must have two directories with equal number of images with the name filenames (except one set is 
 # masked with an arbitrary solid background color and the other set is transparent)
-images_masked_path <- "tanagers_masked"
-images_path <- "tanagers"
+images_masked_path <- file.path("demo", "tanagers_masked")
+images_path <- file.path("demo", "tanagers")
 
 #These values are the RGB bounds to ignore the masked arbitrary background color
 # (e.g, if background is solid green (i.e., R=0,G=1.0,B=0), then lowerG and upperG should be set to 1.0

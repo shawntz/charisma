@@ -79,7 +79,7 @@ Options:
 ### Demo 1: Run only automatic color classification
 Running the automatic color classification requires having a directory of images masked with a solid background color (that doesn't appear within the body of the organism of interest). For all of our examples, we use a solid green background, specifically: `(R=0.0, G=1.0, B=0.0)`. These are also the defaults used by **charisma**. As such, if your images are already pre-processed with a solid green background, no additional command line arguments are required. However, if a unique solid background masking color is used, please use the `-r -g -b -y -u -n` flags to specific the lower-bounds (`-r -g -b`) and upper-bounds (`-y -u -n`) of the background color to ignore (ranging from 0 to 1 for each RGB value). **Note: the lower- and upper-bound RGB values should usually be the exact same for solid background colors. For example, if the background color was solid red, the options would look something like this: `-r 1.0 -g 0.0 -b 0.0 -y 1.0 -u 0.0 -n 0.0`.**
 ```shell
-$ Rscript charisma.R -m tanagers_masked
+$ Rscript charisma.R -m demo/tanagers_masked
 ```
 
 To obtain debug plots, such as this...
@@ -87,19 +87,19 @@ To obtain debug plots, such as this...
 
 use the following options:
 ```shell
-$ Rscript charisma.R -m tanagers_masked -d -q
+$ Rscript charisma.R -m demo/tanagers_masked -d -q
 ```
 _Note: `-d` enables debug plotting and `-q` enables saving of these plots. The saving plot is defaulted to `debug_outputs`, however, a custom path can be specified using the `-o` flag._
 
 **To also save the RGB classifications used for the debug plots as a `.RDS` data file, please use the `-e` flag. For example:**
 ```shell
-$ Rscript charisma.R -m tanagers_masked -d -q -e
+$ Rscript charisma.R -m demo/tanagers_masked -d -q -e
 ```
 
 ### Demo 2: Run automatic color classification & color pattern analysis using these automatically calculated k-values
 The command line calls for running color pattern analysis utilize the same options from **Demo 1**, expect a corresponding directory of un-masked (i.e., not solid-background color masked images) must be supplied using the `-p` flag (with the same image names as the masked directory), along with the `-c` flag to enable the color pattern analysis functionality of **charisma**.
 ```shell
-$ Rscript charisma.R -m tanagers_masked -p tanagers -d -q -e -c
+$ Rscript charisma.R -m demo/tanagers_masked -p demo/tanagers -d -q -e -c
 ```
 
 ## RStudio/R Console Demo
@@ -122,8 +122,8 @@ source("charisma.source.R")
 #### Constants ####
 #Must have two directories with equal number of images with the name filenames (except one set is 
 # masked with an arbitrary solid background color and the other set is transparent)
-images_masked_path <- "tanagers_masked"
-images_path <- "tanagers"
+images_masked_path <- file.path("demo", "tanagers_masked")
+images_path <- file.path("demo", "tanagers")
 
 #These values are the RGB bounds to ignore the masked arbitrary background color
 # (e.g, if background is solid green (i.e., R=0,G=1.0,B=0), then lowerG and upperG should be set to 1.0
