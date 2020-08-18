@@ -56,11 +56,11 @@ Options:
 	-z METHOD, --method=METHOD
 		Method for threshold cutoff. Type either 'GE' or 'G': (GE='>=' and G='>'), default=GE.
 
-	-d, --debug
-		Enable debug plotting mode, default=FALSE
-
 	-e, --rgbDataOutput
 		Enable saving of RDS file with R list data of RGB values for each k, for each image, default=FALSE
+
+	-d, --debug
+		Enable debug plotting mode, default=FALSE
 
 	-q, --saveDebugPlots
 		Automatically save debug plots to directory, default=FALSE

@@ -24,8 +24,8 @@ option_list <- list(
   make_option(c("-n", "--upperBlue"), type="double", default=0.0, help="Upper-bound Blue value (0.0 to 1.0), default=0.0"),
   make_option(c("-t", "--threshold"), type="double", default=0.05, help="Minimum threshold of pixel percentage to count as a color, default=0.05"),
   make_option(c("-z", "--method"), default="GE", help="Method for threshold cutoff. Type either 'GE' or 'G': (GE='>=' and G='>'), default=GE."),
-  make_option(c("-d", "--debug"), action="store_true", default=FALSE, help="Enable debug plotting mode, default=FALSE"),
   make_option(c("-e", "--rgbDataOutput"), action="store_true", default=FALSE, help="Enable saving of RDS file with R list data of RGB values for each k, for each image, default=FALSE"),
+  make_option(c("-d", "--debug"), action="store_true", default=FALSE, help="Enable debug plotting mode, default=FALSE"),
   make_option(c("-q", "--saveDebugPlots"), action="store_true", default=FALSE, help="Automatically save debug plots to directory, default=FALSE"),
   make_option(c("-o", "--saveDebugPlotsPath"), default="debug_outputs", help="Location to automatically save debug plots to directory (-q)"),
   make_option(c("-c", "--colorPatternAnalysis"), action="store_true", default=FALSE, help="Run color pattern analysis pipeline after automatic color classification, default=FALSE")
@@ -93,7 +93,7 @@ if(colorPatternAnalysis == TRUE)
   cat("\nSaving color pattern analysis classification PCA results... (2 files)")
   saveRDS(pca_k, file.path(output_dir, "color-pattern-analysis-PCA.RDS"))
   saveRDS(pca_k_summary, file.path(output_dir, "color-pattern-analysis-PCA_summary.RDS"))
-  cat("Finished saving color pattern analysis classification PCA results successfully! (2 files)\n\n")  
+  cat("\nFinished saving color pattern analysis classification PCA results successfully! (2 files)\n\n")  
 }
 
 ## clean up charisma's main path
