@@ -24,7 +24,7 @@ $ Rscript charisma.R --help
 ```
 
 Though, here are all of the options and defaults:
-```shell
+```
 Options:
 	-m MASKEDPATH, --maskedPath=MASKEDPATH
 		path/to/background_masked_images, no default
