@@ -60,7 +60,14 @@ getHist <- function(img, bins = 3, plotting = FALSE,
   }
   else
   {
-    cat(paste0("\nAnalyzing: ", tail(strsplit(img, "/")[[1]], 1)),"\n")
+    if(Sys.info()['sysname'] != "Windows")
+    {
+      cat(paste0("\nAnalyzing: ", tail(strsplit(img, "/")[[1]], 1)),"\n")
+    } 
+    else
+    {
+      cat(paste0("\nAnalyzing: ", tail(strsplit(img, "\\\\")[[1]], 1)),"\n")  
+    }
     return(colordistance::getImageHist(img, bins = bins, plotting = plotting,
                                        lower = c(lowerR,lowerG,lowerB),
                                        upper = c(upperR,upperG,upperB)))
@@ -113,8 +120,17 @@ debugPlot <- function(path, colClasses, lowerR = 0.0, lowerG = 1.0, lowerB = 0.0
     #wd <- getwd()
     #ifelse(!dir.exists(file.path(wd, plotOutputDir)), dir.create(file.path(wd, plotOutputDir)), FALSE)
     ifelse(!dir.exists(plotOutputDir), dir.create(plotOutputDir), FALSE)
-    cat(paste0("\nSaving debug plot for: ", tail(strsplit(path, "/")[[1]], 1), " as: ", paste0("debug_", tail(strsplit(path, "/")[[1]], 1))))
-    png(paste0(plotOutputDir,"/debug_", tail(strsplit(path, "/")[[1]], 1)), width = 750, height = 500)
+    
+    if(Sys.info()['sysname'] != "Windows")
+    {
+      cat(paste0("\nSaving debug plot for: ", tail(strsplit(path, "/")[[1]], 1), " as: ", paste0("debug_", tail(strsplit(path, "/")[[1]], 1))))
+      png(paste0(plotOutputDir,"/debug_", tail(strsplit(path, "/")[[1]], 1)), width = 750, height = 500)
+    }
+    else
+    {
+      cat(paste0("\nSaving debug plot for: ", tail(strsplit(path, "\\\\")[[1]], 1), " as: ", paste0("debug_", tail(strsplit(path, "\\\\")[[1]], 1))))
+      png(paste0(plotOutputDir,"/debug_", tail(strsplit(path, "\\\\")[[1]], 1)), width = 750, height = 500)
+    }
   }
   
   par(mfrow = c(1,2), mar = rep(1, 4) + 0.1)
@@ -123,7 +139,14 @@ debugPlot <- function(path, colClasses, lowerR = 0.0, lowerG = 1.0, lowerB = 0.0
   plot(0:1, 0:1, type = "n", axes = FALSE, asp = asp, xlab = "", ylab = "")
   
   #panel 1: original image
-  title(paste("\nDebug mode: \nImg: ", tail(strsplit(path, "/")[[1]], 1)))
+  if(Sys.info()['sysname'] != "Windows")
+  {
+    title(paste("\nDebug mode: \nImg: ", tail(strsplit(path, "/")[[1]], 1)))
+  }
+  else
+  {
+    title(paste("\nDebug mode: \nImg: ", tail(strsplit(path, "\\\\")[[1]], 1)))
+  }
   rasterImage(img, 0, 0, 1, 1)
   
   #panel 2: k-values
@@ -154,7 +177,14 @@ classifyByUniqueK <- function(path, kdf)
   images_list <- rep(NA, length(image_paths))
   for(image in 1:length(images_list))
   {
-    images_list[image] <- tail(strsplit(image_paths[image], "/")[[1]], 1)
+    if(Sys.info()['sysname'] != "Windows")
+    {
+      images_list[image] <- tail(strsplit(image_paths[image], "/")[[1]], 1)
+    }
+    else
+    {
+      images_list[image] <- tail(strsplit(image_paths[image], "\\\\")[[1]], 1)
+    }
   }
   
   classifications <- list()
@@ -282,7 +312,14 @@ autoComputeKPipeline <- function(path, bins = 3, debugMode = FALSE,
     hist_list[[ii]] <- getHist(images[ii], bins = bins, plotting = FALSE,
                           lowerR = lowerR, lowerG = lowerG, lowerB = lowerB,
                           upperR = upperR, upperG = upperG, upperB = upperB)
-    images_names[ii] <- tail(strsplit(images[ii], "/")[[1]], 1)
+    if(Sys.info()['sysname'] != "Windows")
+    {
+      images_names[ii] <- tail(strsplit(images[ii], "/")[[1]], 1)
+    }
+    else
+    {
+      images_names[ii] <- tail(strsplit(images[ii], "\\\\")[[1]], 1)
+    }
   }
   
   for(ii in 1:length(hist_list))
@@ -329,7 +366,14 @@ classifyColorPipeline <- function(path, kdf)
   images_list <- rep(NA, length(image_paths))
   for(image in 1:length(images_list))
   {
-    images_list[image] <- tail(strsplit(image_paths[image], "/")[[1]], 1)
+    if(Sys.info()['sysname'] != "Windows")
+    {
+      images_list[image] <- tail(strsplit(image_paths[image], "/")[[1]], 1)
+    }
+    else
+    {
+      images_list[image] <- tail(strsplit(image_paths[image], "\\\\")[[1]], 1)
+    }
   }
   
   adj_stats <- adj_stats %>%

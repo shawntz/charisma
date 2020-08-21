@@ -6,7 +6,8 @@
 #### Setup ####
 rm(list = ls())
 
-wd <- "~/Dropbox/Research/UCLA/Alfaro-Lab/charisma_paper/charisma"
+#wd <- "~/Dropbox/Research/UCLA/Alfaro-Lab/charisma_paper/charisma"
+wd <- "C:/Users/shawn/Downloads/charisma"
 setwd(wd)
 
 #### Load charisma Source ####
