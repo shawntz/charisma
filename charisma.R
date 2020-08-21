@@ -47,7 +47,7 @@ upperB <- opt$upperBlue
 thresh <- opt$threshold
 method <- opt$method
 debugMode <- opt$debug
-rgbOut <- opt$rgbDataOutput
+colOut <- opt$colorDataOutput
 saveDebugPlots <- opt$saveDebugPlots
 plotOutputDirInput <- opt$saveDebugPlotsPath
 colorPatternAnalysis <- opt$colorPatternAnalysis
@@ -72,7 +72,7 @@ cat("\nRunning automatic color class determination now...\n")
 k_out <- autoComputeKPipeline(images_masked_path, debugMode = debugMode,
                               lowerR = lowerR, lowerG = lowerG, lowerB = lowerB,
                               upperR = upperR, upperG = upperG, upperB = upperB,
-                              thresh = thresh, method = method, colOut = rgbOut, colOutPath = output_dir_root,
+                              thresh = thresh, method = method, colOut = colOut, colOutPath = output_dir_root,
                               saveDebugPlots = saveDebugPlots, debugPlotsOutputDir = plot_output_dir, colorspace = colorspace)
 cat("\nSaving automatic color class determination results...\n")
 saveRDS(k_out, file.path(output_dir, "k-values.RDS"))
