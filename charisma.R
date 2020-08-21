@@ -16,7 +16,7 @@ source("charisma.source.R")
 option_list <- list(
   make_option(c("-m", "--maskedPath"), default="NULL", help="path/to/background_masked_images, no default"),
   make_option(c("-p", "--unmaskedPath"), default="NULL", help="path/to/transparent_bg_images, no default"),
-  make_option(c("-s", "--colorspace"), default="rgb", help="set color space to either 'rgb' or 'hsv'"),
+  make_option(c("-s", "--colorspace"), default="rgb", help="set color space to either 'rgb' or 'hsv', default='rgb'"),
   make_option(c("-r", "--lowerRed"), type="double", default=0.0, help="Lower-bound Red value (0.0 to 1.0), default=0.0"),
   make_option(c("-g", "--lowerGreen"), type="double", default=1.0, help="Lower-bound Green value (0.0 to 1.0), default=1.0"),
   make_option(c("-b", "--lowerBlue"), type="double", default=0.0, help="Lower-bound Blue value (0.0 to 1.0), default=0.0"),
