@@ -51,7 +51,7 @@ getImages <- function(path)
 
 getHist <- function(img, bins = 3, plotting = FALSE, 
                     lowerR = 0.0, lowerG = 1.0, lowerB = 0.0,
-                    upperR = 0.4, upperG = 1.0, upperB = 0.0)
+                    upperR = 0.4, upperG = 1.0, upperB = 0.0, colorspace = "rgb")
 {
   #check if valid image
   if(!file.exists(img))
@@ -68,9 +68,23 @@ getHist <- function(img, bins = 3, plotting = FALSE,
     {
       cat(paste0("\nAnalyzing: ", tail(strsplit(img, "\\\\")[[1]], 1)))  
     }
-    return(suppressMessages(colordistance::getImageHist(img, bins = bins, plotting = plotting,
-                                       lower = c(lowerR,lowerG,lowerB),
-                                       upper = c(upperR,upperG,upperB))))
+    
+    if(colorspace == "rgb")
+    {
+      return(suppressMessages(colordistance::getImageHist(img, bins = bins, plotting = plotting,
+                                                          lower = c(lowerR,lowerG,lowerB),
+                                                          upper = c(upperR,upperG,upperB))))
+    }
+    else if(colorspace == "hsv")
+    {
+      return(suppressMessages(colordistance::getImageHist(img, bins = bins, plotting = plotting,
+                                                          lower = c(lowerR,lowerG,lowerB),
+                                                          upper = c(upperR,upperG,upperB), hsv = TRUE)))
+    }
+    else
+    {
+      stop("Invalid color space provided! Must be either 'rgb' or 'hsv'.")
+    }
   }
   
 }
@@ -107,12 +121,12 @@ getNumColorClasses <- function(extracted_colors)
 }
 
 debugPlot <- function(path, colClasses, lowerR = 0.0, lowerG = 1.0, lowerB = 0.0,
-                      upperR = 0.0, upperG = 1.0, upperB = 0.0, savePlots = FALSE, plotOutputDir = "debug_outputs")
+                      upperR = 0.0, upperG = 1.0, upperB = 0.0, savePlots = FALSE, plotOutputDir = "debug_outputs", colorspace = "rgb")
 {
   source_image <- colordistance::loadImage(path, lower = c(lowerR,lowerG,lowerB),
-                                           upper = c(upperR,upperG,upperB))
+                                             upper = c(upperR,upperG,upperB), hsv = TRUE)
   img <- source_image$original.rgb
-  
+    
   current_par <- par()
   
   if(savePlots == TRUE)
@@ -150,12 +164,24 @@ debugPlot <- function(path, colClasses, lowerR = 0.0, lowerG = 1.0, lowerB = 0.0
   rasterImage(img, 0, 0, 1, 1)
   
   #panel 2: k-values
-  rgb_hex_values <- apply(colClasses, 1, function(x) rgb(x[1], x[2], x[3]))
-  num_colors <- length(rgb_hex_values)
-  bar_heights <- rep((1/num_colors), length(rgb_hex_values))
-  x_values <- seq(1:length(rgb_hex_values))
-  barplot(bar_heights, col = rgb_hex_values, axes = F, space = 0, border = NA, horiz = F)
-  title(paste0("(k = ", num_colors, ") colors identified"))
+  if(colorspace == "rgb")
+  {
+    hex_values <- apply(colClasses, 1, function(x) rgb(x[1], x[2], x[3]))
+  }
+  else if(colorspace == "hsv")
+  {
+    hex_values <- apply(colClasses, 1, function(x) hsv(x[1], x[2], x[3]))
+  }
+  else
+  {
+    stop("Invalid color space provided! Must be either 'rgb' or 'hsv'.")
+  }
+  
+  num_colors <- length(hex_values)
+  bar_heights <- rep((1/num_colors), length(hex_values))
+  x_values <- seq(1:length(hex_values))
+  barplot(bar_heights, col = hex_values, axes = F, space = 0, border = NA, horiz = F)
+  title(paste0("(k = ", num_colors, ") colors identified in [", colorspace, "]"))
   text((x_values-0.5), (bar_heights/2), labels = paste0((round(colClasses[,4], digits = 2) * 100),"%"))
   
   if (savePlots == TRUE)
@@ -300,7 +326,7 @@ autoComputeKPipeline <- function(path, bins = 3, debugMode = FALSE,
                      lowerR = 0.0, lowerG = 0.0, lowerB = 0.0,
                      upperR = 0.0, upperG = 0.0, upperB = 0.0,
                      thresh = .05, method = "GE", rgbOut = FALSE, rgbOutPath = "./",
-                     saveDebugPlots = FALSE, debugPlotsOutputDir = "debug_outputs")
+                     saveDebugPlots = FALSE, debugPlotsOutputDir = "debug_outputs", colorspace = "rgb")
 {
   images <- getImages(path)
   images_names <- rep(NA, length(images))
@@ -312,7 +338,7 @@ autoComputeKPipeline <- function(path, bins = 3, debugMode = FALSE,
   {
     hist_list[[ii]] <- getHist(images[ii], bins = bins, plotting = FALSE,
                           lowerR = lowerR, lowerG = lowerG, lowerB = lowerB,
-                          upperR = upperR, upperG = upperG, upperB = upperB)
+                          upperR = upperR, upperG = upperG, upperB = upperB, colorspace = colorspace)
     if(Sys.info()['sysname'] != "Windows")
     {
       images_names[ii] <- tail(strsplit(images[ii], "/")[[1]], 1)
@@ -340,7 +366,7 @@ autoComputeKPipeline <- function(path, bins = 3, debugMode = FALSE,
     {
       debugPlot(images[ii], color_classes_list[[ii]], lowerR = lowerR, lowerG = lowerG, lowerB = lowerB,
                 upperR = upperR, upperG = upperG, upperB = upperB, 
-                savePlots = saveDebugPlots, plotOutputDir = debugPlotsOutputDir)
+                savePlots = saveDebugPlots, plotOutputDir = debugPlotsOutputDir, colorspace = colorspace)
     }
   }
   
