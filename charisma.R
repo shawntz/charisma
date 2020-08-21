@@ -67,6 +67,26 @@ plot_output_dir <- paste0(output_dir, "/", plotOutputDirInput)
 images_masked_path <- paste0(wd, "/", images_masked)
 images_path <- paste0(wd, "/", images_notmasked)
 
+## save session parameters
+sink(paste0(output_dir_root, "charisma_session_parameters_log.txt"))
+  cat(paste0("--maskedPath=", opt$maskedPath, "\n"))
+  cat(paste0("--unmaskedPath=", opt$unmaskedPath, "\n"))
+  cat(paste0("--colorspace=", opt$colorspace, "\n"))
+  cat(paste0("--lowerRed=", opt$lowerRed, "\n"))
+  cat(paste0("--lowerGreen=", opt$lowerGreen, "\n"))
+  cat(paste0("--lowerBlue=", opt$lowerBlue, "\n"))
+  cat(paste0("--upperRed=", opt$upperRed, "\n"))
+  cat(paste0("--upperGreen=", opt$upperGreen, "\n"))
+  cat(paste0("--upperBlue=", opt$upperBlue, "\n"))
+  cat(paste0("--threshold=", opt$threshold, "\n"))
+  cat(paste0("--method=", opt$method, "\n"))
+  cat(paste0("--colorDataOutput=", opt$colorDataOutput, "\n"))
+  cat(paste0("--debug=", opt$debug, "\n"))
+  cat(paste0("--saveDebugPlots=", opt$saveDebugPlots, "\n"))
+  cat(paste0("--saveDebugPlotsPath=", opt$saveDebugPlotsPath, "\n"))
+  cat(paste0("--colorPatternAnalysis=", opt$colorPatternAnalysis, "\n"))
+sink()
+
 ## begin automatic color class determination pipeline
 cat("\nRunning automatic color class determination now...\n")
 k_out <- autoComputeKPipeline(images_masked_path, debugMode = debugMode,
