@@ -61,7 +61,7 @@ if((colorPatternAnalysis == TRUE) & (images_notmasked == "NULL" | images_masked 
 ## setup output dir for data
 output_dir <- file.path(wd, format(Sys.time(), "charisma_%F_%H.%M.%S"))
 dir.create(output_dir)
-cat(paste("Created directory for charisma run output files at:"), output_dir, "\n")
+cat(paste("\nCreated directory for charisma run output files at:"), output_dir, "\n")
 output_dir_root <- paste0(output_dir, "/")
 plot_output_dir <- paste0(output_dir, "/", plotOutputDirInput)
 images_masked_path <- paste0(wd, "/", images_masked)

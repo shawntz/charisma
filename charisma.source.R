@@ -35,7 +35,7 @@ for(libs in required_libraries)
   eval(bquote(library(.(libs))))
 }
 
-cat("Finished loading charisma!")
+cat("Finished loading charisma!\n\n")
 
 ############################################################################
 ############################################################################
