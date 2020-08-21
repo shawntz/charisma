@@ -374,9 +374,9 @@ autoComputeKPipeline <- function(path, bins = 3, debugMode = FALSE,
   
   if(rgbOut == TRUE)
   {
-    cat("\n\nSaving k RGB values to RDS file...")
-    saveRDS(color_classes_list, paste0(rgbOutPath, "rgb_values_output.RDS"))
-    cat("Successfully saved k RGB values to RDS file!\n")
+    cat(paste0("\n\nSaving k ", toupper(colorspace), " values to RDS file..."))
+    saveRDS(color_classes_list, paste0(rgbOutPath, colorspace, "_values_output.RDS"))
+    cat(paste0("Successfully saved k ", toupper(colorspace), " values to RDS file for ", length(images), " images!\n"))
   }
   
   return(color_class_data)
