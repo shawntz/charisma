@@ -62,15 +62,15 @@ getHist <- function(img, bins = 3, plotting = FALSE,
   {
     if(Sys.info()['sysname'] != "Windows")
     {
-      cat(paste0("\nAnalyzing: ", tail(strsplit(img, "/")[[1]], 1)),"\n")
+      cat(paste0("\nAnalyzing: ", tail(strsplit(img, "/")[[1]], 1)))
     } 
     else
     {
-      cat(paste0("\nAnalyzing: ", tail(strsplit(img, "\\\\")[[1]], 1)),"\n")  
+      cat(paste0("\nAnalyzing: ", tail(strsplit(img, "\\\\")[[1]], 1)))  
     }
-    return(colordistance::getImageHist(img, bins = bins, plotting = plotting,
+    return(suppressMessages(colordistance::getImageHist(img, bins = bins, plotting = plotting,
                                        lower = c(lowerR,lowerG,lowerB),
-                                       upper = c(upperR,upperG,upperB)))
+                                       upper = c(upperR,upperG,upperB))))
   }
   
 }
@@ -183,7 +183,7 @@ classifyByUniqueK <- function(path, kdf)
     }
     else
     {
-      images_list[image] <- tail(strsplit(image_paths[image], "\\\\")[[1]], 1)
+      images_list[image] <- tail(strsplit(as.character(image_paths[image]), "\\\\")[[1]], 1)
     }
   }
   
@@ -269,7 +269,8 @@ getAdjStats <- function(classifications, img_class_k_dists, xpts=100, xscale=100
   
   for(i in 1:length(classifications)) 
   {
-    adj_k_dists_list[[i]] <- adjacent(classimg = classifications[[i]],coldists=img_class_k_dists[[i]],xpts=xpts,xscale=xscale)
+    adj_k_dists_list[[i]] <- pavo::adjacent(classimg = classifications[[i]],coldists=img_class_k_dists[[i]],xpts=xpts,xscale=xscale)
+    cat("\n")
   }
   
   return(adj_k_dists_list)
@@ -347,7 +348,7 @@ autoComputeKPipeline <- function(path, bins = 3, debugMode = FALSE,
   
   if(rgbOut == TRUE)
   {
-    cat("\nSaving k RGB values to RDS file...")
+    cat("\n\nSaving k RGB values to RDS file...")
     saveRDS(color_classes_list, paste0(rgbOutPath, "rgb_values_output.RDS"))
     cat("Successfully saved k RGB values to RDS file!\n")
   }
@@ -358,9 +359,9 @@ autoComputeKPipeline <- function(path, bins = 3, debugMode = FALSE,
 classifyColorPipeline <- function(path, kdf)
 {
   classifications <- classifyByUniqueK(path, kdf)
-  classified_k_dists <- getImgClassKDists(classifications, calcEucLumDists)
-  adj_stats_raw <- getAdjStats(classifications, classified_k_dists, 100, 100)
-  adj_stats <- getCleanedupStats(adj_stats_raw)
+  classified_k_dists <- suppressWarnings(getImgClassKDists(classifications, calcEucLumDists))
+  adj_stats_raw <- suppressWarnings(getAdjStats(classifications, classified_k_dists, 100, 100))
+  adj_stats <- suppressWarnings(getCleanedupStats(adj_stats_raw))
   
   image_paths <- kdf$img
   images_list <- rep(NA, length(image_paths))
@@ -372,7 +373,7 @@ classifyColorPipeline <- function(path, kdf)
     }
     else
     {
-      images_list[image] <- tail(strsplit(image_paths[image], "\\\\")[[1]], 1)
+      images_list[image] <- tail(strsplit(as.character(image_paths[image]), "\\\\")[[1]], 1)
     }
   }
   
