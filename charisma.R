@@ -16,6 +16,7 @@ source("charisma.source.R")
 option_list <- list(
   make_option(c("-m", "--maskedPath"), default="NULL", help="path/to/background_masked_images, no default"),
   make_option(c("-p", "--unmaskedPath"), default="NULL", help="path/to/transparent_bg_images, no default"),
+  make_option(c("-s", "--colorspace"), default="rgb", help="set color space to either 'rgb' or 'hsv'"),
   make_option(c("-r", "--lowerRed"), type="double", default=0.0, help="Lower-bound Red value (0.0 to 1.0), default=0.0"),
   make_option(c("-g", "--lowerGreen"), type="double", default=1.0, help="Lower-bound Green value (0.0 to 1.0), default=1.0"),
   make_option(c("-b", "--lowerBlue"), type="double", default=0.0, help="Lower-bound Blue value (0.0 to 1.0), default=0.0"),
@@ -24,7 +25,7 @@ option_list <- list(
   make_option(c("-n", "--upperBlue"), type="double", default=0.0, help="Upper-bound Blue value (0.0 to 1.0), default=0.0"),
   make_option(c("-t", "--threshold"), type="double", default=0.05, help="Minimum threshold of pixel percentage to count as a color, default=0.05"),
   make_option(c("-z", "--method"), default="GE", help="Method for threshold cutoff. Type either 'GE' or 'G': (GE='>=' and G='>'), default=GE."),
-  make_option(c("-e", "--rgbDataOutput"), action="store_true", default=FALSE, help="Enable saving of RDS file with R list data of RGB values for each k, for each image, default=FALSE"),
+  make_option(c("-e", "--colorDataOutput"), action="store_true", default=FALSE, help="Enable saving of RDS file with R list data of RGB/HSV values for each k, for each image, default=FALSE"),
   make_option(c("-d", "--debug"), action="store_true", default=FALSE, help="Enable debug plotting mode, default=FALSE"),
   make_option(c("-q", "--saveDebugPlots"), action="store_true", default=FALSE, help="Automatically save debug plots to directory, default=FALSE"),
   make_option(c("-o", "--saveDebugPlotsPath"), default="debug_outputs", help="Location to automatically save debug plots to directory (-q)"),
@@ -36,6 +37,7 @@ opt <- parse_args(OptionParser(option_list = option_list))
 
 images_masked <- opt$maskedPath
 images_notmasked <- opt$unmaskedPath
+colorspace <- opt$colorspace
 lowerR <- opt$lowerRed
 lowerG <- opt$lowerGreen
 lowerB <- opt$lowerBlue
@@ -70,8 +72,8 @@ cat("\nRunning automatic color class determination now...\n")
 k_out <- autoComputeKPipeline(images_masked_path, debugMode = debugMode,
                               lowerR = lowerR, lowerG = lowerG, lowerB = lowerB,
                               upperR = upperR, upperG = upperG, upperB = upperB,
-                              thresh = thresh, method = method, rgbOut = rgbOut, rgbOutPath = output_dir_root,
-                              saveDebugPlots = saveDebugPlots, debugPlotsOutputDir = plot_output_dir)
+                              thresh = thresh, method = method, colOut = rgbOut, colOutPath = output_dir_root,
+                              saveDebugPlots = saveDebugPlots, debugPlotsOutputDir = plot_output_dir, colorspace = colorspace)
 cat("\nSaving automatic color class determination results...\n")
 saveRDS(k_out, file.path(output_dir, "k-values.RDS"))
 write.csv(k_out, file.path(output_dir, "k-values.csv"))

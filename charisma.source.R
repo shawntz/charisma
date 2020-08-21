@@ -325,7 +325,7 @@ getCleanedupStats <- function(adj_k_dists_list)
 autoComputeKPipeline <- function(path, bins = 3, debugMode = FALSE, 
                      lowerR = 0.0, lowerG = 0.0, lowerB = 0.0,
                      upperR = 0.0, upperG = 0.0, upperB = 0.0,
-                     thresh = .05, method = "GE", rgbOut = FALSE, rgbOutPath = "./",
+                     thresh = .05, method = "GE", colOut = FALSE, colOutPath = "./",
                      saveDebugPlots = FALSE, debugPlotsOutputDir = "debug_outputs", colorspace = "rgb")
 {
   images <- getImages(path)
@@ -372,10 +372,10 @@ autoComputeKPipeline <- function(path, bins = 3, debugMode = FALSE,
   
   color_class_data <- data.frame(img = images, k = k_values)
   
-  if(rgbOut == TRUE)
+  if(colOut == TRUE)
   {
     cat(paste0("\n\nSaving k ", toupper(colorspace), " values to RDS file..."))
-    saveRDS(color_classes_list, paste0(rgbOutPath, colorspace, "_values_output.RDS"))
+    saveRDS(color_classes_list, paste0(colOutPath, colorspace, "_values_output.RDS"))
     cat(paste0("Successfully saved k ", toupper(colorspace), " values to RDS file for ", length(images), " images!\n"))
   }
   

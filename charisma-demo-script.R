@@ -36,7 +36,7 @@ method <- "GE" # greater than or equal to method (contrasted to "G" ~> greater t
 k_out <- autoComputeKPipeline(images_masked_path, debugMode = TRUE,
                               lowerR = lowerR, lowerG = lowerG, lowerB = lowerB,
                               upperR = upperR, upperG = upperG, upperB = upperB, 
-                              rgbOut = TRUE, thresh = thresh, method = method, saveDebugPlots = TRUE,
+                              colOut = TRUE, thresh = thresh, method = method, saveDebugPlots = TRUE,
                               colorspace = "hsv")
 
 write.csv(k_out, "tanagers_k_values_output.csv")
