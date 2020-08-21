@@ -59,8 +59,8 @@ Options:
 	-z METHOD, --method=METHOD
 		Method for threshold cutoff. Type either 'GE' or 'G': (GE='>=' and G='>'), default=GE.
 
-	-e, --rgbDataOutput
-		Enable saving of RDS file with R list data of RGB values for each k, for each image, default=FALSE
+	-e, --colorDataOutput
+		Enable saving of RDS file with R list data of RGB/HSV values for each k, for each image, default=FALSE
 
 	-d, --debug
 		Enable debug plotting mode, default=FALSE
@@ -85,16 +85,27 @@ Running the automatic color classification requires having a directory of images
 $ Rscript charisma.R -m demo/tanagers_masked
 ```
 
-To obtain debug plots, such as this...
-![Example Debug Output](http://dev.shawntylerschwartz.com/charisma/debug_demo.png)
+#### Color Spaces
+**charisma** allows for the calculation of k color classes in either the **rgb** or **hsv** color space, using the `-s` flag to specifythis setting. 
+Example:
+```shell
+$ Rscript charisma.R -m demo/tanagers_masked -s hsv
+```
+
+_See **debug plots** below for an example of the difference between an **rgb** and **hsv** color space output._
+
+#### Debug Plots
+To obtain debug plots, such as these...
+![Example Debug Output](http://dev.shawntylerschwartz.com/charisma/rgb_vs_hsv_outputs_sample.png)
 
 use the following options:
 ```shell
-$ Rscript charisma.R -m demo/tanagers_masked -d -q
+$ Rscript charisma.R -m demo/tanagers_masked -d -q # for RGB outputs
+$ Rscript charisma.R -m demo/tanagers_masked -d -q -s hsv # for HSV outputs
 ```
 _Note: `-d` enables debug plotting and `-q` enables saving of these plots. The saving plot is defaulted to `debug_outputs`, however, a custom path can be specified using the `-o` flag._
 
-**To also save the RGB classifications used for the debug plots as a `.RDS` data file, please use the `-e` flag. For example:**
+**To also save the RGB/HSV classifications used for the debug plots as a `.RDS` data file, please use the `-e` flag. For example:**
 ```shell
 $ Rscript charisma.R -m demo/tanagers_masked -d -q -e
 ```
