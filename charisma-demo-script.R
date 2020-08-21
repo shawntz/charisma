@@ -30,6 +30,7 @@ upperG <- 1.0
 upperB <- 0.0
 thresh <- .05 # (5% minimum threshold)
 method <- "GE" # greater than or equal to method (contrasted to "G" ~> greater than only for threshold comparison)
+colorspace <- "rgb" # set to either 'rgb' or 'hsv'
 
 #### Run Pipeline ####
 #This step uses the masked versions of the images
@@ -37,7 +38,7 @@ k_out <- autoComputeKPipeline(images_masked_path, debugMode = TRUE,
                               lowerR = lowerR, lowerG = lowerG, lowerB = lowerB,
                               upperR = upperR, upperG = upperG, upperB = upperB, 
                               colOut = TRUE, thresh = thresh, method = method, saveDebugPlots = TRUE,
-                              colorspace = "hsv")
+                              colorspace = colorspace)
 
 write.csv(k_out, "tanagers_k_values_output.csv")
 
