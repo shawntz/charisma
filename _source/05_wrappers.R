@@ -8,7 +8,7 @@
 autoComputeKPipeline <- function(path, bins = 3, diagnosticMode = FALSE, 
                      lowerR = 0.0, lowerG = 0.0, lowerB = 0.0,
                      upperR = 0.0, upperG = 0.0, upperB = 0.0,
-                     thresh = .05, method = "GE", colOut = FALSE, colOutPath = "./",
+                     mode = "lower", thresh = .05, method = "GE", colOut = FALSE, colOutPath = "./",
                      saveDiagnosticPlots = FALSE, diagnosticPlotsOutputDir = "diagnostic_outputs", colorspace = "rgb")
 {
   images <- getImages(path)
@@ -34,7 +34,7 @@ autoComputeKPipeline <- function(path, bins = 3, diagnosticMode = FALSE,
   
   for(ii in 1:length(hist_list))
   {
-    color_classes_list[[ii]] <- extractColorClasses(hist_list[[ii]], thresh = thresh, method = method)
+    color_classes_list[[ii]] <- extractColorClasses(hist_list[[ii]], mode = mode, thresh = thresh, method = method)
   }
   names(color_classes_list) <- images_names
   
@@ -48,7 +48,7 @@ autoComputeKPipeline <- function(path, bins = 3, diagnosticMode = FALSE,
     for(ii in 1:length(images))
     {
       diagnosticPlot(images[ii], color_classes_list[[ii]], lowerR = lowerR, lowerG = lowerG, lowerB = lowerB,
-                upperR = upperR, upperG = upperG, upperB = upperB, 
+                upperR = upperR, upperG = upperG, upperB = upperB, mode = mode, thresh = thresh, method = method, 
                 savePlots = saveDiagnosticPlots, plotOutputDir = diagnosticPlotsOutputDir, colorspace = colorspace)
     }
   }

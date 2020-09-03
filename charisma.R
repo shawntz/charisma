@@ -23,6 +23,7 @@ option_list <- list(
   make_option(c("-y", "--upperRed"), type="double", default=0.0, help="Upper-bound Red value (0.0 to 1.0), default=0.0"),
   make_option(c("-u", "--upperGreen"), type="double", default=1.0, help="Upper-bound Green value (0.0 to 1.0), default=1.0"),
   make_option(c("-n", "--upperBlue"), type="double", default=0.0, help="Upper-bound Blue value (0.0 to 1.0), default=0.0"),
+  make_option(c("-b", "--mode"), default="lower", help="Mode for thresholding. Type either 'lower' or 'upper': (lower: captures colors that exceeds (using --method) that threshold; upper: captures all colors necessary to explain some upper bound threshold), default=lower"),
   make_option(c("-t", "--threshold"), type="double", default=0.05, help="Minimum threshold of pixel percentage to count as a color, default=0.05"),
   make_option(c("-z", "--method"), default="GE", help="Method for threshold cutoff. Type either 'GE' or 'G': (GE='>=' and G='>'), default=GE."),
   make_option(c("-e", "--colorDataOutput"), action="store_true", default=FALSE, help="Enable saving of RDS file with R list data of RGB/HSV values for each k, for each image, default=FALSE"),
@@ -44,6 +45,7 @@ lowerB <- opt$lowerBlue
 upperR <- opt$upperRed
 upperG <- opt$upperGreen
 upperB <- opt$upperBlue
+mode <- opt$mode
 thresh <- opt$threshold
 method <- opt$method
 diagnosticMode <- opt$diagnostic
@@ -78,6 +80,7 @@ sink(paste0(output_dir_root, "charisma_session_parameters_log.txt"))
   cat(paste0("--upperRed=", opt$upperRed, "\n"))
   cat(paste0("--upperGreen=", opt$upperGreen, "\n"))
   cat(paste0("--upperBlue=", opt$upperBlue, "\n"))
+  cat(paste0("--mode=", opt$mode, "\n"))
   cat(paste0("--threshold=", opt$threshold, "\n"))
   cat(paste0("--method=", opt$method, "\n"))
   cat(paste0("--colorDataOutput=", opt$colorDataOutput, "\n"))
@@ -92,7 +95,7 @@ cat("\nRunning automatic color class determination now...\n")
 k_out <- autoComputeKPipeline(images_masked_path, diagnosticMode = diagnosticMode,
                               lowerR = lowerR, lowerG = lowerG, lowerB = lowerB,
                               upperR = upperR, upperG = upperG, upperB = upperB,
-                              thresh = thresh, method = method, colOut = colOut, colOutPath = output_dir_root,
+                              mode = mode, thresh = thresh, method = method, colOut = colOut, colOutPath = output_dir_root,
                               saveDiagnosticPlots = saveDiagnosticPlots, diagnosticPlotsOutputDir = plot_output_dir, colorspace = colorspace)
 cat("\nSaving automatic color class determination results...\n")
 saveRDS(k_out, file.path(output_dir, "k-values.RDS"))
