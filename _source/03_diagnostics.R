@@ -1,5 +1,5 @@
-debugPlot <- function(path, colClasses, lowerR = 0.0, lowerG = 1.0, lowerB = 0.0,
-                      upperR = 0.0, upperG = 1.0, upperB = 0.0, savePlots = FALSE, plotOutputDir = "debug_outputs", colorspace = "rgb")
+diagnosticPlot <- function(path, colClasses, lowerR = 0.0, lowerG = 1.0, lowerB = 0.0,
+                      upperR = 0.0, upperG = 1.0, upperB = 0.0, savePlots = FALSE, plotOutputDir = "diagnostic_outputs", colorspace = "rgb")
 {
   source_image <- colordistance::loadImage(path, lower = c(lowerR,lowerG,lowerB),
                                              upper = c(upperR,upperG,upperB), hsv = TRUE)
@@ -15,13 +15,13 @@ debugPlot <- function(path, colClasses, lowerR = 0.0, lowerG = 1.0, lowerB = 0.0
     
     if(Sys.info()['sysname'] != "Windows")
     {
-      cat(paste0("\nSaving debug plot for: ", tail(strsplit(path, "/")[[1]], 1), " as: ", paste0("debug_", tail(strsplit(path, "/")[[1]], 1))))
-      png(paste0(plotOutputDir,"/debug_", tail(strsplit(path, "/")[[1]], 1)), width = 750, height = 500)
+      cat(paste0("\nSaving diagnostic plot for: ", tail(strsplit(path, "/")[[1]], 1), " as: ", paste0("diagnostic_", tail(strsplit(path, "/")[[1]], 1))))
+      png(paste0(plotOutputDir,"/diagnostic_", tail(strsplit(path, "/")[[1]], 1)), width = 750, height = 500)
     }
     else
     {
-      cat(paste0("\nSaving debug plot for: ", tail(strsplit(path, "\\\\")[[1]], 1), " as: ", paste0("debug_", tail(strsplit(path, "\\\\")[[1]], 1))))
-      png(paste0(plotOutputDir,"/debug_", tail(strsplit(path, "\\\\")[[1]], 1)), width = 750, height = 500)
+      cat(paste0("\nSaving diagnostic plot for: ", tail(strsplit(path, "\\\\")[[1]], 1), " as: ", paste0("diagnostic_", tail(strsplit(path, "\\\\")[[1]], 1))))
+      png(paste0(plotOutputDir,"/diagnostic_", tail(strsplit(path, "\\\\")[[1]], 1)), width = 750, height = 500)
     }
   }
   
@@ -33,11 +33,11 @@ debugPlot <- function(path, colClasses, lowerR = 0.0, lowerG = 1.0, lowerB = 0.0
   #panel 1: original image
   if(Sys.info()['sysname'] != "Windows")
   {
-    title(paste("\nDebug mode: \nImg: ", tail(strsplit(path, "/")[[1]], 1)))
+    title(paste("\nDiagnostic mode: \nImg: ", tail(strsplit(path, "/")[[1]], 1)))
   }
   else
   {
-    title(paste("\nDebug mode: \nImg: ", tail(strsplit(path, "\\\\")[[1]], 1)))
+    title(paste("\nDiagnostic mode: \nImg: ", tail(strsplit(path, "\\\\")[[1]], 1)))
   }
   rasterImage(img, 0, 0, 1, 1)
   

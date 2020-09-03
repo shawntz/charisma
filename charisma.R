@@ -26,9 +26,9 @@ option_list <- list(
   make_option(c("-t", "--threshold"), type="double", default=0.05, help="Minimum threshold of pixel percentage to count as a color, default=0.05"),
   make_option(c("-z", "--method"), default="GE", help="Method for threshold cutoff. Type either 'GE' or 'G': (GE='>=' and G='>'), default=GE."),
   make_option(c("-e", "--colorDataOutput"), action="store_true", default=FALSE, help="Enable saving of RDS file with R list data of RGB/HSV values for each k, for each image, default=FALSE"),
-  make_option(c("-d", "--debug"), action="store_true", default=FALSE, help="Enable debug plotting mode, default=FALSE"),
-  make_option(c("-q", "--saveDebugPlots"), action="store_true", default=FALSE, help="Automatically save debug plots to directory, default=FALSE"),
-  make_option(c("-o", "--saveDebugPlotsPath"), default="debug_outputs", help="Location to automatically save debug plots to directory (-q)"),
+  make_option(c("-d", "--diagnostic"), action="store_true", default=FALSE, help="Enable diagnostic plotting mode, default=FALSE"),
+  make_option(c("-q", "--saveDiagnosticPlots"), action="store_true", default=FALSE, help="Automatically save diagnostic plots to directory, default=FALSE"),
+  make_option(c("-o", "--saveDiagnosticPlotsPath"), default="diagnostic_outputs", help="Location to automatically save diagnostic plots to directory (-q)"),
   make_option(c("-c", "--colorPatternAnalysis"), action="store_true", default=FALSE, help="Run color pattern analysis pipeline after automatic color classification, default=FALSE")
 )
 
@@ -46,10 +46,10 @@ upperG <- opt$upperGreen
 upperB <- opt$upperBlue
 thresh <- opt$threshold
 method <- opt$method
-debugMode <- opt$debug
+diagnosticMode <- opt$diagnostic
 colOut <- opt$colorDataOutput
-saveDebugPlots <- opt$saveDebugPlots
-plotOutputDirInput <- opt$saveDebugPlotsPath
+saveDiagnosticPlots <- opt$saveDiagnosticPlots
+plotOutputDirInput <- opt$saveDiagnosticPlotsPath
 colorPatternAnalysis <- opt$colorPatternAnalysis
 
 ## check if both masked/unmasked img dirs are provided if color pattern analysis option is selected
@@ -81,19 +81,19 @@ sink(paste0(output_dir_root, "charisma_session_parameters_log.txt"))
   cat(paste0("--threshold=", opt$threshold, "\n"))
   cat(paste0("--method=", opt$method, "\n"))
   cat(paste0("--colorDataOutput=", opt$colorDataOutput, "\n"))
-  cat(paste0("--debug=", opt$debug, "\n"))
-  cat(paste0("--saveDebugPlots=", opt$saveDebugPlots, "\n"))
-  cat(paste0("--saveDebugPlotsPath=", opt$saveDebugPlotsPath, "\n"))
+  cat(paste0("--diagnostic=", opt$diagnostic, "\n"))
+  cat(paste0("--saveDiagnosticPlots=", opt$saveDiagnosticPlots, "\n"))
+  cat(paste0("--saveDiagnosticPlotsPath=", opt$saveDiagnosticPlotsPath, "\n"))
   cat(paste0("--colorPatternAnalysis=", opt$colorPatternAnalysis, "\n"))
 sink()
 
 ## begin automatic color class determination pipeline
 cat("\nRunning automatic color class determination now...\n")
-k_out <- autoComputeKPipeline(images_masked_path, debugMode = debugMode,
+k_out <- autoComputeKPipeline(images_masked_path, diagnosticMode = diagnosticMode,
                               lowerR = lowerR, lowerG = lowerG, lowerB = lowerB,
                               upperR = upperR, upperG = upperG, upperB = upperB,
                               thresh = thresh, method = method, colOut = colOut, colOutPath = output_dir_root,
-                              saveDebugPlots = saveDebugPlots, debugPlotsOutputDir = plot_output_dir, colorspace = colorspace)
+                              saveDiagnosticPlots = saveDiagnosticPlots, diagnosticPlotsOutputDir = plot_output_dir, colorspace = colorspace)
 cat("\nSaving automatic color class determination results...\n")
 saveRDS(k_out, file.path(output_dir, "k-values.RDS"))
 write.csv(k_out, file.path(output_dir, "k-values.csv"))

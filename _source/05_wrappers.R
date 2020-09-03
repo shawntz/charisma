@@ -5,11 +5,11 @@
 ###                                                                      ###
 ############################################################################
 ############################################################################
-autoComputeKPipeline <- function(path, bins = 3, debugMode = FALSE, 
+autoComputeKPipeline <- function(path, bins = 3, diagnosticMode = FALSE, 
                      lowerR = 0.0, lowerG = 0.0, lowerB = 0.0,
                      upperR = 0.0, upperG = 0.0, upperB = 0.0,
                      thresh = .05, method = "GE", colOut = FALSE, colOutPath = "./",
-                     saveDebugPlots = FALSE, debugPlotsOutputDir = "debug_outputs", colorspace = "rgb")
+                     saveDiagnosticPlots = FALSE, diagnosticPlotsOutputDir = "diagnostic_outputs", colorspace = "rgb")
 {
   images <- getImages(path)
   images_names <- rep(NA, length(images))
@@ -43,13 +43,13 @@ autoComputeKPipeline <- function(path, bins = 3, debugMode = FALSE,
     k_values[ii] <- getNumColorClasses(color_classes_list[[ii]])
   }
   
-  if(debugMode == TRUE)
+  if(diagnosticMode == TRUE)
   {
     for(ii in 1:length(images))
     {
-      debugPlot(images[ii], color_classes_list[[ii]], lowerR = lowerR, lowerG = lowerG, lowerB = lowerB,
+      diagnosticPlot(images[ii], color_classes_list[[ii]], lowerR = lowerR, lowerG = lowerG, lowerB = lowerB,
                 upperR = upperR, upperG = upperG, upperB = upperB, 
-                savePlots = saveDebugPlots, plotOutputDir = debugPlotsOutputDir, colorspace = colorspace)
+                savePlots = saveDiagnosticPlots, plotOutputDir = diagnosticPlotsOutputDir, colorspace = colorspace)
     }
   }
   

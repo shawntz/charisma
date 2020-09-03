@@ -34,10 +34,10 @@ colorspace <- "rgb" # set to either 'rgb' or 'hsv'
 
 #### Run Pipeline ####
 #This step uses the masked versions of the images
-k_out <- autoComputeKPipeline(images_masked_path, debugMode = TRUE,
+k_out <- autoComputeKPipeline(images_masked_path, diagnosticMode = TRUE,
                               lowerR = lowerR, lowerG = lowerG, lowerB = lowerB,
                               upperR = upperR, upperG = upperG, upperB = upperB, 
-                              colOut = TRUE, thresh = thresh, method = method, saveDebugPlots = TRUE,
+                              colOut = TRUE, thresh = thresh, method = method, saveDiagnosticPlots = TRUE,
                               colorspace = colorspace)
 
 write.csv(k_out, "tanagers_k_values_output.csv")
