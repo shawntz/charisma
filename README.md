@@ -1,4 +1,4 @@
-# charisma: script to automatically determine the number of color classes within an image for high-throughput color pattern analyses (in preparation)
+# charisma: an R tool to automatically determine discrete color classes for high-throughput color pattern analysis (in preparation)
 
 Shawn T. Schwartz <sup>1*</sup>, Whitney L.E. Tsai<sup>1</sup>, Elizabeth A. Karan<sup>1</sup>, & Michael E. Alfaro<sup>1</sup>
 
