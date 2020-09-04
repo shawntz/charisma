@@ -39,19 +39,22 @@ Options:
 		Lower-bound Red value (0.0 to 1.0), default=0.0
 
 	-g LOWERGREEN, --lowerGreen=LOWERGREEN
-		Lower-bound Green value (0.0 to 1.0), default=1.0
+		Lower-bound Green value (0.0 to 1.0), default=0.55
 
 	-b LOWERBLUE, --lowerBlue=LOWERBLUE
 		Lower-bound Blue value (0.0 to 1.0), default=0.0
 
 	-y UPPERRED, --upperRed=UPPERRED
-		Upper-bound Red value (0.0 to 1.0), default=0.0
+		Upper-bound Red value (0.0 to 1.0), default=0.24
 
 	-u UPPERGREEN, --upperGreen=UPPERGREEN
 		Upper-bound Green value (0.0 to 1.0), default=1.0
 
 	-n UPPERBLUE, --upperBlue=UPPERBLUE
-		Upper-bound Blue value (0.0 to 1.0), default=0.0
+		Upper-bound Blue value (0.0 to 1.0), default=0.24
+
+	-a MODE, --mode=MODE
+		Mode for thresholding. Type either 'lower' or 'upper': (lower: captures colors that exceeds (using --method) that threshold; upper: captures all colors necessary to explain some upper bound threshold), default=lower
 
 	-t THRESHOLD, --threshold=THRESHOLD
 		Minimum threshold of pixel percentage to count as a color, default=0.05
@@ -62,14 +65,23 @@ Options:
 	-e, --colorDataOutput
 		Enable saving of RDS file with R list data of RGB/HSV values for each k, for each image, default=FALSE
 
-	-d, --debug
-		Enable debug plotting mode, default=FALSE
+	-d, --diagnostic
+		Enable diagnostic plotting mode, default=FALSE
 
-	-q, --saveDebugPlots
-		Automatically save debug plots to directory, default=FALSE
+	-w, --colorWheelPlot
+		Plot color wheel plots when in diagnostic plotting mode, default=FALSE
 
-	-o SAVEDEBUGPLOTSPATH, --saveDebugPlotsPath=SAVEDEBUGPLOTSPATH
-		Location to automatically save debug plots to directory (-q)
+	-v PLOTWIDTH, --plotWidth=PLOTWIDTH
+		Pixel width of diagnostic plot, default=750
+
+	-i PLOTHEIGHT, --plotHeight=PLOTHEIGHT
+		Pixel height of diagnostic plot, default=500
+
+	-q, --saveDiagnosticPlots
+		Automatically save diagnostic plots to directory, default=FALSE
+
+	-o SAVEDIAGNOSTICPLOTSPATH, --saveDiagnosticPlotsPath=SAVEDIAGNOSTICPLOTSPATH
+		Location to automatically save diagnostic plots to directory (-q)
 
 	-c, --colorPatternAnalysis
 		Run color pattern analysis pipeline after automatic color classification, default=FALSE
@@ -80,34 +92,54 @@ Options:
 ```
 
 ### Demo 1: Run only automatic color classification
-Running the automatic color classification requires having a directory of images masked with a solid background color (that doesn't appear within the body of the organism of interest). For all of our examples, we use a solid green background, specifically: `(R=0.0, G=1.0, B=0.0)`. These are also the defaults used by **charisma**. As such, if your images are already pre-processed with a solid green background, no additional command line arguments are required. However, if a unique solid background masking color is used, please use the `-r -g -b -y -u -n` flags to specific the lower-bounds (`-r -g -b`) and upper-bounds (`-y -u -n`) of the background color to ignore (ranging from 0 to 1 for each RGB value). **Note: the lower- and upper-bound RGB values should usually be the exact same for solid background colors. For example, if the background color was solid red, the options would look something like this: `-r 1.0 -g 0.0 -b 0.0 -y 1.0 -u 0.0 -n 0.0`.**
+Running the automatic color classification requires having a directory of images masked with a solid background color (that doesn't appear within the body of the organism of interest). For all of our examples, we use a solid green background, specifically: `(R=0.0, G=1.0, B=0.0)`. The defaults in **charisma** are already set to best accommodate a solid green background color; i.e., `-r 0.0 -g 0.55 -b 0.0 -y 0.24 -u 1.0 -n 0.24`. As such, if your images are already pre-processed with a solid green background, no additional command line arguments are required. However, if a unique solid background masking color is used, please use the `-r -g -b -y -u -n` flags to specific the lower-bounds (`-r -g -b`) and upper-bounds (`-y -u -n`) of the background color to ignore (ranging from 0 to 1 for each RGB value). **Note: you will have to play around with these parameters to best accommodate your background color (to ensure the backdrop isn't counted as a prominent color in the analysis).**
 ```shell
 $ Rscript charisma.R -m demo/tanagers_masked
 ```
 
 #### Color Spaces
-**charisma** allows for the calculation of k color classes in either the **rgb** or **hsv** color space, using the `-s` flag to specifythis setting. 
+**charisma** allows for the calculation of k color classes in either the **rgb** or **hsv** color space, using the `-s` flag to specify this setting. 
 Example:
 ```shell
 $ Rscript charisma.R -m demo/tanagers_masked -s hsv
 ```
 
-_See **debug plots** below for an example of the difference between an **rgb** and **hsv** color space output._
+_See **Diagnostic plots** below for an example of the difference between an **rgb** and **hsv** color space output._
 
-#### Debug Plots
-To obtain debug plots, such as these...
-![Example Debug Output](http://dev.shawntylerschwartz.com/charisma/rgb_vs_hsv_outputs_sample.png)
+#### Diagnostic Plots
+To obtain diagnostic plots, such as these...
+![Example Diagnostic Output](http://dev.shawntylerschwartz.com/charisma/rgb_vs_hsv_outputs_sample.png)
 
 use the following options:
 ```shell
 $ Rscript charisma.R -m demo/tanagers_masked -d -q # for RGB outputs
 $ Rscript charisma.R -m demo/tanagers_masked -d -q -s hsv # for HSV outputs
 ```
-_Note: `-d` enables debug plotting and `-q` enables saving of these plots. The saving plot is defaulted to `debug_outputs`, however, a custom path can be specified using the `-o` flag._
+_Note: `-d` enables diagnostic plotting and `-q` enables saving of these plots. The saving plot is defaulted to `diagnostic_outputs`, however, a custom path can be specified using the `-o` flag._
 
-**To also save the RGB/HSV classifications used for the debug plots as a `.RDS` data file, please use the `-e` flag. For example:**
+You can also plot HSV color wheels with points for each color detected by using the `-w` flag. _(Warning, this mode will take significantly more time/memory to generate these graphics.)_ For example:
+```shell
+$ Rscript charisma.R -m demo/tanagers_masked -d -q -w
+```
+![Example Color Wheel Output](http://dev.shawntylerschwartz.com/charisma/colorwheel_sample.png)
+
+**To also save the RGB/HSV classifications used for the diagnostic plots as a `.RDS` data file, please use the `-e` flag. For example:**
 ```shell
 $ Rscript charisma.R -m demo/tanagers_masked -d -q -e
+```
+
+#### Modes
+There are currently two modes to select color classes (`lower` and `upper`, **default: lower**). The mode is set using the `-a` flag.
+##### 'lower' mode
+The `lower` mode will select color classes based on bins that are either at or above (`-z GE`) or just above (`-z G`) a specified lower-bound threshold (e.g., `-t .05`) with respect to their frequency across the image.
+```shell
+$ Rscript charisma.R -m demo/tanagers_masked -d -q -e -a lower -t .05
+```
+
+##### 'upper' mode
+The `upper` mode will select color classes based on a cumulative summation of bin pixel frequencies that make up at least some specified upper-bound threshold (e.g., `-t .95`). The idea here is to select color classes until some specified percentage of the cumulative color diversity present in the image is explained by the minimum number of bins necessary to do so.
+```shell
+$ Rscript charisma.R -m demo/tanagers_masked -d -q -e -a upper -t .95
 ```
 
 ### Demo 2: Run automatic color classification & color pattern analysis using these automatically calculated k-values
@@ -154,10 +186,10 @@ colorspace <- "rgb" # set to either 'rgb' or 'hsv'
 
 #### Run Pipeline ####
 #This step uses the masked versions of the images
-k_out <- autoComputeKPipeline(images_masked_path, debugMode = TRUE,
+k_out <- autoComputeKPipeline(images_masked_path, diagnosticMode = TRUE,
                               lowerR = lowerR, lowerG = lowerG, lowerB = lowerB,
                               upperR = upperR, upperG = upperG, upperB = upperB, 
-                              colOut = TRUE, thresh = thresh, method = method, saveDebugPlots = TRUE,
+                              colOut = TRUE, thresh = thresh, method = method, savediagnosticPlots = TRUE,
                               colorspace = colorspace)
 
 write.csv(k_out, "tanagers_k_values_output.csv")
