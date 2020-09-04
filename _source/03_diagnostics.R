@@ -36,11 +36,11 @@ diagnosticPlot <- function(path, colClasses, lowerR = 0.0, lowerG = 1.0, lowerB 
   #panel 1: original image
   if(Sys.info()['sysname'] != "Windows")
   {
-    title(paste("\nDiagnostic mode: \nImg: ", tail(strsplit(path, "/")[[1]], 1)))
+    title(paste("\nDiagnostic mode:", tail(strsplit(path, "/")[[1]], 1), "\n mode:", mode, ", threshold:", thresh))
   }
   else
   {
-    title(paste("\nDiagnostic mode: \nImg: ", tail(strsplit(path, "\\\\")[[1]], 1)))
+    title(paste("\nDiagnostic mode:", tail(strsplit(path, "\\\\")[[1]], 1), "\n mode:", mode, ", threshold:", thresh))
   }
   rasterImage(img, 0, 0, 1, 1)
   
@@ -62,14 +62,7 @@ diagnosticPlot <- function(path, colClasses, lowerR = 0.0, lowerG = 1.0, lowerB 
   bar_heights <- rep((1/num_colors), length(hex_values))
   x_values <- seq(1:length(hex_values))
   barplot(bar_heights, col = hex_values, axes = F, space = 0, border = NA, horiz = F)
-  if(mode == "lower")
-  {
-    title(paste0("(k = ", num_colors, ") colors identified in [", colorspace, "]"), sub = paste0("using [", mode, "] mode with a ", mode, "threshold of: ", method, thresh, "."))
-  }
-  else if(mode == "upper")
-  {
-    title(paste0("(k = ", num_colors, ") colors identified in [", colorspace, "]"), sub = paste0("using [", mode, "] mode with a cumulative diversity ", mode, "threshold of: <= ", thresh, "."))
-  }
+  title(paste0("(k = ", num_colors, ") colors identified in [", colorspace, "]"))
   text((x_values-0.5), (bar_heights/2), labels = paste0((round(colClasses[,4], digits = 2) * 100),"%"))
   
   if (savePlots == TRUE)

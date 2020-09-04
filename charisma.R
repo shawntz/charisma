@@ -23,7 +23,7 @@ option_list <- list(
   make_option(c("-y", "--upperRed"), type="double", default=0.0, help="Upper-bound Red value (0.0 to 1.0), default=0.0"),
   make_option(c("-u", "--upperGreen"), type="double", default=1.0, help="Upper-bound Green value (0.0 to 1.0), default=1.0"),
   make_option(c("-n", "--upperBlue"), type="double", default=0.0, help="Upper-bound Blue value (0.0 to 1.0), default=0.0"),
-  make_option(c("-b", "--mode"), default="lower", help="Mode for thresholding. Type either 'lower' or 'upper': (lower: captures colors that exceeds (using --method) that threshold; upper: captures all colors necessary to explain some upper bound threshold), default=lower"),
+  make_option(c("-a", "--mode"), default="lower", help="Mode for thresholding. Type either 'lower' or 'upper': (lower: captures colors that exceeds (using --method) that threshold; upper: captures all colors necessary to explain some upper bound threshold), default=lower"),
   make_option(c("-t", "--threshold"), type="double", default=0.05, help="Minimum threshold of pixel percentage to count as a color, default=0.05"),
   make_option(c("-z", "--method"), default="GE", help="Method for threshold cutoff. Type either 'GE' or 'G': (GE='>=' and G='>'), default=GE."),
   make_option(c("-e", "--colorDataOutput"), action="store_true", default=FALSE, help="Enable saving of RDS file with R list data of RGB/HSV values for each k, for each image, default=FALSE"),

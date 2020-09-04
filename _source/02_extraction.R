@@ -1,4 +1,4 @@
-extractColorClasses <- function(hist, mode = "lower", thresh = c(.05, .95), method = "GE")
+extractColorClasses <- function(hist, mode = "lower", thresh = .05, method = "GE")
 {
   #modes => 
     #"lower": looks for any color class bins that surpass the lower bound threshold (e.g., beyond 5%)
@@ -7,11 +7,13 @@ extractColorClasses <- function(hist, mode = "lower", thresh = c(.05, .95), meth
 
   if(mode == "lower")
   {
-    extracted_colors <- lowerThreshMode(hist = hist, thresh = thresh[1], method = method)
+    #extracted_colors <- lowerThreshMode(hist = hist, thresh = thresh[1], method = method)
+    extracted_colors <- lowerThreshMode(hist = hist, thresh = thresh, method = method)
   }
   else if(mode == "upper")
   {
-    extracted_colors <- upperCumulativeDiversityMode(hist = hist, thresh = thresh[2])
+    #extracted_colors <- upperCumulativeDiversityMode(hist = hist, thresh = thresh[2])
+    extracted_colors <- upperCumulativeDiversityMode(hist = hist, thresh = thresh)
   }
   else
   {
