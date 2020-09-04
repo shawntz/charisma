@@ -12,8 +12,6 @@ diagnosticPlot <- function(path, colClasses, lowerR = 0.0, lowerG = 1.0, lowerB 
   #step 1: swatch plots
   if(savePlots == TRUE)
   {
-    #wd <- getwd()
-    #ifelse(!dir.exists(file.path(wd, plotOutputDir)), dir.create(file.path(wd, plotOutputDir)), FALSE)
     ifelse(!dir.exists(plotOutputDir), dir.create(plotOutputDir), FALSE)
     
     if(Sys.info()['sysname'] != "Windows")
@@ -77,21 +75,9 @@ diagnosticPlot <- function(path, colClasses, lowerR = 0.0, lowerG = 1.0, lowerB 
   {
     for(hex in 1:length(hex_values))
     {
-      if(savePlots == TRUE)
-      {
-        if(Sys.info()['sysname'] != "Windows")
-        {
-          cat(paste0("\nSaving color wheel plot (", hex, "/", length(hex_values), ") for:", tail(strsplit(path, "/")[[1]], 1), " as: ", paste0("diagnostic_", tail(strsplit(path, "/")[[1]], 1))))
-          png(paste0(plotOutputDir, "/diagnostic_colorwheel_", hex, "_", tail(strsplit(path, "/")[[1]], 1)), width = width, height = height)
-        }
-        else {
-          cat(paste0("\nSaving color wheel plot (", hex, "/", length(hex_values), ") for:", tail(strsplit(path, "\\\\")[[1]], 1), " as: ", paste0("diagnostic_", tail(strsplit(path, "\\\\")[[1]], 1))))
-          png(paste0(plotOutputDir, "/diagnostic_colorwheel_", hex, "_", tail(strsplit(path, "\\\\")[[1]], 1)), width = width, height = height)
-        }
-      }
 
-      hsv_converted <- hex2hsv(hex)
-      
+      hsv_converted <- hex2hsv(hex_values[hex])
+
       if(Sys.info()['sysname'] != "Windows")
       {
         colorwheel_plot <- plotColorWheel(hsv_converted, title = paste0("Color Wheel Diagnostic: ", tail(strsplit(path, "/")[[1]], 1)))
@@ -105,7 +91,15 @@ diagnosticPlot <- function(path, colClasses, lowerR = 0.0, lowerG = 1.0, lowerB 
 
       if(savePlots == TRUE)
       {
-        dev.off()
+        if(Sys.info()['sysname'] != "Windows")
+        {
+          cat(paste0("\nSaving color wheel plot (", hex, "/", length(hex_values), ") for: ", tail(strsplit(path, "/")[[1]], 1), ", as: ", paste0("diagnostic_", hex, "_", tail(strsplit(path, "/")[[1]], 1))))
+          ggsave(paste0(plotOutputDir, "/diagnostic_colorwheel_", hex, "_", tail(strsplit(path, "/")[[1]], 1)), width = width / 300, height = height / 300, plot = colorwheel_plot)
+        }
+        else {
+          cat(paste0("\nSaving color wheel plot (", hex, "/", length(hex_values), ") for: ", tail(strsplit(path, "\\\\")[[1]], 1), ", as: ", paste0("diagnostic_", hex, "_", tail(strsplit(path, "\\\\")[[1]], 1))))
+          ggsave(paste0(plotOutputDir, "/diagnostic_colorwheel_", hex, "_", tail(strsplit(path, "\\\\")[[1]], 1)), width = width / 300, height = height / 300, plot = colorwheel_plot)
+        }
       }
     }
   }
@@ -121,11 +115,11 @@ plotColorWheel <- function(hsv_color_row, title = "Color Wheel Diagnostic Plot")
     scale_x_continuous(breaks=NULL) +
     scale_y_continuous(breaks=NULL) +
     scale_fill_identity() +
-    geom_rect(data = d, mapping = aes(xmin = h, xmax = h + resolution(h),
-                                      ymin = s, ymax = h + resolution(s),
-                                      fill = hsv(h,s,v))) +
-    annotate("point", x = hsv_color_row$h, y = hsv_color_row$s, colour = "black", shape = 18) +
-    labs(title = title, subtitle = paste0("(h=", hsv_color_row$h, ", s=", hsv_color_row$s, ", v=", hsv_color_row$v, ")")) +
+    geom_rect(data=d, mapping=aes(xmin=h, xmax=h+resolution(h), 
+                                  ymin=s, ymax=s+resolution(s), 
+                                  fill=hsv(h,s,v))) +
+    annotate("point", x = hsv_color_row$h, y = hsv_color_row$s, colour = "black", shape = 18, size = 1) + 
+    labs(title = title, subtitle = paste0("(h=", round(hsv_color_row$h, digits = 2), ", s=", round(hsv_color_row$s, digits = 2), ", v=", round(hsv_color_row$v, digits = 2), ")")) +
     theme(axis.line=element_blank(),
         axis.text.x=element_blank(),
         axis.text.y=element_blank(),
@@ -137,7 +131,9 @@ plotColorWheel <- function(hsv_color_row, title = "Color Wheel Diagnostic Plot")
         panel.border=element_blank(),
         panel.grid.major=element_blank(),
         panel.grid.minor=element_blank(),
-        plot.background=element_blank())
+        plot.background=element_blank(),
+        plot.title = element_text(size=5, hjust=0.5),
+        plot.subtitle = element_text(size=5, hjust=0.5))
 
   return(p)
 }
