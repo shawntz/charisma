@@ -34,11 +34,11 @@ diagnosticPlot <- function(path, colClasses, lowerR = 0.0, lowerG = 1.0, lowerB 
   #panel 1: original image
   if(Sys.info()['sysname'] != "Windows")
   {
-    title(paste("\nDiagnostic mode:", tail(strsplit(path, "/")[[1]], 1), "\n mode:", mode, ", threshold:", thresh))
+    title(paste("\nDiagnostic mode:", tail(strsplit(path, "/")[[1]], 1), "\n mode:", mode, ", threshold:", thresh*100, "%"))
   }
   else
   {
-    title(paste("\nDiagnostic mode:", tail(strsplit(path, "\\\\")[[1]], 1), "\n mode:", mode, ", threshold:", thresh))
+    title(paste("\nDiagnostic mode:", tail(strsplit(path, "\\\\")[[1]], 1), "\n mode:", mode, ", threshold:", thresh*100, "%"))
   }
   rasterImage(img, 0, 0, 1, 1)
   
