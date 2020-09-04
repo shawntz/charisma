@@ -89,11 +89,11 @@ diagnosticPlot <- function(path, colClasses, lowerR = 0.0, lowerG = 1.0, lowerB 
         if(Sys.info()['sysname'] != "Windows")
         {
           cat(paste0("\nSaving color wheel plot (", hex, "/", length(hex_values), ") for:", tail(strsplit(path, "/")[[1]], 1), " as: ", paste0("diagnostic_", tail(strsplit(path, "/")[[1]], 1))))
-          png(paste0(plotOutputDir, "/diagnostic_colorwheel_", hex, "_" tail(strsplit(path, "/")[[1]], 1)), width = width, height = height)
+          png(paste0(plotOutputDir, "/diagnostic_colorwheel_", hex, "_", tail(strsplit(path, "/")[[1]], 1)), width = width, height = height)
         }
         else {
           cat(paste0("\nSaving color wheel plot (", hex, "/", length(hex_values), ") for:", tail(strsplit(path, "\\\\")[[1]], 1), " as: ", paste0("diagnostic_", tail(strsplit(path, "\\\\")[[1]], 1))))
-          png(paste0(plotOutputDir, "/diagnostic_colorwheel_", hex, "_" tail(strsplit(path, "\\\\")[[1]], 1)), width = width, height = height)
+          png(paste0(plotOutputDir, "/diagnostic_colorwheel_", hex, "_", tail(strsplit(path, "\\\\")[[1]], 1)), width = width, height = height)
         }
       }
 
