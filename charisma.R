@@ -28,6 +28,9 @@ option_list <- list(
   make_option(c("-z", "--method"), default="GE", help="Method for threshold cutoff. Type either 'GE' or 'G': (GE='>=' and G='>'), default=GE."),
   make_option(c("-e", "--colorDataOutput"), action="store_true", default=FALSE, help="Enable saving of RDS file with R list data of RGB/HSV values for each k, for each image, default=FALSE"),
   make_option(c("-d", "--diagnostic"), action="store_true", default=FALSE, help="Enable diagnostic plotting mode, default=FALSE"),
+  make_option(c("-w", "--colorWheelPlot"), action="store_true", default=FALSE, help="Plot color wheel plots when in diagnostic plotting mode, default=FALSE"),
+  make_option(c("-v", "--plotWidth"), type="double", default=750, help="Pixel width of diagnostic plot, default=750"),
+  make_option(c("-i", "--plotHeight"), type="double", default=500, help="Pixel height of diagnostic plot, default=500"),
   make_option(c("-q", "--saveDiagnosticPlots"), action="store_true", default=FALSE, help="Automatically save diagnostic plots to directory, default=FALSE"),
   make_option(c("-o", "--saveDiagnosticPlotsPath"), default="diagnostic_outputs", help="Location to automatically save diagnostic plots to directory (-q)"),
   make_option(c("-c", "--colorPatternAnalysis"), action="store_true", default=FALSE, help="Run color pattern analysis pipeline after automatic color classification, default=FALSE")
@@ -49,6 +52,9 @@ mode <- opt$mode
 thresh <- opt$threshold
 method <- opt$method
 diagnosticMode <- opt$diagnostic
+colorWheelPlot <- opt$colorWheelPlot
+plotWidth <- opt$plotWidth
+plotHeight <- opt$plotHeight
 colOut <- opt$colorDataOutput
 saveDiagnosticPlots <- opt$saveDiagnosticPlots
 plotOutputDirInput <- opt$saveDiagnosticPlotsPath
@@ -85,6 +91,9 @@ sink(paste0(output_dir_root, "charisma_session_parameters_log.txt"))
   cat(paste0("--method=", opt$method, "\n"))
   cat(paste0("--colorDataOutput=", opt$colorDataOutput, "\n"))
   cat(paste0("--diagnostic=", opt$diagnostic, "\n"))
+  cat(paste0("--colorWheelPlot=", opt$colorWheelPlot, "\n"))
+  cat(paste0("--plotWidth=", opt$plotWidth, "\n"))
+  cat(paste0("--plotHeight=", opt$plotHeight, "\n"))
   cat(paste0("--saveDiagnosticPlots=", opt$saveDiagnosticPlots, "\n"))
   cat(paste0("--saveDiagnosticPlotsPath=", opt$saveDiagnosticPlotsPath, "\n"))
   cat(paste0("--colorPatternAnalysis=", opt$colorPatternAnalysis, "\n"))
@@ -96,7 +105,8 @@ k_out <- autoComputeKPipeline(images_masked_path, diagnosticMode = diagnosticMod
                               lowerR = lowerR, lowerG = lowerG, lowerB = lowerB,
                               upperR = upperR, upperG = upperG, upperB = upperB,
                               mode = mode, thresh = thresh, method = method, colOut = colOut, colOutPath = output_dir_root,
-                              saveDiagnosticPlots = saveDiagnosticPlots, diagnosticPlotsOutputDir = plot_output_dir, colorspace = colorspace)
+                              saveDiagnosticPlots = saveDiagnosticPlots, diagnosticPlotsOutputDir = plot_output_dir, 
+                              width = plotWidth, height = plotHeight, colorspace = colorspace, colorwheel = colorWheelPlot)
 cat("\nSaving automatic color class determination results...\n")
 saveRDS(k_out, file.path(output_dir, "k-values.RDS"))
 write.csv(k_out, file.path(output_dir, "k-values.csv"))

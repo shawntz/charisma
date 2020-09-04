@@ -42,3 +42,14 @@ getHist <- function(img, bins = 3, plotting = FALSE,
   }
   
 }
+
+hex2hsv <- function(hex_vec)
+{
+  hsv_out <- data.frame(h = numeric(), s = numeric(), v = numeric())
+  for(colors in hex_vec)
+  {
+    hsv_out <- hsv_out %>%
+      rbind(t(rgb2hsv(col2rgb(color))))
+  }
+  return(hsv_out)
+}
