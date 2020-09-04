@@ -13,5 +13,5 @@
 source_dir <- "_source"
 for(f in list.files(source_dir, pattern="*.R"))
 {
-    source(f)
+    source(paste0(source_dir, "/", f))
 }
