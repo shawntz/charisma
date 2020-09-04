@@ -7,12 +7,10 @@ extractColorClasses <- function(hist, mode = "lower", thresh = .05, method = "GE
 
   if(mode == "lower")
   {
-    #extracted_colors <- lowerThreshMode(hist = hist, thresh = thresh[1], method = method)
     extracted_colors <- lowerThreshMode(hist = hist, thresh = thresh, method = method)
   }
   else if(mode == "upper")
   {
-    #extracted_colors <- upperCumulativeDiversityMode(hist = hist, thresh = thresh[2])
     extracted_colors <- upperCumulativeDiversityMode(hist = hist, thresh = thresh)
   }
   else

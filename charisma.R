@@ -109,7 +109,7 @@ k_out <- autoComputeKPipeline(images_masked_path, diagnosticMode = diagnosticMod
                               width = plotWidth, height = plotHeight, colorspace = colorspace, colorwheel = colorWheelPlot)
 cat("\nSaving automatic color class determination results...\n")
 saveRDS(k_out, file.path(output_dir, "k-values.RDS"))
-write.csv(k_out, file.path(output_dir, "k-values.csv"))
+write.csv(k_out, file.path(output_dir, "k-values.csv"), row.names = FALSE)
 cat("\nFinished saving automatic color class determination results successfully!\n")
 
 ## run pavo color pattern analysis pipeline
@@ -119,7 +119,7 @@ if(colorPatternAnalysis == TRUE)
   color_classified <- classifyColorPipeline(images_path, k_out)
   cat("\nSaving color pattern analysis classification results...")
   saveRDS(color_classified, file.path(output_dir, "color-pattern-analysis.RDS"))
-  write.csv(color_classified, file.path(output_dir, "color-pattern-analysis.csv"))
+  write.csv(color_classified, file.path(output_dir, "color-pattern-analysis.csv"), row.names = FALSE)
   cat("Finished saving color pattern analysis classification results successfully!\n\n")
   
   cat("\nRunning color pattern analysis classification PCA...\n")
