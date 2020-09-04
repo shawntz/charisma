@@ -19,8 +19,9 @@ images_masked_path <- file.path("demo", "tanagers_masked")
 images_path <- file.path("demo", "tanagers")
 
 #These values are the RGB bounds to ignore the masked arbitrary background color
-# (e.g, if background is solid green (i.e., R=0,G=1.0,B=0), then lowerG and upperG should be set to 1.0
-# to ignore only the solid green parts of the image (i.e., the masked out background pixels))
+# (e.g, if background is solid green (i.e., R=0,G=1.0,B=0), then the defaults below 
+# should be used to ignore only the solid green parts of the image 
+# (i.e., the masked out background pixels))
 lowerR <- 0.0
 lowerG <- 0.55
 lowerB <- 0.0

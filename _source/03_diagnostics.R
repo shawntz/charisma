@@ -1,5 +1,5 @@
-diagnosticPlot <- function(path, colClasses, lowerR = 0.0, lowerG = 1.0, lowerB = 0.0,
-                      upperR = 0.0, upperG = 1.0, upperB = 0.0, mode = "lower", thresh = .05, 
+diagnosticPlot <- function(path, colClasses, lowerR = 0.0, lowerG = 0.55, lowerB = 0.0,
+                      upperR = 0.24, upperG = 1.0, upperB = 0.24, mode = "lower", thresh = .05, 
                       method = "GE", savePlots = FALSE, plotOutputDir = "diagnostic_outputs", width = 750, height = 500, 
                       colorspace = "rgb", colorwheel = FALSE)
 {

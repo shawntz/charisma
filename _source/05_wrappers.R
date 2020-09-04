@@ -6,8 +6,8 @@
 ############################################################################
 ############################################################################
 autoComputeKPipeline <- function(path, bins = 3, diagnosticMode = FALSE, 
-                     lowerR = 0.0, lowerG = 1.0, lowerB = 0.0,
-                     upperR = 0.0, upperG = 1.0, upperB = 0.0,
+                     lowerR = 0.0, lowerG = 0.55, lowerB = 0.0,
+                     upperR = 0.24, upperG = 1.0, upperB = 0.24,
                      mode = "lower", thresh = .05, method = "GE", colOut = FALSE, colOutPath = "./",
                      saveDiagnosticPlots = FALSE, diagnosticPlotsOutputDir = "diagnostic_outputs", width = 750, height = 500, 
                      colorspace = "rgb", colorwheel = FALSE)

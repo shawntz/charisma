@@ -4,8 +4,8 @@ getImages <- function(path)
 }
 
 getHist <- function(img, bins = 3, plotting = FALSE, 
-                    lowerR = 0.0, lowerG = 1.0, lowerB = 0.0,
-                    upperR = 0.4, upperG = 1.0, upperB = 0.0, colorspace = "rgb")
+                    lowerR = 0.0, lowerG = 0.55, lowerB = 0.0,
+                    upperR = 0.24, upperG = 1.0, upperB = 0.24, colorspace = "rgb")
 {
   #check if valid image
   if(!file.exists(img))
