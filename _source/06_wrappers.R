@@ -1,18 +1,7 @@
 classifyPixelsPipeline <- function(img, classification, all = T)
 {
-  #classification <- classifyPixels(img)
   hits_by_id <- countHitsByID(classification)
-  
-  #updated_color_table_ALL <- updateColorTableWithHits(hits_by_id, T)
-  #updated_color_table_LOCAL <- updateColorTableWithHits(hits_by_id, F)
-  
   updated_color_table <- updateColorTableWithHits(hits_by_id, all)
-  
-  #invisible(ifelse(!dir.exists(plot_output_dir), dir.create(plot_output_dir), FALSE))
-  
-  #plotHits(updated_color_table_ALL, updated_color_table_LOCAL, plot_output_dir, img, plotWidth, plotHeight)
-  
-  #return(extractDiscreteColors(classification))
   return(updated_color_table)
 }
 
