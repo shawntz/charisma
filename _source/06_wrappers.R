@@ -1,0 +1,63 @@
+classifyPixelsPipeline <- function(img, classification, all = T)
+{
+  #classification <- classifyPixels(img)
+  hits_by_id <- countHitsByID(classification)
+  
+  #updated_color_table_ALL <- updateColorTableWithHits(hits_by_id, T)
+  #updated_color_table_LOCAL <- updateColorTableWithHits(hits_by_id, F)
+  
+  updated_color_table <- updateColorTableWithHits(hits_by_id, all)
+  
+  #invisible(ifelse(!dir.exists(plot_output_dir), dir.create(plot_output_dir), FALSE))
+  
+  #plotHits(updated_color_table_ALL, updated_color_table_LOCAL, plot_output_dir, img, plotWidth, plotHeight)
+  
+  #return(extractDiscreteColors(classification))
+  return(updated_color_table)
+}
+
+getDiscreteColors <- function(classification)
+{
+  return(extractDiscreteColors(classification))
+}
+
+plotPixelsPipeline <- function(img, updated_color_table_ALL, updated_color_table_LOCAL, classifications)
+{
+  invisible(ifelse(!dir.exists(plot_output_dir), dir.create(plot_output_dir), FALSE))
+  plotHits(updated_color_table_ALL, updated_color_table_LOCAL, classifications, plot_output_dir, img, plotWidth, plotHeight)
+}
+
+sortExtractedColorsPipeline <- function(extracted_colors_list, source_color_table = color_table)
+{
+  discrete_color_df <- data.frame(matrix(nrow = length(extracted_colors_list), ncol = getNumPossibleColors(source_color_table)))
+  color_labels <- getColorLabels(source_color_table)
+  colnames(discrete_color_df) <- color_labels
+  
+  k_values <- rep(NA, length(extracted_colors_list))
+  
+  for(ii in 1:length(extracted_colors_list))
+  {
+    k_values[ii] <- length(extracted_colors_list[[ii]])
+    
+    for(jj in 1:ncol(discrete_color_df))
+    {
+      if(color_labels[jj] %in% extracted_colors_list[[ii]])
+      {
+        discrete_color_df[ii,jj] <- 1
+      } else
+      {
+        discrete_color_df[ii,jj] <- 0
+      }
+    }
+  }
+  
+  color_class_data <- data.frame(matrix(ncol = (2 + getNumPossibleColors(source_color_table)), nrow = length(extracted_colors_list)))
+  combo_column_names <- append(c("img", "k"), color_labels)
+  colnames(color_class_data) <- combo_column_names
+  color_class_data$img <- names(extracted_colors_list)
+  color_class_data$k <- k_values
+  k_df <- data.frame(img = names(extracted_colors_list), k = k_values)
+  color_class_data_merged <- cbind(k_df, discrete_color_df)
+  
+  return(color_class_data_merged)
+}

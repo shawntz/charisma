@@ -1,137 +1,59 @@
 #!/usr/bin/Rscript
 
-cat("\n\n#######################################################################
-##                              charisma                             ##
-##  Automatic Detection of Color Classes for Color Pattern Analysis  ##
-##                  Written by Shawn Schwartz, 2020                  ##
-##                      <shawnschwartz@ucla.edu>                     ##
-#######################################################################\n\n\n")
-
-## init
-ptm <- proc.time() #begin run timer
+#### Initialize Source ----
+ptm <- proc.time() ## begin run timer
 wd <- getwd()
-source("charisma.source.R")
+source("charisma.source.compile.R")
 
-## parameters
-option_list <- list(
-  make_option(c("-m", "--maskedPath"), default="NULL", help="path/to/background_masked_images, no default"),
-  make_option(c("-p", "--unmaskedPath"), default="NULL", help="path/to/transparent_bg_images, no default"),
-  make_option(c("-s", "--colorspace"), default="rgb", help="set color space to either 'rgb' or 'hsv', default='rgb'"),
-  make_option(c("-r", "--lowerRed"), type="double", default=0.0, help="Lower-bound Red value (0.0 to 1.0), default=0.0"),
-  make_option(c("-g", "--lowerGreen"), type="double", default=0.55, help="Lower-bound Green value (0.0 to 1.0), default=0.55"),
-  make_option(c("-b", "--lowerBlue"), type="double", default=0.0, help="Lower-bound Blue value (0.0 to 1.0), default=0.0"),
-  make_option(c("-y", "--upperRed"), type="double", default=0.24, help="Upper-bound Red value (0.0 to 1.0), default=0.24"),
-  make_option(c("-u", "--upperGreen"), type="double", default=1.0, help="Upper-bound Green value (0.0 to 1.0), default=1.0"),
-  make_option(c("-n", "--upperBlue"), type="double", default=0.24, help="Upper-bound Blue value (0.0 to 1.0), default=0.24"),
-  make_option(c("-a", "--mode"), default="lower", help="Mode for thresholding. Type either 'lower' or 'upper': (lower: captures colors that exceeds (using --method) that threshold; upper: captures all colors necessary to explain some upper bound threshold), default=lower"),
-  make_option(c("-t", "--threshold"), type="double", default=0.05, help="Minimum threshold of pixel percentage to count as a color, default=0.05"),
-  make_option(c("-z", "--method"), default="GE", help="Method for threshold cutoff. Type either 'GE' or 'G': (GE='>=' and G='>'), default=GE."),
-  make_option(c("-e", "--colorDataOutput"), action="store_true", default=FALSE, help="Enable saving of RDS file with R list data of RGB/HSV values for each k, for each image, default=FALSE"),
-  make_option(c("-d", "--diagnostic"), action="store_true", default=FALSE, help="Enable diagnostic plotting mode, default=FALSE"),
-  make_option(c("-w", "--colorWheelPlot"), action="store_true", default=FALSE, help="Plot color wheel plots when in diagnostic plotting mode, default=FALSE"),
-  make_option(c("-v", "--plotWidth"), type="double", default=750, help="Pixel width of diagnostic plot, default=750"),
-  make_option(c("-i", "--plotHeight"), type="double", default=500, help="Pixel height of diagnostic plot, default=500"),
-  make_option(c("-q", "--saveDiagnosticPlots"), action="store_true", default=FALSE, help="Automatically save diagnostic plots to directory, default=FALSE"),
-  make_option(c("-o", "--saveDiagnosticPlotsPath"), default="diagnostic_outputs", help="Location to automatically save diagnostic plots to directory (-q)"),
-  make_option(c("-c", "--colorPatternAnalysis"), action="store_true", default=FALSE, help="Run color pattern analysis pipeline after automatic color classification, default=FALSE")
-)
+imgs <- getImages(images_masked_path)
 
-## parse command line args
-opt <- parse_args(OptionParser(option_list = option_list))
-
-images_masked <- opt$maskedPath
-images_notmasked <- opt$unmaskedPath
-colorspace <- opt$colorspace
-lowerR <- opt$lowerRed
-lowerG <- opt$lowerGreen
-lowerB <- opt$lowerBlue
-upperR <- opt$upperRed
-upperG <- opt$upperGreen
-upperB <- opt$upperBlue
-mode <- opt$mode
-thresh <- opt$threshold
-method <- opt$method
-diagnosticMode <- opt$diagnostic
-colorWheelPlot <- opt$colorWheelPlot
-plotWidth <- opt$plotWidth
-plotHeight <- opt$plotHeight
-colOut <- opt$colorDataOutput
-saveDiagnosticPlots <- opt$saveDiagnosticPlots
-plotOutputDirInput <- opt$saveDiagnosticPlotsPath
-colorPatternAnalysis <- opt$colorPatternAnalysis
-
-## check if both masked/unmasked img dirs are provided if color pattern analysis option is selected
-if((colorPatternAnalysis == TRUE) & (images_notmasked == "NULL" | images_masked == "NULL"))
+if(resize == TRUE)
 {
-  stop("\n\n\n***charisma warning: Corresponding masked/unmasked directories must be provided to run color pattern analysis!***\n\n\n")
-}
-
-## setup output dir for data
-output_dir <- file.path(wd, format(Sys.time(), "charisma_%F_%H.%M.%S"))
-dir.create(output_dir)
-cat(paste("\nCreated directory for charisma run output files at:"), output_dir, "\n")
-output_dir_root <- paste0(output_dir, "/")
-plot_output_dir <- paste0(output_dir, "/", plotOutputDirInput)
-images_masked_path <- paste0(wd, "/", images_masked)
-images_path <- paste0(wd, "/", images_notmasked)
-
-## save session parameters
-sink(paste0(output_dir_root, "charisma_session_parameters_log.txt"))
-  cat(paste0("--maskedPath=", opt$maskedPath, "\n"))
-  cat(paste0("--unmaskedPath=", opt$unmaskedPath, "\n"))
-  cat(paste0("--colorspace=", opt$colorspace, "\n"))
-  cat(paste0("--lowerRed=", opt$lowerRed, "\n"))
-  cat(paste0("--lowerGreen=", opt$lowerGreen, "\n"))
-  cat(paste0("--lowerBlue=", opt$lowerBlue, "\n"))
-  cat(paste0("--upperRed=", opt$upperRed, "\n"))
-  cat(paste0("--upperGreen=", opt$upperGreen, "\n"))
-  cat(paste0("--upperBlue=", opt$upperBlue, "\n"))
-  cat(paste0("--mode=", opt$mode, "\n"))
-  cat(paste0("--threshold=", opt$threshold, "\n"))
-  cat(paste0("--method=", opt$method, "\n"))
-  cat(paste0("--colorDataOutput=", opt$colorDataOutput, "\n"))
-  cat(paste0("--diagnostic=", opt$diagnostic, "\n"))
-  cat(paste0("--colorWheelPlot=", opt$colorWheelPlot, "\n"))
-  cat(paste0("--plotWidth=", opt$plotWidth, "\n"))
-  cat(paste0("--plotHeight=", opt$plotHeight, "\n"))
-  cat(paste0("--saveDiagnosticPlots=", opt$saveDiagnosticPlots, "\n"))
-  cat(paste0("--saveDiagnosticPlotsPath=", opt$saveDiagnosticPlotsPath, "\n"))
-  cat(paste0("--colorPatternAnalysis=", opt$colorPatternAnalysis, "\n"))
-sink()
-
-## begin automatic color class determination pipeline
-cat("\nRunning automatic color class determination now...\n")
-k_out <- autoComputeKPipeline(images_masked_path, diagnosticMode = diagnosticMode,
-                              lowerR = lowerR, lowerG = lowerG, lowerB = lowerB,
-                              upperR = upperR, upperG = upperG, upperB = upperB,
-                              mode = mode, thresh = thresh, method = method, colOut = colOut, colOutPath = output_dir_root,
-                              saveDiagnosticPlots = saveDiagnosticPlots, diagnosticPlotsOutputDir = plot_output_dir, 
-                              width = plotWidth, height = plotHeight, colorspace = colorspace, colorwheel = colorWheelPlot)
-cat("\nSaving automatic color class determination results...\n")
-saveRDS(k_out, file.path(output_dir, "k-values.RDS"))
-write.csv(k_out, file.path(output_dir, "k-values.csv"), row.names = FALSE)
-cat("\nFinished saving automatic color class determination results successfully!\n")
-
-## run pavo color pattern analysis pipeline
-if(colorPatternAnalysis == TRUE)
-{
-  cat("\nRunning color pattern analysis classification pipeline...\n\n")
-  color_classified <- classifyColorPipeline(images_path, k_out)
-  cat("\nSaving color pattern analysis classification results...")
-  saveRDS(color_classified, file.path(output_dir, "color-pattern-analysis.RDS"))
-  write.csv(color_classified, file.path(output_dir, "color-pattern-analysis.csv"), row.names = FALSE)
-  cat("Finished saving color pattern analysis classification results successfully!\n\n")
+  cat(paste0("    Beginning Image Downsampling", " (", scale_value, "%):\n"))
+  for(ii in 1:length(imgs))
+  {
+    cat(paste0("        Downsampling Image: ", imgs[ii], " ...\n"))
+    downsampleImage(imgs[ii], resize_dir)
+  }
+  cat("    Image Downsampling Completed\n\n")
   
-  cat("\nRunning color pattern analysis classification PCA...\n")
-  pca_k <- runColorPCA(color_classified)
-  pca_k_summary <- getColorPCASummary(pca_k)
-  cat("\nSaving color pattern analysis classification PCA results... (2 files)")
-  saveRDS(pca_k, file.path(output_dir, "color-pattern-analysis-PCA.RDS"))
-  saveRDS(pca_k_summary, file.path(output_dir, "color-pattern-analysis-PCA_summary.RDS"))
-  cat("\nFinished saving color pattern analysis classification PCA results successfully! (2 files)\n\n")  
+  #reload downsampled images
+  imgs <- getImages(resize_dir)
 }
 
-## clean up charisma's main path
+#### Run Pixel-By-Pixel Classification Pipeline ----
+classifications_list <- list()
+extracted_colors_list_ALL <- list()
+extracted_colors_list_LOCAL <- list()
+discrete_colors_list <- list()
+
+for(ii in 1:length(imgs))
+{
+  cat(paste0("    Classifying ", ii, " of ", length(imgs), ": \n"))
+  
+  classifications_list[[ii]] <- classifyPixels(imgs[ii])
+  extracted_colors_list_ALL[[ii]] <- classifyPixelsPipeline(imgs[ii], classifications_list[[ii]], T)
+  extracted_colors_list_LOCAL[[ii]] <- classifyPixelsPipeline(imgs[ii], classifications_list[[ii]], F)
+  discrete_colors_list[[ii]] <- getDiscreteColors(classifications_list[[ii]])
+  
+  if(diagnosticMode)
+  {
+    plotPixelsPipeline(imgs[ii], extracted_colors_list_ALL[[ii]], extracted_colors_list_LOCAL[[ii]], classifications_list[[ii]])
+  }
+}
+names(discrete_colors_list) <- basename(imgs)
+charisma_calls_df <- sortExtractedColorsPipeline(discrete_colors_list)
+
+## Save RDS and CSV Files with charisma calls
+cat(paste0("\n    Saving discrete color class calls to RDS file..."))
+saveRDS(charisma_calls_df, file.path(output_dir, "_charisma_calls.RDS"))
+cat(paste0("\n    Successfully saved discrete color class calls to RDS file for ", length(imgs), " images!\n"))
+
+cat(paste0("\n    Saving discrete color class calls to CSV file..."))
+write.csv(charisma_calls_df, file.path(output_dir, "_charisma_calls.csv"), row.names = F)
+cat(paste0("\n    Successfully saved discrete color class calls to CSV file for ", length(imgs), " images!\n"))
+
+#### Clean up charisma's main path ----
 if(file.exists("Rplots.pdf"))
 {
   cat("\nCleaning up directory...")
@@ -139,20 +61,6 @@ if(file.exists("Rplots.pdf"))
   cat("Done!\n")
 }
 
-## sink final run time
+#### Finishing Message ----
 final_run_time <- proc.time() - ptm #end run timer
-
-if(colorPatternAnalysis == TRUE)
-{
-  sink(paste0(output_dir_root, "total_run_time_log.txt"))
-    cat(paste(final_run_time[[3]], "seconds to automatically classify k and run color pattern analysis on", nrow(k_out), "images."))
-  sink()
-} else if(colorPatternAnalysis == FALSE)
-{
-  sink(paste0(output_dir_root, "total_run_time_log.txt"))
-  cat(paste(final_run_time[[3]], "seconds to automatically classify k for", nrow(k_out), "images."))
-  sink()
-}
-
-## finishing message
 cat(paste("\ncharisma pipeline successfully completed in", final_run_time[[3]], "seconds.\n\n"))

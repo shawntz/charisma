@@ -5,12 +5,13 @@
 #################################################################
 ##                       Launch charisma                       ##
 #################################################################
-cat("Loading charisma...\n")
+cat("\n    Initializing charisma...\n")
 
+options(warn=-1)
 ##################################################################
 ##                  Install Required Libraries                  ##
 ##################################################################
-required_libraries <- c("colordistance", "pavo", "tidyverse", "plyr", "optparse")
+required_libraries <- c("colordistance", "pavo", "tidyverse", "plyr", "optparse", "magick", "progress", "gridExtra")
 if(length(setdiff(required_libraries, rownames(installed.packages()))) > 0)
 {
   install.packages(setdiff(required_libraries, rownames(installed.packages())))
@@ -21,7 +22,7 @@ if(length(setdiff(required_libraries, rownames(installed.packages()))) > 0)
 #################################################################
 for(libs in required_libraries)
 {
-  eval(bquote(library(.(libs))))
+  eval(bquote(suppressMessages(library(.(libs)))))
 }
 
-cat("Finished loading charisma!\n\n")
+cat("\n    Finished loading charisma!\n\n")
