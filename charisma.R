@@ -38,7 +38,7 @@ for(ii in 1:length(imgs))
   
   if(diagnosticMode)
   {
-    plotPixelsPipeline(imgs[ii], extracted_colors_list_ALL[[ii]], extracted_colors_list_LOCAL[[ii]], classifications_list[[ii]])
+    plotPixelsPipeline(imgs[ii], extracted_colors_list_ALL[[ii]], extracted_colors_list_LOCAL[[ii]], classifications_list[[ii]], thresh)
   }
 }
 names(discrete_colors_list) <- basename(imgs)

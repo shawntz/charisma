@@ -5,15 +5,26 @@ classifyPixelsPipeline <- function(img, classification, all = T)
   return(updated_color_table)
 }
 
+getColorFreqs <- function(classification)
+{
+  hits_color_freqs <- classification %>% 
+    dplyr::count(Color.Name) %>%
+    mutate(total.calls = sum(n)) %>%
+    rowwise() %>%
+    mutate(pct = n/total.calls)
+  
+  return(hits_color_freqs)
+}
+
 getDiscreteColors <- function(classification)
 {
   return(extractDiscreteColors(classification))
 }
 
-plotPixelsPipeline <- function(img, updated_color_table_ALL, updated_color_table_LOCAL, classifications)
+plotPixelsPipeline <- function(img, updated_color_table_ALL, updated_color_table_LOCAL, classifications, thresh = thresh)
 {
   invisible(ifelse(!dir.exists(plot_output_dir), dir.create(plot_output_dir), FALSE))
-  plotHits(updated_color_table_ALL, updated_color_table_LOCAL, classifications, plot_output_dir, img, plotWidth, plotHeight)
+  plotHits(updated_color_table_ALL, updated_color_table_LOCAL, classifications, plot_output_dir, img, plotWidth, plotHeight, thresh)
 }
 
 sortExtractedColorsPipeline <- function(extracted_colors_list, source_color_table = color_table)
