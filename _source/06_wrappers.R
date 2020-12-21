@@ -16,6 +16,24 @@ getColorFreqs <- function(classification)
   return(hits_color_freqs)
 }
 
+trimColorFreqsThresh <- function(classification, thresh)
+{
+  color_freqs <- getColorFreqs(classification)
+  
+  color_freqs_trimmed <- data.frame(Color.Name=character(), n=numeric(), total.calls=numeric(), pct=numeric())
+  
+  for(ii in 1:nrow(color_freqs))
+  {
+    if(color_freqs$pct[ii] >= thresh)
+    {
+      color_freqs_trimmed <- color_freqs[ii,] %>%
+        rbind(color_freqs_trimmed)
+    }
+  }
+  
+  return(color_freqs_trimmed)
+}
+
 getDiscreteColors <- function(classification)
 {
   return(extractDiscreteColors(classification))

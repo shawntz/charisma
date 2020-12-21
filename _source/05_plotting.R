@@ -40,9 +40,10 @@ plotHits <- function(hex_color_data_all, hex_color_data_local, classification, l
   extracted_discrete_colors <- extractDiscreteColorNamesPlot(classification)
   
   extracted_color_freqs <- getColorFreqs(classification)
+  extracted_color_freqs_trimmed_by_thresh <- trimColorFreqsThresh(classification, thresh)
   
   #Plot Panel 1
-  ref_img <- magick::image_ggplot(magick::image_read(file.path(images_masked_path, basename(img)))) + ggtitle(basename(img)) + labs(subtitle = str_wrap(paste0(toString(extracted_discrete_colors), "\n(k=", length(extracted_discrete_colors), ")"), 10)) + theme(plot.title = element_text(size=12, vjust=100, hjust=.10), plot.subtitle = element_text(hjust=.10, vjust=-10))
+  ref_img <- magick::image_ggplot(magick::image_read(file.path(images_masked_path, basename(img)))) + ggtitle(basename(img)) + labs(subtitle = str_wrap(paste0(toString(extracted_color_freqs_trimmed_by_thresh$Color.Name), "\n(k=", length(extracted_color_freqs_trimmed_by_thresh$Color.Name), ")"), 10)) + theme(plot.title = element_text(size=12, vjust=100, hjust=.10), plot.subtitle = element_text(hjust=.10, vjust=-10))
   
   #Plot Panel 2
   p_all <- ggplot(hex_color_data_all, aes(x=nickname, y=height, fill=nickname)) +
