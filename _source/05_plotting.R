@@ -46,16 +46,25 @@ plotHits <- function(hex_color_data_all, hex_color_data_local, classification, l
   ref_img <- magick::image_ggplot(magick::image_read(file.path(images_masked_path, basename(img)))) + ggtitle(paste0(basename(img), "\n(", (thresh*100), "% Frequency Threshold)")) + labs(subtitle = str_wrap(paste0(toString(extracted_color_freqs_trimmed_by_thresh$Color.Name), "\n(k=", length(extracted_color_freqs_trimmed_by_thresh$Color.Name), ")"), 10)) + theme(plot.title = element_text(size=12, vjust=100, hjust=.5, face="bold"), plot.subtitle = element_text(hjust=.10, vjust=-10, face="bold"))
   
   #Plot Panel 2
-  p_all <- ggplot(hex_color_data_all, aes(x=nickname, y=height, fill=nickname)) +
-    geom_bar(stat = "identity", alpha = 0.1) +
-    geom_bar(aes(x=nickname, y=hits, fill=nickname), stat = "identity") +
-    scale_fill_manual(values = hex_color_data_all$hexcolors) +
-    theme(axis.text.x=element_blank()) + 
+  ## force the positions to be the same as the row order
+  plot_positions <- hex_color_data_all$nickname
+  
+  ## generate plot color map
+  plot_color_map <- hex_color_data_all$hexcolors
+  names(plot_color_map) = hex_color_data_all$nickname
+  
+  ## make plot
+  p_all <- ggplot(hex_color_data_all) +
+    geom_bar(aes(x = nickname, y = height, fill = nickname), stat = "identity", alpha = .1) +
+    geom_bar(aes(x = nickname, y = hits, fill = nickname), stat = "identity", alpha = 1) +
+    scale_fill_manual(values = plot_color_map) +
+    theme(axis.text.x = element_blank(), 
+          legend.position = "none", 
+          plot.title = element_text(face = "bold", hjust = .5)) +
     ggtitle("Master Color Reference") + 
     xlab("Reference Color") +
-    ylab("Color Frequency") +
-    scale_y_log10() +
-    theme(legend.position = "none", plot.title = element_text(face = "bold", hjust = .5))
+    ylab("log(Color Frequency)") +
+    scale_x_discrete(limits = plot_positions)
   
   #Plot Panel 3
   p_local <- ggplot(hex_color_data_local, aes(x=nickname, y=height, fill=nickname)) +
