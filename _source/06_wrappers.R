@@ -41,8 +41,8 @@ getDiscreteColors <- function(classification)
 
 plotPixelsPipeline <- function(img, updated_color_table_ALL, updated_color_table_LOCAL, classifications, thresh = thresh)
 {
-  write.csv(updated_color_table_ALL, file.path(wd, "col_table_ALL_demo.csv"))
-  write.csv(updated_color_table_LOCAL, file.path(wd, "col_table_LOCAL_demo.csv"))
+  ##write.csv(updated_color_table_ALL, file.path(wd, "col_table_ALL_demo.csv")) ##for debugging
+  ##write.csv(updated_color_table_LOCAL, file.path(wd, "col_table_LOCAL_demo.csv")) ##for debugging
   invisible(ifelse(!dir.exists(plot_output_dir), dir.create(plot_output_dir), FALSE))
   plotHits(updated_color_table_ALL, updated_color_table_LOCAL, classifications, plot_output_dir, img, plotWidth, plotHeight, thresh)
 }
