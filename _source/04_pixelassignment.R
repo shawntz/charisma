@@ -11,7 +11,7 @@ classifyPixels <- function(img)
   
   pic <- pic$filtered.rgb.2d
   
-  pb <- progress::progress_bar$new(total = nrow(pic), format = paste0("    Analyzing ", basename(img), " [:bar] :percent eta: :eta"), clear = F)
+  pb <- progress::progress_bar$new(total = nrow(pic), format = " [:bar] :percent eta: :eta", clear = F)
   output <- data.frame()
   for(i in 1:nrow(pic))
   {

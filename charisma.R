@@ -29,7 +29,7 @@ discrete_colors_list <- list()
 
 for(ii in 1:length(imgs))
 {
-  cat(paste0("    Classifying ", ii, " of ", length(imgs), ": \n"))
+  cat(paste0("    Classifying ", ii, " of ", length(imgs), ": ", basename(imgs[ii]), " \n"))
   
   classifications_list[[ii]] <- classifyPixels(imgs[ii])
   extracted_colors_list_ALL[[ii]] <- classifyPixelsPipeline(imgs[ii], classifications_list[[ii]], T)

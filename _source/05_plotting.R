@@ -54,6 +54,7 @@ plotHits <- function(hex_color_data_all, hex_color_data_local, classification, l
     ggtitle("Master Color Reference") + 
     xlab("Reference Color") +
     ylab("Color Frequency") +
+    scale_y_log10() +
     theme(legend.position = "none", plot.title = element_text(face = "bold", hjust = .5))
   
   #Plot Panel 3
@@ -65,6 +66,7 @@ plotHits <- function(hex_color_data_all, hex_color_data_local, classification, l
     ggtitle("Local Hits") +
     xlab("Reference Color") +
     ylab("Color Frequency") +
+    scale_y_log10() +
     theme(legend.position = "none", plot.title = element_text(face = "bold", hjust = .5))
   
   #Plot Panel 4
