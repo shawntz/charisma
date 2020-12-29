@@ -74,7 +74,7 @@ plotHits <- function(hex_color_data_all, hex_color_data_local, classification, l
     theme(axis.text.x=element_blank()) + 
     ggtitle("Local Hits") +
     xlab("Reference Color") +
-    ylab("Color Frequency") +
+    ylab("log(Color Frequency)") +
     scale_y_log10() +
     theme(legend.position = "none", plot.title = element_text(face = "bold", hjust = .5))
   
