@@ -47,21 +47,29 @@ plotPixelsPipeline <- function(img, updated_color_table_ALL, updated_color_table
   plotHits(updated_color_table_ALL, updated_color_table_LOCAL, classifications, plot_output_dir, img, plotWidth, plotHeight, thresh)
 }
 
-sortExtractedColorsPipeline <- function(extracted_colors_list, source_color_table = color_table)
+sortExtractedColorsPipeline <- function(extracted_colors_list, classifications_list, thresh, source_color_table = color_table)
 {
-  discrete_color_df <- data.frame(matrix(nrow = length(extracted_colors_list), ncol = getNumPossibleColors(source_color_table)))
+  discrete_color_df <- data.frame(matrix(nrow = length(classifications_list), ncol = getNumPossibleColors(source_color_table)))
   color_labels <- getColorLabels(source_color_table)
   colnames(discrete_color_df) <- color_labels
   
-  k_values <- rep(NA, length(extracted_colors_list))
+  k_values <- rep(NA, length(classifications_list))
   
-  for(ii in 1:length(extracted_colors_list))
+  extracted_discrete_colors_list <- list()
+  extracted_color_freqs_list <- list()
+  extracted_color_freqs_trimmed_by_thresh_list <- list()
+  
+  for(ii in 1:length(classifications_list))
   {
-    k_values[ii] <- length(extracted_colors_list[[ii]])
+    extracted_discrete_colors_list[[ii]] <- extractDiscreteColorNamesPlot(classifications_list[[ii]])
+    extracted_color_freqs_list[[ii]] <- getColorFreqs(classifications_list[[ii]])
+    extracted_color_freqs_trimmed_by_thresh_list[[ii]] <- trimColorFreqsThresh(classifications_list[[ii]], thresh)
+    
+    k_values[ii] <- nrow(extracted_color_freqs_trimmed_by_thresh_list[[ii]])
     
     for(jj in 1:ncol(discrete_color_df))
     {
-      if(color_labels[jj] %in% extracted_colors_list[[ii]])
+      if(color_labels[jj] %in% extracted_color_freqs_trimmed_by_thresh_list[[ii]]$Color.Name)
       {
         discrete_color_df[ii,jj] <- 1
       } else

@@ -38,7 +38,6 @@ extractDiscreteColorNamesPlot <- function(classification, source_color_table = c
 plotHits <- function(hex_color_data_all, hex_color_data_local, classification, loc, img, w = plotWidth, h = plotHeight, thresh = thresh)
 {
   extracted_discrete_colors <- extractDiscreteColorNamesPlot(classification)
-  
   extracted_color_freqs <- getColorFreqs(classification)
   extracted_color_freqs_trimmed_by_thresh <- trimColorFreqsThresh(classification, thresh)
   

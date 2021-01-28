@@ -12,10 +12,23 @@ classifyPixels <- function(img)
   pic <- pic$filtered.rgb.2d
   
   pb <- progress::progress_bar$new(total = nrow(pic), format = " [:bar] :percent eta: :eta", clear = F)
+  
+  ### SHORT WAY ###
+  #output <- as.data.frame(matrix(NA, nrow = nrow(pic), ncol = 4))
+  #colnames(output) <- c("Color.ID", "Color.Name", "HEX", "delta")
+  #for(i in 1:nrow(pic))
+  #{
+  #  tmp_out <- getColorLabel(pic[i,])
+  #  output[ii,] <- tmp_out
+  #  pb$tick()
+  #}
+  
+  ### LONG WAY ###
   output <- data.frame()
   for(i in 1:nrow(pic))
   {
-    output <- rbind(output, getColorLabel(pic[i,]))
+  #  output <- rbind(output, getColorLabel(pic[i,]))
+    output <- dplyr::bind_rows(output, getColorLabel(pic[i,]))
     pb$tick()
   }
   return(as.data.frame(output))
@@ -42,7 +55,7 @@ getColorLabel <- function(rgb_triplet, lookup_ref = color_table)
   }
   
   output <- data.frame("Color.ID" = color_id, "Color.Name" = color_name, "HEX" = hex_value, "delta" = delta)
-  
+  #print(output)
   return(output)
 }
 
@@ -65,5 +78,6 @@ extractDiscreteColors <- function(hits_output, source_color_table = color_table)
   {
     extracted_colors <- append(extracted_colors, source_color_table[matched_ids_idx[hit],]$color)
   }
+  #print(unique(extracted_colors))
   return(unique(extracted_colors))
 }

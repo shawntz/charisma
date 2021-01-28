@@ -42,7 +42,7 @@ for(ii in 1:length(imgs))
   }
 }
 names(discrete_colors_list) <- basename(imgs)
-charisma_calls_df <- sortExtractedColorsPipeline(discrete_colors_list)
+charisma_calls_df <- sortExtractedColorsPipeline(discrete_colors_list, classifications_list, thresh)
 
 ## Save RDS and CSV Files with charisma calls
 cat(paste0("\n    Saving discrete color class calls to RDS file..."))
