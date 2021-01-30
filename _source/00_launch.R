@@ -14,7 +14,8 @@ options(warn=-1)
 required_libraries <- c("colordistance", "pavo", "tidyverse", "plyr", "optparse", "magick", "progress", "gridExtra")
 if(length(setdiff(required_libraries, rownames(installed.packages()))) > 0)
 {
-  install.packages(setdiff(required_libraries, rownames(installed.packages())))
+  install.packages(setdiff(required_libraries, rownames(installed.packages())),
+                   repos = "https://ftp.osuosl.org/pub/cran/") #set CRAN mirror
 }
 
 #################################################################
