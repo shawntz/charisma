@@ -34,7 +34,34 @@ classifyPixels <- function(img)
   return(as.data.frame(output))
 }
 
-getColorLabel <- function(rgb_triplet, lookup_ref = color_table)
+get_dist <- function(x, y)
+{
+  return(abs(x-y))
+}
+
+getColorLabel <- function(rgb_triplet, lookup_ref = color_table, minimum = 10000)
+{
+  R <- rgb_triplet[1] * 255
+  G <- rgb_triplet[2] * 255
+  B <- rgb_triplet[3] * 255
+  
+  index <- which.min(sapply(R,get_dist,y=lookup_ref$r) + sapply(G,get_dist,y=lookup_ref$g) + sapply(B,get_dist,y=lookup_ref$b))
+  combination <- sapply(R,get_dist,y=lookup_ref$r) + sapply(G,get_dist,y=lookup_ref$g) + sapply(B,get_dist,y=lookup_ref$b)
+  
+  if(combination[index] <= minimum)
+  {
+    minimum <- combination[index]
+    color_name <- lookup_ref[index,]$color
+    color_id <- lookup_ref[index,]$id
+    hex_value <- rgb2hex(lookup_ref[index,]$r, lookup_ref[index,]$g, lookup_ref[index,]$b)
+    delta <- as.integer(combination[index])
+  }
+  
+  output <- data.frame("Color.ID" = color_id, "Color.Name" = color_name, "HEX" = hex_value, "delta" = delta)
+  return(output)
+}
+
+getColorLabelVec <- function(rgb_triplet, lookup_ref = color_table)
 {
   minimum <- 10000
   R <- rgb_triplet[1] * 255
