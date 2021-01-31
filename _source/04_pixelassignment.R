@@ -37,25 +37,34 @@ classifyPixels <- function(img)
 getColorLabel <- function(rgb_triplet, lookup_ref = color_table)
 {
   minimum <- 10000
-  r <- rgb_triplet[1] * 255
-  g <- rgb_triplet[2] * 255
-  b <- rgb_triplet[3] * 255
-  
-  for(i in 1:nrow(lookup_ref))
-  {
-    dist_calc <- abs(r - as.integer(lookup_ref$r[i])) + abs(g - as.integer(lookup_ref$g[i])) + abs(b - as.integer(lookup_ref$b[i]))
-    if(dist_calc <= minimum)
-    {
-      minimum <- dist_calc
-      color_name <- lookup_ref[i,]$color
-      color_id <- lookup_ref[i,]$id
-      hex_value <- rgb2hex(lookup_ref[i,]$r, lookup_ref[i,]$g, lookup_ref[i,]$b)
-      delta <- as.integer(dist_calc)
-    }
+  R <- rgb_triplet[1] * 255
+  G <- rgb_triplet[2] * 255
+  B <- rgb_triplet[3] * 255
+  distr<-function(x){
+    distance<-abs(x-R)
+    return(distance)
   }
+  distg<-function(x){
+    distance<-abs(x-G)
+    return(distance)
+  }
+  distb<-function(x){
+    distance<-abs(x-B)
+    return(distance)
+  }
+  index<-which.min(sapply(lookup_ref$r,distr)+sapply(lookup_ref$g,distg)+sapply(lookup_ref$b,distb))
+  combination<-sapply(lookup_ref$r,distr)+sapply(lookup_ref$g,distg)+sapply(lookup_ref$b,distb)
+  if(combination[index] <= minimum)
+    {
+     minimum <- combination[index]
+      color_name <- lookup_ref[index,]$color
+      color_id <- lookup_ref[index,]$id
+      hex_value <- rgb2hex(lookup_ref[index,]$r, lookup_ref[index,]$g, lookup_ref[index,]$b)
+      delta <- as.integer(combination[index])
+   }
   
   output <- data.frame("Color.ID" = color_id, "Color.Name" = color_name, "HEX" = hex_value, "delta" = delta)
-  #print(output)
+  print(output)
   return(output)
 }
 
