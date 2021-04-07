@@ -18,21 +18,24 @@ parseConditional <- function(parsed_mapping, python = F) {
     
     #generate h conditional string
     for(jj in 1:length(h_string)) {
-      h_string[jj] <- paste0("(h >= ", h_split[[jj]][1], " & h <= ", h_split[[jj]][2], ")")
+      #h_string[jj] <- paste0("(h >= ", h_split[[jj]][1], " & h <= ", h_split[[jj]][2], ")")
+      h_string[jj] <- paste0("(img$h >= ", h_split[[jj]][1], " & img$h <= ", h_split[[jj]][2], ")")
       #h_string[jj] <- paste0("(df['H'] >= ", h_split[[jj]][1], " & df['H'] <= ", h_split[[jj]][2], ")")
       #h_string[jj] <- paste0("(df['H'].ge(", h_split[[jj]][1], ") & df['H'].le(", h_split[[jj]][2], "))")
     }
     
     #generate s conditional string
     for(jj in 1:length(s_string)) {
-      s_string[jj] <- paste0("(s >= ", s_split[[jj]][1], " & s <= ", s_split[[jj]][2], ")")
+      #s_string[jj] <- paste0("(s >= ", s_split[[jj]][1], " & s <= ", s_split[[jj]][2], ")")
+      s_string[jj] <- paste0("(img$s >= ", s_split[[jj]][1], " & img$s <= ", s_split[[jj]][2], ")")
       #s_string[jj] <- paste0("(df['S'] >= ", s_split[[jj]][1], " & df['S'] <= ", s_split[[jj]][2], ")")
       #s_string[jj] <- paste0("(df['S'].ge(", s_split[[jj]][1], ") & df['S'].le(", s_split[[jj]][2], "))")
     }
     
     #generate v conditional string
     for(jj in 1:length(v_string)) {
-      v_string[jj] <- paste0("(v >= ", v_split[[jj]][1], " & v <= ", v_split[[jj]][2], ")")
+      #v_string[jj] <- paste0("(v >= ", v_split[[jj]][1], " & v <= ", v_split[[jj]][2], ")")
+      v_string[jj] <- paste0("(img$v >= ", v_split[[jj]][1], " & img$v <= ", v_split[[jj]][2], ")")
       #v_string[jj] <- paste0("(df['V'] >= ", v_split[[jj]][1], " & df['V'] <= ", v_split[[jj]][2], ")")
       #v_string[jj] <- paste0("(df['V'].ge(", v_split[[jj]][1], ") & df['V'].le(", v_split[[jj]][2], "))")
     }
