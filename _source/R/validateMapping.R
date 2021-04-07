@@ -21,10 +21,10 @@ validateMapping <- function(mapping) {
   }
   
   if(total_n_missing > 0) {
-    cat(paste0("Missing color calls for ", total_n_missing, " pixels ==> Mapping validation failed.\nSee output for missing pixels.\n"))
+    warning(paste0("\n    Missing color calls for ", total_n_missing, " pixels ==> Mapping validation failed.\nSee output for missing pixels.\n"))
     return(missing)
   } else {
-    cat("No missing color calls. Mapping successfully validated!\n")
+    cat("\n    No missing color calls. Mapping successfully validated!\n\n")
     return(TRUE)
   }
   

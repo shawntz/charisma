@@ -10,7 +10,7 @@ cat("\n    Initializing Charisma...\n")
 options(warn=-1)
 
 #### Install Required Libraries ####
-required_libraries <- c("tidyverse", "plyr", "magick", "gridExtra")
+required_libraries <- c("tidyverse", "dplyr", "magick", "gridExtra")
 if(length(setdiff(required_libraries, rownames(installed.packages()))) > 0) {
   install.packages(setdiff(required_libraries, rownames(installed.packages())),
                    repos = "https://ftp.osuosl.org/pub/cran/") #set CRAN mirror
@@ -29,3 +29,8 @@ for(f in list.files("_source/R", pattern = "*.R"))
 {
   source(paste0("_source/R", "/", f))
 }
+
+#### Load Mapping Into Memory and Validate ####
+mapping <- readMapping("_source/data/mapping.csv")
+if(validate)
+  validation <- validateMapping(mapping)
