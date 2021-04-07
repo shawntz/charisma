@@ -1,4 +1,4 @@
-checkColor <- function(color_triplet, parsed_conditional, color_name, scale = T, color_space = c("HSV", "RGB")) {
+getColor <- function(color_triplet, parsed_conditional, scale = T, color_space = c("HSV", "RGB")) {
   
   ##check if valid color space
   color_space <- match.arg(color_space)
@@ -19,12 +19,10 @@ checkColor <- function(color_triplet, parsed_conditional, color_name, scale = T,
     v <- round(color_triplet[3])
   }
   
-  ##TODO: catch missed color or >1 colors
-  ##TODO: need a function to test someone's color definitions before running through Charisma pipeline
   if(eval(parse(text = parsed_conditional))) {
-    is_color <- 1
+    is_color <- TRUE
   } else {
-    is_color <- 0
+    is_color <- FALSE
   }
   
   return(is_color)
