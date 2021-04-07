@@ -1,9 +1,7 @@
 ## Adapted and Modified from R::colordistance function `loadImage`
-loadImg <- function(path, lower = c(0, 0.55, 0),
-                         upper = c(0.24, 1, 0.24), hsv = TRUE,
-                         CIELab = FALSE, sample.size = 100000,
-                         ref.white = NULL, alpha.channel = TRUE,
-                         alpha.message = FALSE) {
+loadImg <- function(path, lower = c(0, 0.55, 0), upper = c(0.24, 1, 0.24), hsv = TRUE,
+                    CIELab = FALSE, sample.size = 100000, ref.white = NULL, 
+                    alpha.channel = TRUE, alpha.message = FALSE) {
   
   # Read in the file as either JPG or PNG (or, if neither, stop execution and
   # return error message)
@@ -87,9 +85,11 @@ loadImg <- function(path, lower = c(0, 0.55, 0),
     }
   }
   
+  ##add modified background labels for sprite plot generation
   end.list$hsv.version <- t(rgb2hsv(filtered.img$filtered.rgb.2d[,1], filtered.img$filtered.rgb.2d[,2], filtered.img$filtered.rgb.2d[,3], maxColorValue = 1))
   end.list$hsv.version <- cbind(end.list$hsv.version, end.list$filtered.rgb.2d[,4])
   colnames(end.list$hsv.version)[4] <- "is.bg"
+  
   return(end.list)
   
 }

@@ -1,8 +1,5 @@
 ## Adapted and Modified from R::colordistance function `removeBackground`
-removeBG <- function(img,
-                      lower = NULL, upper = NULL,
-                      quietly = FALSE,
-                      alpha.channel = TRUE) {
+removeBG <- function(img, lower = NULL, upper = NULL, quietly = FALSE, alpha.channel = TRUE) {
 
   # assume no background masking to start
   idx <- NULL
