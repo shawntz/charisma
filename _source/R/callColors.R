@@ -1,17 +1,23 @@
-callColors <- function(img, mapping) {
+callColors <- function(img, mapping, scale = T) {
   
   ##get all color names from mapping
   colors <- getMappedColors(mapping)
   
   img <- as.data.frame(img[,1:3])
-  img$h <- round(img$h * 360)
-  img$s <- round(img$s * 100)
-  img$v <- round(img$v * 100)
+  if(scale) {
+    img$h <- round(img$h * 360)
+    img$s <- round(img$s * 100)
+    img$v <- round(img$v * 100) 
+  } else {
+    img$h <- round(img$h)
+    img$s <- round(img$s)
+    img$v <- round(img$v) 
+  }
   
   ##get T/F calls for each color
   calls <- list()
   
-  cat("Counting colors...\n")
+  #cat("Counting colors...\n")
   for(color in 1:length(colors)) {
     parsed_mapping <- parseMapping(mapping, colors[color])
     parsed_conditional <- parseConditional(parsed_mapping)
@@ -23,6 +29,10 @@ callColors <- function(img, mapping) {
   ##rearrange color called data into columns with original pixels
   pixel_calls <- data.frame(do.call(cbind, calls))
   combo_data <- cbind(img, pixel_calls)
+  
+  ##sum counts and add column
+  combo_data <- combo_data %>%
+    mutate(total = rowSums(across(4:ncol(combo_data))))
   
   return(combo_data)
   
