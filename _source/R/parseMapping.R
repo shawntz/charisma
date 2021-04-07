@@ -1,8 +1,5 @@
 parseMapping <- function(mapping, color_name) {
   
-  ##read in color mapping sheet
-  ##mapping <- read.csv(mapping, header = T, sep = ",")
-  
   ##check if color exists in mapping
   if(!color_name %in% mapping$color)
     stop("Error: specified color name is not defined in color mapping. Please check definitions in color mapping file.")
