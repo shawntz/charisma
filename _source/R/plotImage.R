@@ -19,8 +19,8 @@ plotImage <- function(img) {
   asp <- img$nrows[1] / img$ncols[1]
   rasterized <- rgb2hex(img[,1:3])
   dim(rasterized) <- c(img$nrows[1], img$ncols[2])
-  plot(0:1, 0:1, type = "n", ann = FALSE, axes = FALSE,
-       asp = asp, main = "")
+  plot(0:1, 0:1, type = "n", axes = FALSE,
+       asp = asp, main = "Source Image", xlab = "", ylab = "")
   
   graphics::rasterImage(rasterized, 0, 0, 1, 1)
   

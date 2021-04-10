@@ -38,8 +38,8 @@ plotSprite <- function(img, mapping) {
   asp <- img$nrows[1] / img$ncols[1]
   dim(hex_values) <- c(img$nrows[1], img$ncols[2])
   
-  plot(0:1, 0:1, type = "n", ann = FALSE, axes = FALSE,
-       asp = asp, main = "")
+  plot(0:1, 0:1, type = "n", axes = FALSE,
+       asp = asp, main = "Sprite Plot", xlab = "", ylab = "")
   
   graphics::rasterImage(hex_values, 0, 0, 1, 1)
   
