@@ -14,6 +14,9 @@ readImg <- function(path, alpha = T) {
   img$nrows <- rep(nrows, nrow(img))
   img$ncols <- rep(ncols, nrow(img))
   
+  ##remove extra `is.bg` column
+  img <- img[,-8]
+  
   return(img)
   
 }

@@ -12,10 +12,11 @@ plotImage <- function(img) {
     }
   }
   
+  ##subset relevant data for plotting
   img <- as.data.frame(cbind(r = img$r, g = img$g, b = img$b, is.bg = img$is.bg, nrows = img$nrows, ncols = img$ncols))
   
+  ##make plot
   asp <- img$nrows[1] / img$ncols[1]
-  print(head(img[,1:3]))
   rasterized <- rgb2hex(img[,1:3])
   dim(rasterized) <- c(img$nrows[1], img$ncols[2])
   plot(0:1, 0:1, type = "n", ann = FALSE, axes = FALSE,
