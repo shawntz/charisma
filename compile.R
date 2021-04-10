@@ -34,3 +34,7 @@ for(f in list.files("_source/R", pattern = "*.R"))
 mapping <- readMapping("_source/data/mapping.csv")
 if(validate)
   validation <- validateMapping(mapping)
+
+#### Set Constants ####
+threshold <- .05
+output <- "_output"
