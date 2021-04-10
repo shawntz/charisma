@@ -1,0 +1,5 @@
+plotSprite <- function(img, classification) {
+  
+  
+  
+}

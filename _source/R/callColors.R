@@ -3,7 +3,7 @@ callColors <- function(img, mapping, scale = T) {
   ##get all color names from mapping
   colors <- getMappedColors(mapping)
   
-  img <- as.data.frame(img[,1:5])
+  img <- as.data.frame(img[,1:7])
   if(scale) {
     img$h <- round(img$h * 360)
     img$s <- round(img$s * 100)
@@ -33,7 +33,7 @@ callColors <- function(img, mapping, scale = T) {
   ##sum counts and add column
   combo_data <- combo_data %>%
     #mutate(total = rowSums(dplyr::across(4:ncol(combo_data))))
-    mutate(total = rowSums(.[6:ncol(combo_data)]))
+    mutate(total = rowSums(.[8:ncol(combo_data)]))
   
   return(combo_data)
   
