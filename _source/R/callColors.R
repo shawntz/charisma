@@ -31,11 +31,8 @@ callColors <- function(img, mapping, scale = T) {
   pixel_calls <- data.frame(do.call(cbind, calls))
   combo_data <- cbind(img, pixel_calls)
   
-  print(head(combo_data))
-  
   ##sum counts and add column
   combo_data <- combo_data %>%
-    #mutate(total = rowSums(dplyr::across(4:ncol(combo_data))))
     mutate(total = rowSums(.[11:ncol(combo_data)]))
   
   return(combo_data)
