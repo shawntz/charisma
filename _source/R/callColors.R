@@ -18,7 +18,6 @@ callColors <- function(img, mapping, scale = T) {
   ##get T/F calls for each color
   calls <- list()
   
-  #cat("Counting colors...\n")
   for(color in 1:length(colors)) {
     parsed_mapping <- parseMapping(mapping, colors[color])
     parsed_conditional <- parseConditional(parsed_mapping)
