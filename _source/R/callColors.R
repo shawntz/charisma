@@ -3,7 +3,6 @@ callColors <- function(img, mapping, scale = T) {
   ##get all color names from mapping
   colors <- getMappedColors(mapping)
   
-  #img <- as.data.frame(img[,1:7])
   img <- as.data.frame(img)
   if(scale) {
     img$h <- round(img$h * 360)
