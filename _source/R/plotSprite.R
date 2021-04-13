@@ -31,8 +31,11 @@ plotSprite <- function(img, mapping) {
   ##get raw color names based on combos to then convert to hex values
   color_names <- ifelse(combos$is.bg == 10, "is.bg", combos$color.name)
   
+  ##make hex vector
+  hex_vector <- getHexVector(mapping)
+  
   ##convert raw color name strings into corresponding hex values
-  hex_values <- sapply(color_names, getMatchedHex, mapping, simplify = T)
+  hex_values <- sapply(color_names, getMatchedHex, hex_vector, simplify = T)
   
   ##make plot
   asp <- img$nrows[1] / img$ncols[1]
