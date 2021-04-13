@@ -13,7 +13,7 @@ ifelse(!dir.exists(file.path(getwd(), output)), dir.create(file.path(getwd(), ou
 
 ## Get Images
 input_path <- "demo/"
-img_dir <- "birds"
+img_dir <- "birds_two"
 imgs <- getImgPaths(paste0(input_path, img_dir))
 
 ## Create Another Output Directory for img_dir path
