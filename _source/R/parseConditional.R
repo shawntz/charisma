@@ -1,4 +1,4 @@
-parseConditional <- function(parsed_mapping, destination = c("pipeline", "getter", "python")) {
+parseConditional <- function(parsed_mapping, destination = c("pipeline", "getter", "python"), round = F) {
   
   ##check if valid destination
   ###`pipeline`: parses output to be used in the `callColors.R` pipeline function
@@ -25,31 +25,58 @@ parseConditional <- function(parsed_mapping, destination = c("pipeline", "getter
     #generate H conditional string
     for(jj in 1:length(h_string)) {
       if(destination == "pipeline")
-        h_string[jj] <- paste0("(img$h >= ", h_split[[jj]][1], " & img$h < ", h_split[[jj]][2], ")")
+        if(h_split[[jj]][2] != "360")
+          h_string[jj] <- paste0("(img$h >= ", h_split[[jj]][1], if(!round) ".00", " & img$h < ", h_split[[jj]][2], if(!round) ".99", ")")
+        else
+          h_string[jj] <- paste0("(img$h >= ", h_split[[jj]][1], if(!round) ".00", " & img$h <= ", h_split[[jj]][2], if(!round) ".00", ")")
       else if(destination == "getter")
-        h_string[jj] <- paste0("(h >= ", h_split[[jj]][1], " & h < ", h_split[[jj]][2], ")")
+        if(h_split[[jj]][2] != "360")
+          h_string[jj] <- paste0("(h >= ", h_split[[jj]][1], if(!round) ".00", " & h < ", h_split[[jj]][2], if(!round) ".99", ")")
+        else
+          h_string[jj] <- paste0("(h >= ", h_split[[jj]][1], if(!round) ".00", " & h <= ", h_split[[jj]][2], if(!round) ".00", ")")
       else if(destination == "python")
-        h_string[jj] <- paste0("(df['H'].ge(", h_split[[jj]][1], ") & df['H'].lt(", h_split[[jj]][2], "))") 
+        if(h_split[[jj]][2] != "360")
+          h_string[jj] <- paste0("(df['H'].ge(", h_split[[jj]][1], if(!round) ".00", ") & df['H'].lt(", h_split[[jj]][2], if(!round) ".99", "))")
+        else
+          h_string[jj] <- paste0("(df['H'].ge(", h_split[[jj]][1], if(!round) ".00", ") & df['H'].le(", h_split[[jj]][2], if(!round) ".00", "))")
     }
     
     #generate S conditional string
     for(jj in 1:length(s_string)) {
       if(destination == "pipeline")
-        s_string[jj] <- paste0("(img$s >= ", s_split[[jj]][1], " & img$s < ", s_split[[jj]][2], ")")
+        if(s_split[[jj]][2] != "100")
+          s_string[jj] <- paste0("(img$s >= ", s_split[[jj]][1], if(!round) ".00", " & img$s < ", s_split[[jj]][2], if(!round) ".99", ")")
+        else
+          s_string[jj] <- paste0("(img$s >= ", s_split[[jj]][1], if(!round) ".00", " & img$s <= ", s_split[[jj]][2], if(!round) ".00", ")")
       else if(destination == "getter")
-        s_string[jj] <- paste0("(s >= ", s_split[[jj]][1], " & s < ", s_split[[jj]][2], ")") 
+        if(s_split[[jj]][2] != "100")
+          s_string[jj] <- paste0("(s >= ", s_split[[jj]][1], if(!round) ".00", " & s < ", s_split[[jj]][2], if(!round) ".99", ")")
+        else
+          s_string[jj] <- paste0("(s >= ", s_split[[jj]][1], if(!round) ".00", " & s <= ", s_split[[jj]][2], if(!round) ".00", ")")
       else if(destination == "python")
-        s_string[jj] <- paste0("(df['S'].ge(", s_split[[jj]][1], ") & df['S'].lt(", s_split[[jj]][2], "))") 
+        if(s_split[[jj]][2] != "100")
+          s_string[jj] <- paste0("(df['S'].ge(", s_split[[jj]][1], if(!round) ".00", ") & df['S'].lt(", s_split[[jj]][2], if(!round) ".99", "))")
+        else
+          s_string[jj] <- paste0("(df['S'].ge(", s_split[[jj]][1], if(!round) ".00", ") & df['S'].le(", s_split[[jj]][2], if(!round) ".00", "))")
     }
     
     #generate V conditional string
     for(jj in 1:length(v_string)) {
       if(destination == "pipeline")
-        v_string[jj] <- paste0("(img$v >= ", v_split[[jj]][1], " & img$v < ", v_split[[jj]][2], ")")
+        if(v_split[[jj]][2] != "100")
+          v_string[jj] <- paste0("(img$v >= ", v_split[[jj]][1], if(!round) ".00", " & img$v < ", v_split[[jj]][2], if(!round) ".99", ")")
+        else
+          v_string[jj] <- paste0("(img$v >= ", v_split[[jj]][1], if(!round) ".00", " & img$v <= ", v_split[[jj]][2], if(!round) ".00", ")")
       else if(destination == "getter")
-        v_string[jj] <- paste0("(v >= ", v_split[[jj]][1], " & v < ", v_split[[jj]][2], ")")
+        if(v_split[[jj]][2] != "100")
+          v_string[jj] <- paste0("(v >= ", v_split[[jj]][1], if(!round) ".00", " & v < ", v_split[[jj]][2], if(!round) ".99", ")")
+        else
+          v_string[jj] <- paste0("(v >= ", v_split[[jj]][1], if(!round) ".00", " & v <= ", v_split[[jj]][2], if(!round) ".00", ")")
       else if(destination == "python")
-        v_string[jj] <- paste0("(df['V'].ge(", v_split[[jj]][1], ") & df['V'].lt(", v_split[[jj]][2], "))")
+        if(v_split[[jj]][2] != "100")
+          v_string[jj] <- paste0("(df['V'].ge(", v_split[[jj]][1], if(!round) ".00", ") & df['V'].lt(", v_split[[jj]][2], if(!round) ".99", "))")
+        else
+          v_string[jj] <- paste0("(df['V'].ge(", v_split[[jj]][1], if(!round) ".00", ") & df['V'].le(", v_split[[jj]][2], if(!round) ".00", "))")
     }
     
     ##collapse strings with 'or' pipe
