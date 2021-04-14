@@ -11,17 +11,17 @@ parseMapping <- function(mapping, color_name) {
   v <- mapping$v
   
   ##check defined mapping lengths
-  h <- strsplit(h, ",")[[1]]
-  s <- strsplit(s, ",")[[1]]
-  v <- strsplit(v, ",")[[1]]
+  h <- strsplit(as.character(h), ",")[[1]]
+  s <- strsplit(as.character(s), ",")[[1]]
+  v <- strsplit(as.character(v), ",")[[1]]
   col_lens <- c(length(h), length(s), length(v))
   if(length(unique(col_lens)) != 1)
     stop("Error: specified color ranges are not of equal length. Please check definitions in color mapping file.")
   
   ##parse: split 'or' pipes
-  h <- strsplit(h, "\\|")
-  s <- strsplit(s, "\\|")
-  v <- strsplit(v, "\\|")
+  h <- strsplit(as.character(h), "\\|")
+  s <- strsplit(as.character(s), "\\|")
+  v <- strsplit(as.character(v), "\\|")
   
   ##format output
   output <- list(h, s, v)
