@@ -9,7 +9,6 @@ import os
 import sys
 from tkinter import Tk # from tkinter import Tk for Python 3.x
 from tkinter.filedialog import askopenfilename
-# from matplotlib import pyplot as plt
 
 Tk().withdraw() # we don't want a full GUI, so keep the root window from appearing
 filename = askopenfilename() # show an "Open" dialog box and return the path to the selected file
@@ -20,10 +19,7 @@ img_path = filename
 img = cv2.imread(img_path)
 print('Original Dimensions : ', img.shape)
 
-##scale images to 1000 pixels]
-
-# cv2.namedWindow('Charisma - Color Detection Diagnostics Tool', cv2.WINDOW_NORMAL)
-
+##scale images to 1000 pixels
 scale_factor = 1000 / img.shape[1]
 width = int(img.shape[1] * scale_factor)
 height = int(img.shape[0] * scale_factor)
@@ -37,74 +33,54 @@ r = g = b = xpos = ypos = 0
 
 
 def test_black(df):
-	return((((df['H'].ge(0) & df['H'].le(360))) & ((df['S'].ge(0) & df['S'].le(100))) & ((df['V'].ge(0) & df['V'].le(19)))))
+	return((((df['H'].ge(0) & df['H'].lt(360))) & ((df['S'].ge(0) & df['S'].lt(100))) & ((df['V'].ge(0) & df['V'].lt(19)))))
  
 
 def test_white(df):
-	return((((df['H'].ge(0) & df['H'].le(360))) & ((df['S'].ge(0) & df['S'].le(10))) & ((df['V'].ge(86) & df['V'].le(100)))))
+	return((((df['H'].ge(0) & df['H'].lt(360))) & ((df['S'].ge(0) & df['S'].lt(19))) & ((df['V'].ge(86) & df['V'].lt(100)))))
  
 
 def test_grey(df):
-	return((((df['H'].ge(0) & df['H'].le(360))) & ((df['S'].ge(0) & df['S'].le(35))) & ((df['V'].ge(20) & df['V'].le(30)))) | (((df['H'].ge(0) & df['H'].le(360))) & ((df['S'].ge(0) & df['S'].le(25))) & ((df['V'].ge(31) & df['V'].le(40)))) | (((df['H'].ge(0) & df['H'].le(360))) & ((df['S'].ge(0) & df['S'].le(19))) & ((df['V'].ge(41) & df['V'].le(60)))) | (((df['H'].ge(0) & df['H'].le(360))) & ((df['S'].ge(0) & df['S'].le(19))) & ((df['V'].ge(61) & df['V'].le(75)))) | (((df['H'].ge(0) & df['H'].le(360))) & ((df['S'].ge(0) & df['S'].le(15))) & ((df['V'].ge(76) & df['V'].le(85)))))
+	return((((df['H'].ge(0) & df['H'].lt(360))) & ((df['S'].ge(0) & df['S'].lt(35))) & ((df['V'].ge(20) & df['V'].lt(30)))) | (((df['H'].ge(0) & df['H'].lt(360))) & ((df['S'].ge(0) & df['S'].lt(25))) & ((df['V'].ge(31) & df['V'].lt(40)))) | (((df['H'].ge(0) & df['H'].lt(360))) & ((df['S'].ge(0) & df['S'].lt(19))) & ((df['V'].ge(41) & df['V'].lt(60)))) | (((df['H'].ge(0) & df['H'].lt(360))) & ((df['S'].ge(0) & df['S'].lt(19))) & ((df['V'].ge(61) & df['V'].lt(75)))) | (((df['H'].ge(0) & df['H'].lt(360))) & ((df['S'].ge(0) & df['S'].lt(15))) & ((df['V'].ge(76) & df['V'].lt(85)))))
  
 
 def test_brown(df):
-	return((((df['H'].ge(0) & df['H'].le(54)) | (df['H'].ge(300) & df['H'].le(360))) & ((df['S'].ge(36) & df['S'].le(100))) & ((df['V'].ge(20) & df['V'].le(30)))) | (((df['H'].ge(0) & df['H'].le(54)) | (df['H'].ge(300) & df['H'].le(360))) & ((df['S'].ge(26) & df['S'].le(100))) & ((df['V'].ge(31) & df['V'].le(40)))) | (((df['H'].ge(0) & df['H'].le(54)) | (df['H'].ge(300) & df['H'].le(360))) & ((df['S'].ge(20) & df['S'].le(100))) & ((df['V'].ge(41) & df['V'].le(60)))) | (((df['H'].ge(16) & df['H'].le(54))) & ((df['S'].ge(20) & df['S'].le(100))) & ((df['V'].ge(61) & df['V'].le(75)))))
+	return((((df['H'].ge(0) & df['H'].lt(54)) | (df['H'].ge(300) & df['H'].lt(360))) & ((df['S'].ge(36) & df['S'].lt(100))) & ((df['V'].ge(20) & df['V'].lt(30)))) | (((df['H'].ge(0) & df['H'].lt(54)) | (df['H'].ge(300) & df['H'].lt(360))) & ((df['S'].ge(26) & df['S'].lt(100))) & ((df['V'].ge(31) & df['V'].lt(40)))) | (((df['H'].ge(0) & df['H'].lt(54)) | (df['H'].ge(300) & df['H'].lt(360))) & ((df['S'].ge(20) & df['S'].lt(100))) & ((df['V'].ge(41) & df['V'].lt(60)))) | (((df['H'].ge(16) & df['H'].lt(54))) & ((df['S'].ge(20) & df['S'].lt(100))) & ((df['V'].ge(61) & df['V'].lt(75)))))
  
 
 def test_red(df):
-	return((((df['H'].ge(0) & df['H'].le(15)) | (df['H'].ge(300) & df['H'].le(360))) & ((df['S'].ge(20) & df['S'].le(100))) & ((df['V'].ge(61) & df['V'].le(75)))) | (((df['H'].ge(0) & df['H'].le(19)) | (df['H'].ge(300) & df['H'].le(360))) & ((df['S'].ge(16) & df['S'].le(100))) & ((df['V'].ge(76) & df['V'].le(85)))) | (((df['H'].ge(0) & df['H'].le(19)) | (df['H'].ge(300) & df['H'].le(360))) & ((df['S'].ge(11) & df['S'].le(100))) & ((df['V'].ge(86) & df['V'].le(100)))))
+	return((((df['H'].ge(0) & df['H'].lt(15)) | (df['H'].ge(300) & df['H'].lt(360))) & ((df['S'].ge(20) & df['S'].lt(100))) & ((df['V'].ge(61) & df['V'].lt(75)))) | (((df['H'].ge(0) & df['H'].lt(19)) | (df['H'].ge(300) & df['H'].lt(360))) & ((df['S'].ge(16) & df['S'].lt(100))) & ((df['V'].ge(76) & df['V'].lt(85)))) | (((df['H'].ge(0) & df['H'].lt(19)) | (df['H'].ge(300) & df['H'].lt(360))) & ((df['S'].ge(20) & df['S'].lt(100))) & ((df['V'].ge(86) & df['V'].lt(100)))))
  
 
 def test_orange(df):
-	return((((df['H'].ge(20) & df['H'].le(45))) & ((df['S'].ge(16) & df['S'].le(100))) & ((df['V'].ge(76) & df['V'].le(85)))) | (((df['H'].ge(20) & df['H'].le(40))) & ((df['S'].ge(11) & df['S'].le(100))) & ((df['V'].ge(86) & df['V'].le(100)))))
+	return((((df['H'].ge(20) & df['H'].lt(45))) & ((df['S'].ge(16) & df['S'].lt(100))) & ((df['V'].ge(76) & df['V'].lt(85)))) | (((df['H'].ge(20) & df['H'].lt(40))) & ((df['S'].ge(20) & df['S'].lt(100))) & ((df['V'].ge(86) & df['V'].lt(100)))))
  
 
 def test_yellow(df):
-	return((((df['H'].ge(46) & df['H'].le(61))) & ((df['S'].ge(16) & df['S'].le(100))) & ((df['V'].ge(76) & df['V'].le(85)))) | (((df['H'].ge(41) & df['H'].le(61))) & ((df['S'].ge(11) & df['S'].le(100))) & ((df['V'].ge(86) & df['V'].le(100)))))
+	return((((df['H'].ge(46) & df['H'].lt(61))) & ((df['S'].ge(16) & df['S'].lt(100))) & ((df['V'].ge(76) & df['V'].lt(85)))) | (((df['H'].ge(41) & df['H'].lt(61))) & ((df['S'].ge(20) & df['S'].lt(100))) & ((df['V'].ge(86) & df['V'].lt(100)))))
  
 
 def test_green(df):
-	return((((df['H'].ge(55) & df['H'].le(165))) & ((df['S'].ge(36) & df['S'].le(100))) & ((df['V'].ge(20) & df['V'].le(30)))) | (((df['H'].ge(55) & df['H'].le(165))) & ((df['S'].ge(26) & df['S'].le(100))) & ((df['V'].ge(31) & df['V'].le(40)))) | (((df['H'].ge(55) & df['H'].le(165))) & ((df['S'].ge(20) & df['S'].le(100))) & ((df['V'].ge(41) & df['V'].le(60)))) | (((df['H'].ge(55) & df['H'].le(165))) & ((df['S'].ge(20) & df['S'].le(100))) & ((df['V'].ge(61) & df['V'].le(75)))) | (((df['H'].ge(62) & df['H'].le(165))) & ((df['S'].ge(16) & df['S'].le(100))) & ((df['V'].ge(76) & df['V'].le(85)))) | (((df['H'].ge(62) & df['H'].le(165))) & ((df['S'].ge(11) & df['S'].le(100))) & ((df['V'].ge(86) & df['V'].le(100)))))
+	return((((df['H'].ge(55) & df['H'].lt(165))) & ((df['S'].ge(36) & df['S'].lt(100))) & ((df['V'].ge(20) & df['V'].lt(30)))) | (((df['H'].ge(55) & df['H'].lt(165))) & ((df['S'].ge(26) & df['S'].lt(100))) & ((df['V'].ge(31) & df['V'].lt(40)))) | (((df['H'].ge(55) & df['H'].lt(165))) & ((df['S'].ge(20) & df['S'].lt(100))) & ((df['V'].ge(41) & df['V'].lt(60)))) | (((df['H'].ge(55) & df['H'].lt(165))) & ((df['S'].ge(20) & df['S'].lt(100))) & ((df['V'].ge(61) & df['V'].lt(75)))) | (((df['H'].ge(62) & df['H'].lt(165))) & ((df['S'].ge(16) & df['S'].lt(100))) & ((df['V'].ge(76) & df['V'].lt(85)))) | (((df['H'].ge(62) & df['H'].lt(165))) & ((df['S'].ge(20) & df['S'].lt(100))) & ((df['V'].ge(86) & df['V'].lt(100)))))
  
 
 def test_blue(df):
-	return((((df['H'].ge(166) & df['H'].le(266))) & ((df['S'].ge(36) & df['S'].le(100))) & ((df['V'].ge(20) & df['V'].le(30)))) | (((df['H'].ge(166) & df['H'].le(266))) & ((df['S'].ge(26) & df['S'].le(100))) & ((df['V'].ge(31) & df['V'].le(40)))) | (((df['H'].ge(166) & df['H'].le(266))) & ((df['S'].ge(20) & df['S'].le(100))) & ((df['V'].ge(41) & df['V'].le(60)))) | (((df['H'].ge(166) & df['H'].le(266))) & ((df['S'].ge(20) & df['S'].le(100))) & ((df['V'].ge(61) & df['V'].le(75)))) | (((df['H'].ge(166) & df['H'].le(266))) & ((df['S'].ge(16) & df['S'].le(100))) & ((df['V'].ge(76) & df['V'].le(85)))) | (((df['H'].ge(166) & df['H'].le(266))) & ((df['S'].ge(11) & df['S'].le(100))) & ((df['V'].ge(86) & df['V'].le(100)))))
+	return((((df['H'].ge(166) & df['H'].lt(266))) & ((df['S'].ge(36) & df['S'].lt(100))) & ((df['V'].ge(20) & df['V'].lt(30)))) | (((df['H'].ge(166) & df['H'].lt(266))) & ((df['S'].ge(26) & df['S'].lt(100))) & ((df['V'].ge(31) & df['V'].lt(40)))) | (((df['H'].ge(166) & df['H'].lt(266))) & ((df['S'].ge(20) & df['S'].lt(100))) & ((df['V'].ge(41) & df['V'].lt(60)))) | (((df['H'].ge(166) & df['H'].lt(266))) & ((df['S'].ge(20) & df['S'].lt(100))) & ((df['V'].ge(61) & df['V'].lt(75)))) | (((df['H'].ge(166) & df['H'].lt(266))) & ((df['S'].ge(16) & df['S'].lt(100))) & ((df['V'].ge(76) & df['V'].lt(85)))) | (((df['H'].ge(166) & df['H'].lt(266))) & ((df['S'].ge(20) & df['S'].lt(100))) & ((df['V'].ge(86) & df['V'].lt(100)))))
  
 
 def test_purple(df):
-	return((((df['H'].ge(267) & df['H'].le(299))) & ((df['S'].ge(36) & df['S'].le(100))) & ((df['V'].ge(20) & df['V'].le(30)))) | (((df['H'].ge(267) & df['H'].le(299))) & ((df['S'].ge(26) & df['S'].le(100))) & ((df['V'].ge(31) & df['V'].le(40)))) | (((df['H'].ge(267) & df['H'].le(299))) & ((df['S'].ge(20) & df['S'].le(100))) & ((df['V'].ge(41) & df['V'].le(60)))) | (((df['H'].ge(267) & df['H'].le(299))) & ((df['S'].ge(20) & df['S'].le(100))) & ((df['V'].ge(61) & df['V'].le(75)))) | (((df['H'].ge(267) & df['H'].le(299))) & ((df['S'].ge(16) & df['S'].le(100))) & ((df['V'].ge(76) & df['V'].le(85)))) | (((df['H'].ge(267) & df['H'].le(299))) & ((df['S'].ge(11) & df['S'].le(100))) & ((df['V'].ge(86) & df['V'].le(100)))))
+	return((((df['H'].ge(267) & df['H'].lt(299))) & ((df['S'].ge(36) & df['S'].lt(100))) & ((df['V'].ge(20) & df['V'].lt(30)))) | (((df['H'].ge(267) & df['H'].lt(299))) & ((df['S'].ge(26) & df['S'].lt(100))) & ((df['V'].ge(31) & df['V'].lt(40)))) | (((df['H'].ge(267) & df['H'].lt(299))) & ((df['S'].ge(20) & df['S'].lt(100))) & ((df['V'].ge(41) & df['V'].lt(60)))) | (((df['H'].ge(267) & df['H'].lt(299))) & ((df['S'].ge(20) & df['S'].lt(100))) & ((df['V'].ge(61) & df['V'].lt(75)))) | (((df['H'].ge(267) & df['H'].lt(299))) & ((df['S'].ge(16) & df['S'].lt(100))) & ((df['V'].ge(76) & df['V'].lt(85)))) | (((df['H'].ge(267) & df['H'].lt(299))) & ((df['S'].ge(20) & df['S'].lt(100))) & ((df['V'].ge(86) & df['V'].lt(100)))))
 
 ##identify color
 def colorID(h,s,v):
 	color = None
-	d = {'H': [h], 'S': [s], 'V': [v]}
+	d = {'H': [round(h, 2)], 'S': [round(s, 2)], 'V': [round(v, 2)]}
 	df = pd.DataFrame(data=d)
 	choices = ['black', 'white', 'grey', 'brown', 'red', 'orange', 'yellow', 'green', 'blue', 'purple']
 	conditions = [test_black(df), test_white(df), test_grey(df), test_brown(df), test_red(df), test_orange(df), test_yellow(df), test_green(df), test_blue(df), test_purple(df)]
 	color = np.select(conditions, choices, default=None)
 	print('the color is {}'.format(color[0]))
-	return(color, conditions)
-
-# def rgb_to_hsv_2(r,g,b):
-#     r, g, b = r/255.0, g/255.0, b/255.0
-#     mx = max(r, g, b)
-#     mn = min(r, g, b)
-#     df = mx-mn
-#     if mx == mn:
-#         h = 0
-#     elif mx == r:
-#         h = (60 * ((g-b)/df) + 360) % 360
-#     elif mx == g:
-#         h = (60 * ((b-r)/df) + 120) % 360
-#     elif mx == b:
-#         h = (60 * ((r-g)/df) + 240) % 360
-#     if mx == 0:
-#         s = 0
-#     else:
-#         s = (df/mx)*100
-#     v = mx*100
-#     return round(h, 2), round(s, 2), round(v, 2)
+	return(color)
 
 def rgb_to_hsv_2(r,g,b):
     r, g, b = r/255.0, g/255.0, b/255.0
@@ -124,14 +100,7 @@ def rgb_to_hsv_2(r,g,b):
     else:
         s = (df/mx)*100
     v = mx*100
-    return round(h), round(s), round(v)
-
-# def rgb_to_hsv_2(r,g,b):
-#     r, g, b = r/255.0, g/255.0, b/255.0
-#     h = round(r * 360)
-#     s = round(g * 100)
-#     v = round(b * 100)
-#     return(h,s,v)
+    return h, s, v
 
 ##function to get x,y coordinates of mouse double click
 def draw_function(event, x,y,flags,param):
@@ -145,16 +114,12 @@ def draw_function(event, x,y,flags,param):
         g = int(g)
         r = int(r)
 cv2.namedWindow('Charisma - Color Detection Diagnostics Tool')
-
 cv2.setMouseCallback('Charisma - Color Detection Diagnostics Tool',draw_function)
 
 ##main window activity
 while(1):
 
     cv2.imshow("Charisma - Color Detection Diagnostics Tool",img)
-    # plt.imshow(img, cmap = 'gray', interpolation = 'bicubic')
-    # plt.xticks([]), plt.yticks([])  # to hide tick values on X and Y axis
-    # plt.show()
     if (clicked):
    
         #cv2.rectangle(image, startpoint, endpoint, color, thickness)-1 fills entire rectangle 
@@ -162,8 +127,7 @@ while(1):
 
         h,s,v = rgb_to_hsv_2(r,g,b)
 
-        hsvcolor, conditions = colorID(h,s,v)
-        print(conditions)
+        hsvcolor = colorID(h,s,v)
         
         #Creating text string to display( Color name and RGB values )
         if(hsvcolor != None):
