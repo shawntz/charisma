@@ -29,7 +29,7 @@ buildColorDetectorTool <- function(mapping) {
   cat(paste0("\n\n", "##identify color", "\n",
              "def colorID(h,s,v):\n",
              "\t", "color = None", "\n",
-             "\t", "d = {'H': [round(h, 2)], 'S': [round(s, 2)], 'V': [round(v, 2)]}", "\n",
+             "\t", "d = {'H': [h], 'S': [s], 'V': [v]}", "\n",
              "\t", "df = pd.DataFrame(data=d)", "\n",
              "\t", color_choices_text, "\n",
              "\t", conditions_array_text, "\n",
