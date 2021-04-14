@@ -14,9 +14,9 @@ parseConditional <- function(parsed_mapping, destination = c("pipeline", "getter
     num_ors_s <- length(parsed_mapping$s[[ii]]) - 1
     num_ors_v <- length(parsed_mapping$v[[ii]]) - 1
     
-    h_split <- strsplit(parsed_mapping$h[[ii]], "::")
-    s_split <- strsplit(parsed_mapping$s[[ii]], "::")
-    v_split <- strsplit(parsed_mapping$v[[ii]], "::")
+    h_split <- strsplit(as.character(parsed_mapping$h[[ii]]), "::")
+    s_split <- strsplit(as.character(parsed_mapping$s[[ii]]), "::")
+    v_split <- strsplit(as.character(parsed_mapping$v[[ii]]), "::")
     
     h_string <- rep(NA, num_ors_h + 1)
     s_string <- rep(NA, num_ors_s + 1)
