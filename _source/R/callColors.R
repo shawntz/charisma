@@ -5,16 +5,14 @@ callColors <- function(img, mapping, scale = T) {
   
   img <- as.data.frame(img)
   if(scale) {
-    img$h <- img$h * 360.00
-    img$s <- img$s * 100.00
-    img$v <- img$v * 100.00
+    img$h <- round(img$h * 360)
+    img$s <- round(img$s * 100)
+    img$v <- round(img$v * 100)
   } else {
-    img$h <- img$h
-    img$s <- img$s
-    img$v <- img$v
+    img$h <- round(img$h)
+    img$s <- round(img$s)
+    img$v <- round(img$v)
   }
-  
-  print(img)
   
   ##get T/F calls for each color
   calls <- list()
@@ -26,7 +24,6 @@ callColors <- function(img, mapping, scale = T) {
   }
   
   names(calls) <- colors
-  return(calls)
   
   ##rearrange color called data into columns with original pixels
   pixel_calls <- data.frame(do.call(cbind, calls))

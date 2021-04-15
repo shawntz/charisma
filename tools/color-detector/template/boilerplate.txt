@@ -50,7 +50,7 @@ def rgb_to_hsv_2(r,g,b):
     else:
         s = (df/mx)*100
     v = mx*100
-    return h, s, v
+    return round(h), round(s), round(v)
 
 ##function to get x,y coordinates of mouse double click
 def draw_function(event, x,y,flags,param):
@@ -81,9 +81,9 @@ while(1):
         
         #Creating text string to display( Color name and RGB values )
         if(hsvcolor != None):
-            text = "{} H={:.2f} S={:.2f} V={:.2f} ({},{})".format(hsvcolor[0].capitalize(), h, s, v, xpos, ypos)
+            text = "{} H={:.0f} S={:.0f} V={:.0f} ({},{})".format(hsvcolor[0].capitalize(), h, s, v, xpos, ypos)
         else:
-            text = "{} H={:.2f} S={:.2f} V={:.2f} ({},{})".format("ERROR: NO COLOR FOUND", h, s, v, xpos, ypos)
+            text = "{} H={:.0f} S={:.0f} V={:.0f} ({},{})".format("ERROR: NO COLOR FOUND", h, s, v, xpos, ypos)
         cv2.putText(img, text,(50,50),2,0.8,(255,255,255),2,cv2.LINE_AA)
 
         #for very light colours we will display text in black colour
