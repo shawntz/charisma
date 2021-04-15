@@ -9,12 +9,25 @@ import os
 import sys
 from tkinter import Tk # from tkinter import Tk for Python 3.x
 from tkinter.filedialog import askopenfilename
+from pdf2image import convert_from_path ##from Shawn: you'll need to install poppler with home-brew or from poppler's website (`brew install poppler`)
 
-Tk().withdraw() # we don't want a full GUI, so keep the root window from appearing
+##force window to be at the top of all other windows upon loading
+root = Tk()
+root.lift()
+root.wm_attributes('-topmost', 1)  
+root.withdraw() # we don't want a full GUI, so keep the root window from appearing
 filename = askopenfilename() # show an "Open" dialog box and return the path to the selected file
 print("opening {}".format(filename))
 
 img_path = filename
+
+##check format of filename and convert if PDF
+pdf_status = False
+if img_path.endswith(".pdf"):
+    pdf_status = True
+    images_converted = convert_from_path(img_path)
+    images_converted[0].save(filename + '.jpg', 'JPEG')
+    img_path = filename + '.jpg'
 
 img = cv2.imread(img_path)
 print('Original Dimensions : ', img.shape)
@@ -26,6 +39,9 @@ height = int(img.shape[0] * scale_factor)
 dim = (width, height)
 img = cv2.resize(img, dim, interpolation = cv2.INTER_AREA)
 print('Rescaled Dimensions : ', img.shape)
+
+##user instructions
+print("PRESS 'q' TO QUIT WHILE IN THE WINDOW!")
 
 clicked = False
 r = g = b = xpos = ypos = 0
@@ -92,7 +108,11 @@ while(1):
             
         clicked=False
 
-    if cv2.waitKey(20) & 0xFF ==27:
+    if cv2.waitKey(1) & 0xFF == ord('q'):
         break
+
+## delete temp jpg file (from pdf if exists)
+if pdf_status == True and os.path.exists(img_path):
+    os.remove(img_path)
     
 cv2.destroyAllWindows()
