@@ -10,14 +10,18 @@ getColor <- function(color_triplet, parsed_conditional, scale = T, color_space =
   
   ##rescale hsv color triplet to match scales used in parsed color mapping
   if(scale) {
-    h <- round(color_triplet[1] * 360)
-    s <- round(color_triplet[2] * 100)
-    v <- round(color_triplet[3] * 100)
+    h <- color_triplet[1] * 360.00
+    s <- color_triplet[2] * 100.00
+    v <- color_triplet[3] * 100.00
   } else {
-    h <- round(color_triplet[1])
-    s <- round(color_triplet[2])
-    v <- round(color_triplet[3])
+    h <- color_triplet[1]
+    s <- color_triplet[2]
+    v <- color_triplet[3]
   }
+  print(h)
+  print(s)
+  print(v)
+  print(parsed_conditional)
   
   if(eval(parse(text = parsed_conditional))) {
     is_color <- TRUE
