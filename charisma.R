@@ -16,14 +16,18 @@ ifelse(!dir.exists(file.path(getwd(), output)), dir.create(file.path(getwd(), ou
 
 ## Get Images
 input_path <- "demo/"
-img_dir <- "birds_two"
+img_dir <- "wbbirds"
 imgs <- getImgPaths(paste0(input_path, img_dir))
 
 ## Create Another Output Directory for img_dir path
 ifelse(!dir.exists(file.path(output, img_dir)), dir.create(file.path(output, img_dir)), FALSE)
 
+## Begin Timer
+ptm <- proc.time()
 ## Call Colors
 calls <- callColorsPipeline(imgs, mapping)
+## End Timer
+proc.time() - ptm
 
 ## Save Classifications
 saveRDS(calls, paste0(output, "/", img_dir, "/", img_dir, ".RDS"))
