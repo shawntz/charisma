@@ -8,7 +8,7 @@
 rm(list = ls())
 
 ## Initialize Main
-validate <- TRUE
+validate <- FALSE
 source("compile.R")
 
 ## Create Output Directory If It Doesn't Exist
@@ -16,7 +16,7 @@ ifelse(!dir.exists(file.path(getwd(), output)), dir.create(file.path(getwd(), ou
 
 ## Get Images
 input_path <- "demo/"
-img_dir <- "wbbirds"
+img_dir <- "birds"
 imgs <- getImgPaths(paste0(input_path, img_dir))
 
 ## Create Another Output Directory for img_dir path
@@ -40,13 +40,6 @@ write.csv(calls_summary, paste0(output, "/", img_dir, "/", img_dir, "_summary.cs
 ##PDF Version
 for(ii in 1:length(imgs)) {
   pdf(paste0(output, "/", img_dir, "/", "Charisma_Diagnostic_Output_", basename(imgs[ii]), ".pdf"), width = 10, height = 5)
-    buildPlots(calls[[ii]], mapping, threshold)
-  dev.off()
-}
-
-##JPEG Version
-for(ii in 1:length(imgs)) {
-  jpeg(paste0(output, "/", img_dir, "/", "Charisma_Diagnostic_Output_", basename(imgs[ii]), ".jpeg"), width = 1000, height = 500, res = 150)
     buildPlots(calls[[ii]], mapping, threshold)
   dev.off()
 }
