@@ -38,5 +38,6 @@ if(validate) {
 }
 
 #### Set Constants ####
-threshold <- .05
+freq_threshold <- .05
+spatial_threshold <- .02
 output <- "_output"

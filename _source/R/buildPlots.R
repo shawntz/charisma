@@ -1,7 +1,7 @@
-buildPlots <- function(img, mapping, threshold = .05) {
+buildPlots <- function(img, mapping, freq_threshold = .05, spatial_threshold = .01) {
   
   ##make 1 row, 3 column plotting space
-  par(mfrow=c(1,3))
+  par(mfrow=c(1,4))
   
   ##panel 1: source image
   plotImage(img)
@@ -11,6 +11,10 @@ buildPlots <- function(img, mapping, threshold = .05) {
   
   ##panel 3: color frequency histogram
   color_means <- getColorMeans(img, mapping)
-  plotColors(color_means, mapping, threshold)
+  plotColors(color_means, mapping, type = "freq", freq_threshold)
+  
+  ##panel 4: color spatial density histogram
+  color_densities <- getSpatialDensityScores(img, mapping)
+  plotColors(color_densities, mapping, type = "spatial", spatial_threshold)
   
 }

@@ -33,13 +33,13 @@ proc.time() - ptm
 saveRDS(calls, paste0(output, "/", img_dir, "/", img_dir, ".RDS"))
 
 ## Summarize Calls and Save
-calls_summary <- summarizeCalledColorsPipeline(calls, mapping, threshold)
+calls_summary <- summarizeCalledColorsPipeline(calls, mapping, freq_threshold)
 write.csv(calls_summary, paste0(output, "/", img_dir, "/", img_dir, "_summary.csv"))
 
 ## Build and Save Diagnostic Plots for Each Call
 ##PDF Version
 for(ii in 1:length(imgs)) {
   pdf(paste0(output, "/", img_dir, "/", "Charisma_Diagnostic_Output_", basename(imgs[ii]), ".pdf"), width = 10, height = 5)
-    buildPlots(calls[[ii]], mapping, threshold)
+    buildPlots(calls[[ii]], mapping, freq_threshold, spatial_threshold)
   dev.off()
 }
