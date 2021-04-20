@@ -8,7 +8,7 @@
 rm(list = ls())
 
 ## Initialize Main
-validate <- FALSE
+validate <- TRUE
 source("compile.R")
 
 ## Create Output Directory If It Doesn't Exist

@@ -33,7 +33,7 @@ for(f in list.files("_source/R", pattern = "*.R"))
 #### Load Mapping Into Memory and Validate ####
 mapping <- readMapping("_source/data/mapping.csv")
 if(validate) {
-  cat("\n    Validating Charisma color boundaries...")
+  cat("\n    Validating color boundaries...")
   validation <- validateMapping(mapping)
 }
 

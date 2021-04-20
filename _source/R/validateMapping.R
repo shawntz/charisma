@@ -1,28 +1,46 @@
 validateMapping <- function(mapping) {
   
-  ##build validation slices
-  invisible(capture.output(buildValidationSlices()))
+  ##get all color names from mapping
+  colors <- getMappedColors(mapping)
   
-  ##get validation slices
-  dest <- "_source/data/validation_slices"
-  slices <- getImgPaths(dest)
-  slices <- gtools::mixedsort(sort(slices))
+  ##create empty list to hold color calls in
+  calls <- list()
   
-  ##validate along each slice
-  missing <- list()
-  total_n_missing <- 0
-  for(ii in 1:length(slices)) {
-    slice <- readImg(slices[ii], alpha = F)
-    calls <- callColors(slice, mapping)
-    
-    n_missing <- nrow(slice) - sum(calls$total)
-    total_n_missing <- total_n_missing + n_missing
-    missing[[ii]] <- calls[calls$total == 0,]
+  ##generate entire HSV color space
+  h <- rep(0:360)
+  s <- rep(0:100)
+  v <- rep(0:100)
+  img <- expand.grid(h,s,v)
+  colnames(img) <- c("h", "s", "v")
+  
+  for(color in 1:length(colors)) {
+    parsed_mapping <- parseMapping(mapping, colors[color])
+    parsed_conditional <- parseConditional(parsed_mapping)
+    calls[[color]] <- ifelse(eval(parse(text = parsed_conditional)), 1, 0)
   }
   
-  if(total_n_missing > 0) {
-    cat(paste0("\n    Missing color calls for ", total_n_missing, " pixels ==> Mapping validation failed.\nSee output for missing pixels.\n"))
-    return(missing)
+  names(calls) <- colors
+  
+  ##convert list of color calls to dataframe
+  calls <- data.frame(matrix(unlist(calls), ncol = length(calls), byrow = F))
+  colnames(calls) <- colors
+  
+  ##sum counts per pixel and add column
+  h <- img$h
+  s <- img$s
+  v <- img$v
+  calls <- calls %>%
+    mutate(total = rowSums(.)) %>%
+    add_column(h, .before = as.character(colors[1])) %>%
+    add_column(s, .after = "h") %>%
+    add_column(v, .after = "s")
+  
+  ##extract missing or duplicate pixels in HSV space
+  invalid <- calls[calls$total != 1,]
+  
+  if(nrow(invalid) > 0) {
+    cat(paste0("\n    Missing color calls for ", nrow(invalid), " pixels ==> Mapping validation failed.\nSee output for missing pixels.\n"))
+    return(invalid)
   } else {
     cat("\n    No missing color calls. Mapping successfully validated!\n\n")
     return(TRUE)
