@@ -18,10 +18,6 @@ getColor <- function(color_triplet, parsed_conditional, scale = T, color_space =
     s <- color_triplet[2]
     v <- color_triplet[3]
   }
-  print(h)
-  print(s)
-  print(v)
-  print(parsed_conditional)
   
   if(eval(parse(text = parsed_conditional))) {
     is_color <- TRUE
