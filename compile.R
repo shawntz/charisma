@@ -34,7 +34,7 @@ for(f in list.files("_source/R", pattern = "*.R"))
 mapping <- readMapping("_source/data/mapping.csv")
 if(validate) {
   cat("\n    Validating color boundaries...")
-  validation <- validateMapping(mapping)
+  missingColorCalls <- validateMapping(mapping)
 }
 
 #### Set Constants ####

@@ -39,11 +39,11 @@ validateMapping <- function(mapping) {
   invalid <- calls[calls$total != 1,]
   
   if(nrow(invalid) > 0) {
-    cat(paste0("\n    Missing color calls for ", nrow(invalid), " pixels ==> Mapping validation failed.\nSee output for missing pixels.\n"))
+    cat(paste0("\n    Missing color calls for ", nrow(invalid), " pixels ==> Mapping validation failed.\nSee output `missingColorCalls` for missing pixels.\n"))
     return(invalid)
   } else {
     cat("\n    No missing color calls. Mapping successfully validated!\n\n")
-    return(TRUE)
+    return("NONE")
   }
   
 }
