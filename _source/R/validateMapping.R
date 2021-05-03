@@ -1,4 +1,4 @@
-validateMapping <- function(mapping) {
+validateMapping <- function(mapping, simple = T) {
   
   ##get all color names from mapping
   colors <- getMappedColors(mapping)
@@ -7,11 +7,20 @@ validateMapping <- function(mapping) {
   calls <- list()
   
   ##generate entire HSV color space
-  h <- rep(0:360)
-  s <- rep(0:100)
-  v <- rep(0:100)
+  if(simple) {
+    h <- rep(0:360)
+    s <- rep(0:100)
+    v <- rep(0:100)
+  } else if(!simple) {
+    h <- seq(0, 360, length.out = (361*2))
+    s <- seq(0, 100, length.out = (101*2))
+    v <- s
+  }
+  
   img <- expand.grid(h,s,v)
   colnames(img) <- c("h", "s", "v")
+  
+  cat(paste0("Running Color Validation along ", nrow(img), " colors in HSV space. Please wait...\n\n"))
   
   for(color in 1:length(colors)) {
     parsed_mapping <- parseMapping(mapping, colors[color])
@@ -42,7 +51,7 @@ validateMapping <- function(mapping) {
     cat(paste0("\n    Missing color calls for ", nrow(invalid), " pixels ==> Mapping validation failed.\nSee output `missingColorCalls` for missing pixels.\n"))
     return(invalid)
   } else {
-    cat("\n    No missing color calls. Mapping successfully validated!\n\n")
+    cat("\n    No missing color calls. Color Mapping successfully validated!\n\n")
     return("NONE")
   }
   
