@@ -49,43 +49,43 @@ r = g = b = xpos = ypos = 0
 
 
 def test_black(df):
-	return((((df['H'].ge(0) & df['H'].le(360))) & ((df['S'].ge(0) & df['S'].le(100))) & ((df['V'].ge(0) & df['V'].le(30)))))
+	return((((df['H'].ge(0.0000) & df['H'].lt(360.9999))) & ((df['S'].ge(0.0000) & df['S'].lt(100.9999))) & ((df['V'].ge(0.0000) & df['V'].lt(30.9999)))))
  
 
 def test_white(df):
-	return((((df['H'].ge(0) & df['H'].le(360))) & ((df['S'].ge(0) & df['S'].le(19))) & ((df['V'].ge(86) & df['V'].le(100)))))
+	return((((df['H'].ge(0.0000) & df['H'].lt(360.9999))) & ((df['S'].ge(0.0000) & df['S'].lt(19.9999))) & ((df['V'].ge(86.0000) & df['V'].lt(100.9999)))))
  
 
 def test_grey(df):
-	return((((df['H'].ge(0) & df['H'].le(360))) & ((df['S'].ge(0) & df['S'].le(25))) & ((df['V'].ge(31) & df['V'].le(40)))) | (((df['H'].ge(0) & df['H'].le(360))) & ((df['S'].ge(0) & df['S'].le(19))) & ((df['V'].ge(41) & df['V'].le(60)))) | (((df['H'].ge(0) & df['H'].le(360))) & ((df['S'].ge(0) & df['S'].le(19))) & ((df['V'].ge(61) & df['V'].le(75)))) | (((df['H'].ge(0) & df['H'].le(360))) & ((df['S'].ge(0) & df['S'].le(15))) & ((df['V'].ge(76) & df['V'].le(85)))))
+	return((((df['H'].ge(0.0000) & df['H'].lt(360.9999))) & ((df['S'].ge(0.0000) & df['S'].lt(25.9999))) & ((df['V'].ge(31.0000) & df['V'].lt(40.9999)))) | (((df['H'].ge(0.0000) & df['H'].lt(360.9999))) & ((df['S'].ge(0.0000) & df['S'].lt(19.9999))) & ((df['V'].ge(41.0000) & df['V'].lt(60.9999)))) | (((df['H'].ge(0.0000) & df['H'].lt(360.9999))) & ((df['S'].ge(0.0000) & df['S'].lt(19.9999))) & ((df['V'].ge(61.0000) & df['V'].lt(75.9999)))) | (((df['H'].ge(0.0000) & df['H'].lt(360.9999))) & ((df['S'].ge(0.0000) & df['S'].lt(15.9999))) & ((df['V'].ge(76.0000) & df['V'].lt(85.9999)))))
  
 
 def test_brown(df):
-	return((((df['H'].ge(0) & df['H'].le(54)) | (df['H'].ge(300) & df['H'].le(360))) & ((df['S'].ge(26) & df['S'].le(100))) & ((df['V'].ge(31) & df['V'].le(40)))) | (((df['H'].ge(0) & df['H'].le(54)) | (df['H'].ge(300) & df['H'].le(360))) & ((df['S'].ge(20) & df['S'].le(100))) & ((df['V'].ge(41) & df['V'].le(60)))) | (((df['H'].ge(16) & df['H'].le(54))) & ((df['S'].ge(20) & df['S'].le(100))) & ((df['V'].ge(61) & df['V'].le(75)))))
+	return((((df['H'].ge(0.0000) & df['H'].lt(54.9999)) | (df['H'].ge(300.0000) & df['H'].lt(360.9999))) & ((df['S'].ge(26.0000) & df['S'].lt(100.9999))) & ((df['V'].ge(31.0000) & df['V'].lt(40.9999)))) | (((df['H'].ge(0.0000) & df['H'].lt(54.9999)) | (df['H'].ge(300.0000) & df['H'].lt(360.9999))) & ((df['S'].ge(20.0000) & df['S'].lt(100.9999))) & ((df['V'].ge(41.0000) & df['V'].lt(60.9999)))) | (((df['H'].ge(16.0000) & df['H'].lt(54.9999))) & ((df['S'].ge(20.0000) & df['S'].lt(100.9999))) & ((df['V'].ge(61.0000) & df['V'].lt(75.9999)))))
  
 
 def test_red(df):
-	return((((df['H'].ge(0) & df['H'].le(15)) | (df['H'].ge(300) & df['H'].le(360))) & ((df['S'].ge(20) & df['S'].le(100))) & ((df['V'].ge(61) & df['V'].le(75)))) | (((df['H'].ge(0) & df['H'].le(19)) | (df['H'].ge(300) & df['H'].le(360))) & ((df['S'].ge(16) & df['S'].le(100))) & ((df['V'].ge(76) & df['V'].le(85)))) | (((df['H'].ge(0) & df['H'].le(19)) | (df['H'].ge(300) & df['H'].le(360))) & ((df['S'].ge(20) & df['S'].le(100))) & ((df['V'].ge(86) & df['V'].le(100)))))
+	return((((df['H'].ge(0.0000) & df['H'].lt(15.9999)) | (df['H'].ge(300.0000) & df['H'].lt(360.9999))) & ((df['S'].ge(20.0000) & df['S'].lt(100.9999))) & ((df['V'].ge(61.0000) & df['V'].lt(75.9999)))) | (((df['H'].ge(0.0000) & df['H'].lt(19.9999)) | (df['H'].ge(300.0000) & df['H'].lt(360.9999))) & ((df['S'].ge(16.0000) & df['S'].lt(100.9999))) & ((df['V'].ge(76.0000) & df['V'].lt(85.9999)))) | (((df['H'].ge(0.0000) & df['H'].lt(19.9999)) | (df['H'].ge(300.0000) & df['H'].lt(360.9999))) & ((df['S'].ge(20.0000) & df['S'].lt(100.9999))) & ((df['V'].ge(86.0000) & df['V'].lt(100.9999)))))
  
 
 def test_orange(df):
-	return((((df['H'].ge(20) & df['H'].le(45))) & ((df['S'].ge(16) & df['S'].le(100))) & ((df['V'].ge(76) & df['V'].le(85)))) | (((df['H'].ge(20) & df['H'].le(35))) & ((df['S'].ge(20) & df['S'].le(100))) & ((df['V'].ge(86) & df['V'].le(100)))))
+	return((((df['H'].ge(20.0000) & df['H'].lt(45.9999))) & ((df['S'].ge(16.0000) & df['S'].lt(100.9999))) & ((df['V'].ge(76.0000) & df['V'].lt(85.9999)))) | (((df['H'].ge(20.0000) & df['H'].lt(35.9999))) & ((df['S'].ge(20.0000) & df['S'].lt(100.9999))) & ((df['V'].ge(86.0000) & df['V'].lt(100.9999)))))
  
 
 def test_yellow(df):
-	return((((df['H'].ge(46) & df['H'].le(61))) & ((df['S'].ge(16) & df['S'].le(100))) & ((df['V'].ge(76) & df['V'].le(85)))) | (((df['H'].ge(36) & df['H'].le(61))) & ((df['S'].ge(20) & df['S'].le(100))) & ((df['V'].ge(86) & df['V'].le(100)))))
+	return((((df['H'].ge(46.0000) & df['H'].lt(61.9999))) & ((df['S'].ge(16.0000) & df['S'].lt(100.9999))) & ((df['V'].ge(76.0000) & df['V'].lt(85.9999)))) | (((df['H'].ge(36.0000) & df['H'].lt(61.9999))) & ((df['S'].ge(20.0000) & df['S'].lt(100.9999))) & ((df['V'].ge(86.0000) & df['V'].lt(100.9999)))))
  
 
 def test_green(df):
-	return((((df['H'].ge(55) & df['H'].le(165))) & ((df['S'].ge(26) & df['S'].le(100))) & ((df['V'].ge(31) & df['V'].le(40)))) | (((df['H'].ge(55) & df['H'].le(165))) & ((df['S'].ge(20) & df['S'].le(100))) & ((df['V'].ge(41) & df['V'].le(60)))) | (((df['H'].ge(55) & df['H'].le(165))) & ((df['S'].ge(20) & df['S'].le(100))) & ((df['V'].ge(61) & df['V'].le(75)))) | (((df['H'].ge(62) & df['H'].le(165))) & ((df['S'].ge(16) & df['S'].le(100))) & ((df['V'].ge(76) & df['V'].le(85)))) | (((df['H'].ge(62) & df['H'].le(165))) & ((df['S'].ge(20) & df['S'].le(100))) & ((df['V'].ge(86) & df['V'].le(100)))))
+	return((((df['H'].ge(55.0000) & df['H'].lt(165.9999))) & ((df['S'].ge(26.0000) & df['S'].lt(100.9999))) & ((df['V'].ge(31.0000) & df['V'].lt(40.9999)))) | (((df['H'].ge(55.0000) & df['H'].lt(165.9999))) & ((df['S'].ge(20.0000) & df['S'].lt(100.9999))) & ((df['V'].ge(41.0000) & df['V'].lt(60.9999)))) | (((df['H'].ge(55.0000) & df['H'].lt(165.9999))) & ((df['S'].ge(20.0000) & df['S'].lt(100.9999))) & ((df['V'].ge(61.0000) & df['V'].lt(75.9999)))) | (((df['H'].ge(62.0000) & df['H'].lt(165.9999))) & ((df['S'].ge(16.0000) & df['S'].lt(100.9999))) & ((df['V'].ge(76.0000) & df['V'].lt(85.9999)))) | (((df['H'].ge(62.0000) & df['H'].lt(165.9999))) & ((df['S'].ge(20.0000) & df['S'].lt(100.9999))) & ((df['V'].ge(86.0000) & df['V'].lt(100.9999)))))
  
 
 def test_blue(df):
-	return((((df['H'].ge(166) & df['H'].le(266))) & ((df['S'].ge(26) & df['S'].le(100))) & ((df['V'].ge(31) & df['V'].le(40)))) | (((df['H'].ge(166) & df['H'].le(266))) & ((df['S'].ge(20) & df['S'].le(100))) & ((df['V'].ge(41) & df['V'].le(60)))) | (((df['H'].ge(166) & df['H'].le(266))) & ((df['S'].ge(20) & df['S'].le(100))) & ((df['V'].ge(61) & df['V'].le(75)))) | (((df['H'].ge(166) & df['H'].le(266))) & ((df['S'].ge(16) & df['S'].le(100))) & ((df['V'].ge(76) & df['V'].le(85)))) | (((df['H'].ge(166) & df['H'].le(266))) & ((df['S'].ge(20) & df['S'].le(100))) & ((df['V'].ge(86) & df['V'].le(100)))))
+	return((((df['H'].ge(166.0000) & df['H'].lt(266.9999))) & ((df['S'].ge(26.0000) & df['S'].lt(100.9999))) & ((df['V'].ge(31.0000) & df['V'].lt(40.9999)))) | (((df['H'].ge(166.0000) & df['H'].lt(266.9999))) & ((df['S'].ge(20.0000) & df['S'].lt(100.9999))) & ((df['V'].ge(41.0000) & df['V'].lt(60.9999)))) | (((df['H'].ge(166.0000) & df['H'].lt(266.9999))) & ((df['S'].ge(20.0000) & df['S'].lt(100.9999))) & ((df['V'].ge(61.0000) & df['V'].lt(75.9999)))) | (((df['H'].ge(166.0000) & df['H'].lt(266.9999))) & ((df['S'].ge(16.0000) & df['S'].lt(100.9999))) & ((df['V'].ge(76.0000) & df['V'].lt(85.9999)))) | (((df['H'].ge(166.0000) & df['H'].lt(266.9999))) & ((df['S'].ge(20.0000) & df['S'].lt(100.9999))) & ((df['V'].ge(86.0000) & df['V'].lt(100.9999)))))
  
 
 def test_purple(df):
-	return((((df['H'].ge(267) & df['H'].le(299))) & ((df['S'].ge(26) & df['S'].le(100))) & ((df['V'].ge(31) & df['V'].le(40)))) | (((df['H'].ge(267) & df['H'].le(299))) & ((df['S'].ge(20) & df['S'].le(100))) & ((df['V'].ge(41) & df['V'].le(60)))) | (((df['H'].ge(267) & df['H'].le(299))) & ((df['S'].ge(20) & df['S'].le(100))) & ((df['V'].ge(61) & df['V'].le(75)))) | (((df['H'].ge(267) & df['H'].le(299))) & ((df['S'].ge(16) & df['S'].le(100))) & ((df['V'].ge(76) & df['V'].le(85)))) | (((df['H'].ge(267) & df['H'].le(299))) & ((df['S'].ge(20) & df['S'].le(100))) & ((df['V'].ge(86) & df['V'].le(100)))))
+	return((((df['H'].ge(267.0000) & df['H'].lt(299.9999))) & ((df['S'].ge(26.0000) & df['S'].lt(100.9999))) & ((df['V'].ge(31.0000) & df['V'].lt(40.9999)))) | (((df['H'].ge(267.0000) & df['H'].lt(299.9999))) & ((df['S'].ge(20.0000) & df['S'].lt(100.9999))) & ((df['V'].ge(41.0000) & df['V'].lt(60.9999)))) | (((df['H'].ge(267.0000) & df['H'].lt(299.9999))) & ((df['S'].ge(20.0000) & df['S'].lt(100.9999))) & ((df['V'].ge(61.0000) & df['V'].lt(75.9999)))) | (((df['H'].ge(267.0000) & df['H'].lt(299.9999))) & ((df['S'].ge(16.0000) & df['S'].lt(100.9999))) & ((df['V'].ge(76.0000) & df['V'].lt(85.9999)))) | (((df['H'].ge(267.0000) & df['H'].lt(299.9999))) & ((df['S'].ge(20.0000) & df['S'].lt(100.9999))) & ((df['V'].ge(86.0000) & df['V'].lt(100.9999)))))
 
 ##identify color
 def colorID(h,s,v):
@@ -116,7 +116,7 @@ def rgb_to_hsv_2(r,g,b):
     else:
         s = (df/mx)*100
     v = mx*100
-    return round(h), round(s), round(v)
+    return h, s, v
 
 ##function to get x,y coordinates of mouse double click
 def draw_function(event, x,y,flags,param):
@@ -147,9 +147,9 @@ while(1):
         
         #Creating text string to display( Color name and RGB values )
         if(hsvcolor != None):
-            text = "{} H={:.0f} S={:.0f} V={:.0f} ({},{})".format(hsvcolor[0].capitalize(), h, s, v, xpos, ypos)
+            text = "{} H={:.2f} S={:.2f} V={:.2f} ({},{})".format(hsvcolor[0].capitalize(), h, s, v, xpos, ypos)
         else:
-            text = "{} H={:.0f} S={:.0f} V={:.0f} ({},{})".format("ERROR: NO COLOR FOUND", h, s, v, xpos, ypos)
+            text = "{} H={:.2f} S={:.2f} V={:.2f} ({},{})".format("ERROR: NO COLOR FOUND", h, s, v, xpos, ypos)
         cv2.putText(img, text,(50,50),2,0.8,(255,255,255),2,cv2.LINE_AA)
 
         #for very light colours we will display text in black colour
