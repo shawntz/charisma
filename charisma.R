@@ -4,19 +4,24 @@
 ##                      <shawnschwartz@ucla.edu>                     ##
 #######################################################################
 
+#### TODO: Add corresponding x,y coordinates for each row of calls[[x]] for CENTROID!!!
+
 ## Clean R Environment (If Desired)
 rm(list = ls())
 
 ## Initialize Main
-validate <- TRUE
+validate <- FALSE
 source("compile.R")
+
+## Build Python Tools
+buildPythonTools()
 
 ## Create Output Directory If It Doesn't Exist
 ifelse(!dir.exists(file.path(getwd(), output)), dir.create(file.path(getwd(), output)), FALSE)
 
 ## Get Images
 input_path <- "demo/"
-img_dir <- "birds"
+img_dir <- "birds3"
 imgs <- getImgPaths(paste0(input_path, img_dir))
 
 ## Create Another Output Directory for img_dir path
