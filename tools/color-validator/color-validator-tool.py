@@ -5,7 +5,7 @@ import os
 from datetime import datetime
 
 ## Make Results Directory
-if not os.path.exists('results'): os.makedirs('results')
+if not os.path.exists('tools/color-validator/results'): os.makedirs('tools/color-validator/results')
 
 ## Build HSV Vectors
 h = np.linspace(0, 360, (361*2))
@@ -75,6 +75,9 @@ def validate_colors(colors):
 	purple = test_purple(colors)
 
 	df = pd.DataFrame({
+		'H': colors['H'].astype(str),
+		'S': colors['S'].astype(str),
+		'V': colors['V'].astype(str),
 		'black': black,
 		'white': white,
 		'grey': grey,
@@ -89,7 +92,10 @@ def validate_colors(colors):
 
 	#check number of True per color
 	counts = df[df == True].count(axis = 1)
-	multiples = counts[counts > 1]
+	multiples = counts[(counts > 1) | (counts == 0)]
+
+	#append counts to final data output
+	df = pd.concat([df, counts.rename('total.colors')], axis=1)
 
 	#get indices of duplicate color rows
 	indices = multiples.index
@@ -109,9 +115,9 @@ invalid_length, invalid_calls = validate_colors(colors)
 print(invalid_length, "invalid colors!")
 
 date = datetime.now().strftime("%Y_%m_%d-%H.%M.%S")
-filename = os.path.join("results", "missing_colors" + "-" + date + ".csv")
+filename = os.path.join("tools", "color-validator", "results", "missing_colors" + "-" + date + ".csv")
 
-print("Writing", invalid_length, "invalid colors to CSV @ `results/missing_colors-date.csv`")
+print("Writing", invalid_length, "invalid colors to CSV @ `tools/color-validator/results/missing_colors-DATE.csv`")
 
 invalid_calls.to_csv(filename, index=False)
 

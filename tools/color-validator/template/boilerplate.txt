@@ -5,7 +5,7 @@ import os
 from datetime import datetime
 
 ## Make Results Directory
-if not os.path.exists('results'): os.makedirs('results')
+if not os.path.exists('tools/color-validator/results'): os.makedirs('tools/color-validator/results')
 
 ## Build HSV Vectors
 h = np.linspace(0, 360, (361*2))
@@ -29,9 +29,9 @@ invalid_length, invalid_calls = validate_colors(colors)
 print(invalid_length, "invalid colors!")
 
 date = datetime.now().strftime("%Y_%m_%d-%H.%M.%S")
-filename = os.path.join("results", "missing_colors" + "-" + date + ".csv")
+filename = os.path.join("tools", "color-validator", "results", "missing_colors" + "-" + date + ".csv")
 
-print("Writing", invalid_length, "invalid colors to CSV @ `results/missing_colors-date.csv`")
+print("Writing", invalid_length, "invalid colors to CSV @ `tools/color-validator/results/missing_colors-DATE.csv`")
 
 invalid_calls.to_csv(filename, index=False)
 
