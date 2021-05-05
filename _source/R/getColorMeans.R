@@ -7,6 +7,6 @@ getColorMeans <- function(img, mapping) {
   ##only get means for non-background color pixels
   img <- subset(img, is.bg == 0)
   
-  return(apply(img[,11:(10 + num_colors)], 2, mean))
+  return(apply(img[,13:(10 + num_colors)], 2, mean))
   
 }

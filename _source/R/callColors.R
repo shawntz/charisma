@@ -31,7 +31,7 @@ callColors <- function(img, mapping, scale = T) {
   
   ##sum counts and add column
   combo_data <- combo_data %>%
-    mutate(total = rowSums(.[11:ncol(combo_data)]))
+    mutate(total = rowSums(.[13:ncol(combo_data)]))
   
   return(combo_data)
   

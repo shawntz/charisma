@@ -4,8 +4,6 @@
 ##                      <shawnschwartz@ucla.edu>                     ##
 #######################################################################
 
-#### TODO: Add corresponding x,y coordinates for each row of calls[[x]] for CENTROID!!!
-
 ## Clean R Environment (If Desired)
 rm(list = ls())
 
