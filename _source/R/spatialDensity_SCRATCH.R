@@ -1,4 +1,4 @@
-getSpatialDensity <- function(img, color_name) {
+getSpatialDensity <- function(img, color_name, verbose = FALSE) {
   
   ##get size information about img (vector of color names [strings])
   n_row <- nrow(img)
@@ -47,6 +47,7 @@ getSpatialDensity <- function(img, color_name) {
   print(paste("sum real img: ", sum(neighbor_sums)))
   print(paste("sum ideal img: ", sum(ideal_neighbor_sums)))
   print(sum(neighbor_sums) / sum(ideal_neighbor_sums))
+  return(sum(neighbor_sums) / sum(ideal_neighbor_sums))
   
   
 }
