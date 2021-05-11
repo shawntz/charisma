@@ -35,6 +35,7 @@ getSpatialDensity <- function(img, color_name, verbose = FALSE) {
   ideal_img <- cbind(ideal_img, rep(0, ideal_img_original_nrow))
   row_fill = new_row_size 
   col_fill = 0
+  ## TODO: KEVIN AND TREVOR -- FINISH THIS
   if(row_fill > nrow(ideal_img)) {
     col_fill = row_fill - nrow(ideal_img)
     row_fill = 4
