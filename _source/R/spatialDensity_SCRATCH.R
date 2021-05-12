@@ -58,8 +58,5 @@ getSpatialDensity <- function(img, color_name, verbose = FALSE) {
   print(paste("sum ideal img: ", sum(ideal_neighbor_sums)))
   print(sum(neighbor_sums) / sum(ideal_neighbor_sums))
   return(sum(neighbor_sums) / sum(ideal_neighbor_sums))
-  
-  
 }
 
-getSpatialDensity(sample_colors, "red", TRUE)
