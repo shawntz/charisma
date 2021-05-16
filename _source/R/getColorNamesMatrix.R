@@ -5,8 +5,8 @@ getColorNamesMatrix <- function(img, mapping) {
   num_colors <- length(colors)
   
   ##extract color call columns
-  calls <- img[,c(4,8:(10 + num_colors))]
-  calls_cut <- calls[,c(1, 5:(4 + num_colors))]
+  calls <- img[,c(4,8:(13 + num_colors))]
+  calls_cut <- calls[,c(1, 7:(6 + num_colors))]
   
   ##modify values for easy sorting of background vs. color called pixels
   calls_cut <- calls_cut * -1
