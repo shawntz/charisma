@@ -1,3 +1,4 @@
+
 getSpatialDensity <- function(img, color_name, verbose = FALSE) {
   
   ##get size information about img (vector of color names [strings])
@@ -33,14 +34,22 @@ getSpatialDensity <- function(img, color_name, verbose = FALSE) {
   new_row_size <- num_colors - square_area
   ideal_img <- rbind(ideal_img, rep(0, ideal_img_original_ncol))
   ideal_img <- cbind(ideal_img, rep(0, ideal_img_original_nrow))
+  
+  #calculate the number of colors in the remainder. Allocate to row then column 
   row_fill = new_row_size 
   col_fill = 0
-  ## TODO: KEVIN AND TREVOR -- FINISH THIS
-  if(row_fill > nrow(ideal_img)) {
-    col_fill = row_fill - nrow(ideal_img)
-    row_fill = 4
+  img_size <- nrow(ideal_img)
+  if(row_fill > img_size - 1) {
+    col_fill = row_fill - img_size + 1
+    row_fill = img_size - 1
   }
-    
+  #create new row and column to set into image
+  new_row <- c(rep(1, row_fill), rep(0, img_size - row_fill))
+  new_col <- c(rep(1, col_fill), rep(0, img_size - col_fill))
+  #set ideal_image 
+  ideal_img[img_size, ] = new_row
+  ideal_img[, img_size] = new_col
+  
   #ideal_img <- rbind(ideal_img, c(rep(1, new_row_size), rep(0, ncol(ideal_img) - new_row_size))) ## find the largest possible patch square & and in remaining difference of square area
   print(ideal_img)
   ideal_neighbor_sums <- rbind(ideal_img[-1,],0) + rbind(0,ideal_img[-nrow(ideal_img),]) + cbind(ideal_img[,-1],0) + cbind(0,ideal_img[,-ncol(ideal_img)])
@@ -49,6 +58,5 @@ getSpatialDensity <- function(img, color_name, verbose = FALSE) {
   print(paste("sum ideal img: ", sum(ideal_neighbor_sums)))
   print(sum(neighbor_sums) / sum(ideal_neighbor_sums))
   return(sum(neighbor_sums) / sum(ideal_neighbor_sums))
-  
-  
 }
+
