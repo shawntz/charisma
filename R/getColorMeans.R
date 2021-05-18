@@ -8,6 +8,6 @@ getColorMeans <- function(charisma_obj, mapping = charisma::color.map) {
   img <- charisma_obj$filtered.2d
   img <- subset(img, is.bg == 0)
 
-  return(apply(img[,13:(10 + num_colors)], 2, mean))
+  return(apply(img[,13:(12 + num_colors)], 2, mean))
 
 }
