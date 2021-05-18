@@ -1,5 +1,8 @@
 plotSprite <- function(charisma_obj, mapping = charisma::color.map) {
 
+  # for resetting
+  user_par <- graphics::par(no.readonly = TRUE)
+
   img <- charisma_obj$filtered.2d
 
   hex_values <- charisma_obj$hex.matrix
@@ -10,5 +13,8 @@ plotSprite <- function(charisma_obj, mapping = charisma::color.map) {
        asp = asp, main = "Sprite Plot", xlab = "", ylab = "")
 
   graphics::rasterImage(hex_values, 0, 0, 1, 1)
+
+  # reset parameters
+  graphics::par(user_par)
 
 }

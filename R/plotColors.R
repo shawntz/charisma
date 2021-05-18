@@ -2,6 +2,11 @@ plotColors <- function(charisma_obj, mapping = charisma::color.map, type = c("fr
 
   # check if valid plot type
   type <- match.arg(type)
+  if(is.null(type))
+    stop("Invalid plot type specified. Please select from `freq` or `spatial`.")
+
+  # for resetting
+  user_par <- graphics::par(no.readonly = TRUE)
 
   # get default hex values from color mapping
   hex <- getMappedHex(mapping)
@@ -28,4 +33,8 @@ plotColors <- function(charisma_obj, mapping = charisma::color.map, type = c("fr
             ylim = c(0,1), ylab = "Proportion of Maximized Patchiness", las = 2)
   }
   abline(h = threshold, col = "red", lty = "dashed")
+
+  # reset parameters
+  graphics::par(user_par)
+
 }
