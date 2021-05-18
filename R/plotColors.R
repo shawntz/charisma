@@ -1,4 +1,4 @@
-plotColors <- function(charisma_obj, mapping = charisma::color.map, type = c("freq", "spatial"), threshold = .05) {
+plotColors <- function(charisma_obj, mapping = charisma::color.map, type = c("freq", "spatial"), threshold = .05, multi.plot = FALSE) {
 
   # check if valid plot type
   type <- match.arg(type)
@@ -6,7 +6,8 @@ plotColors <- function(charisma_obj, mapping = charisma::color.map, type = c("fr
     stop("Invalid plot type specified. Please select from `freq` or `spatial`.")
 
   # for resetting
-  user_par <- graphics::par(no.readonly = TRUE)
+  if(!multi.plot)
+    user_par <- graphics::par(no.readonly = TRUE)
 
   # get default hex values from color mapping
   hex <- getMappedHex(mapping)
@@ -35,6 +36,7 @@ plotColors <- function(charisma_obj, mapping = charisma::color.map, type = c("fr
   abline(h = threshold, col = "red", lty = "dashed")
 
   # reset parameters
-  graphics::par(user_par)
+  if(!multi.plot)
+    graphics::par(user_par)
 
 }
