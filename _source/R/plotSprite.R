@@ -23,6 +23,7 @@ plotSprite <- function(img, mapping) {
   
   print(x_coords)
   print(y_coords)
+  print(centroid_distances)
   
   halo_color <- "#FF00D9"
   
