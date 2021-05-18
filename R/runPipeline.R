@@ -6,12 +6,14 @@ runPipeline <- function(images, mapping = charisma::color.map,
                         save.plot.type = c("pdf", "png", "jpeg", "tiff", "bmp"), plot.width = 10, plot.height = 5) {
 
   # check if valid summary method
+  summary.method <- tolower(summary.method)
   summary.method <- match.arg(summary.method)
   if(is.null(summary.method))
     stop("Invalid summary method specified.
          Please select from `both`, `freq`, or `spatial`.")
 
   # check if valid save.plot.type
+  save.plot.type <- tolower(save.plot.type)
   save.plot.type <- match.arg(save.plot.type)
   if(is.null(save.plot.type))
     stop("Invalid save plot filetype specified.

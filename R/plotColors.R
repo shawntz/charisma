@@ -1,6 +1,7 @@
 plotColors <- function(charisma_obj, mapping = charisma::color.map, type = c("freq", "spatial"), threshold = .05, multi.plot = FALSE) {
 
   # check if valid plot type
+  type <- tolower(type)
   type <- match.arg(type)
   if(is.null(type))
     stop("Invalid plot type specified. Please select from `freq` or `spatial`.")

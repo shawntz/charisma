@@ -3,6 +3,7 @@ getSummary <- function(charisma_obj, mapping = charisma::color.map,
                        freq.threshold = .05, spatial.threshold = .05) {
 
   # check if valid summary method
+  method <- tolower(method)
   method <- match.arg(method)
   if(is.null(method))
     stop("Invalid summary method specified.

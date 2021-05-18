@@ -4,6 +4,7 @@ parseConditional <- function(parsed_mapping, destination = c("pipeline", "getter
   # `pipeline`: parses output to be used in the `callColors.R` pipeline function
   # `getter`: parses output to be used in the `getColor.R` stand-alone function
   # `python`: parses output to be used in the Python color detector application
+  destination <- tolower(destination)
   destination <- match.arg(destination)
 
   num_ranges <- length(parsed_mapping$h) # (assumes equal lengths for each color variable: h, s, v)
