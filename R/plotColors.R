@@ -6,10 +6,13 @@ plotColors <- function(charisma_obj, mapping = charisma::color.map, type = c("fr
   # get default hex values from color mapping
   hex <- getMappedHex(mapping)
 
-  # get color scores
+  # extract color scores
   if(type == "freq") {
-    # get frequency means
-    color_scores <- getColorMeans(charisma_obj)
+    # extract frequency means
+    color_scores <- charisma_obj$color.frequencies
+  } else if(type == "spatial") {
+    # extract spatial density scores
+    color_scores <- charisma_obj$spatial.density
   }
 
   # get k-value (i.e., total number of discrete color classes)
@@ -22,7 +25,7 @@ plotColors <- function(charisma_obj, mapping = charisma::color.map, type = c("fr
   } else if(type == "spatial") {
     # make plot
     barplot(height = color_scores, names = names(color_scores), col = hex, main = paste0("Spatial Density (k=", k, ", ", (threshold*100), "%)"),
-            ylim = c(0,1), ylab = "Proportion of Image", las = 2)
+            ylim = c(0,1), ylab = "Proportion of Maximized Patchiness", las = 2)
   }
   abline(h = threshold, col = "red", lty = "dashed")
 }

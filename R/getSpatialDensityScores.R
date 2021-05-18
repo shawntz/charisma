@@ -1,0 +1,16 @@
+getSpatialDensityScores <- function(charisma_obj, mapping = charisma::color.map) {
+
+  # get all color names from color mapping
+  color_names <- getMappedColors(mapping)
+  num_colors <- length(color_names)
+
+  # get spatial density score for each color
+  scores <- rep(NA, num_colors)
+  for(i in 1:num_colors) {
+    scores[i] <- getSpatialDensity(charisma_obj, color_names[i])
+  }
+  names(scores) <- color_names
+
+  return(scores)
+
+}

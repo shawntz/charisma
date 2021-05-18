@@ -93,9 +93,10 @@ readImage <- function(path, lower = NULL, upper = NULL, alpha.channel = TRUE, ma
   # 3D RGB array, 2D RGB+HSV array with background pixels
   # removed and labeled, matrix of hex values for raster,
   # and matrix of paired color names to hex values for raster
-  end.list <- vector("list", length = 5)
+  end.list <- vector("list", length = 7)
   endList_names <- c("path", "original.rgb", "filtered.2d",
-                     "hex.matrix", "cname.matrix")
+                     "hex.matrix", "cname.matrix", "color.frequencies",
+                     "spatial.density")
   names(end.list) <- endList_names
 
   end.list[1:3] <- list(path,
@@ -148,6 +149,12 @@ readImage <- function(path, lower = NULL, upper = NULL, alpha.channel = TRUE, ma
 
   # get matched color mapping matrix for fast raster sprite plotting
   end.list$cname.matrix <- raster_objects$cname.matrix
+
+  # get color means for fast color plotting
+  end.list$color.frequencies <- getColorMeans(end.list)
+
+  # get spatial density scores for fast color plotting
+  end.list$spatial.density <- getSpatialDensityScores(end.list)
 
   return(end.list)
 
