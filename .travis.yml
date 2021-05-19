@@ -1,5 +1,5 @@
 language: r
 cache: packages
 notifications:
-	email:
-		shawn.t.schwartz@gmail.com
+    email:
+        shawn.t.schwartz@gmail.com
