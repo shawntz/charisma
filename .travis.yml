@@ -1,0 +1,8 @@
+language: r
+cache: packages
+notifications:
+	email:
+		shawn.t.schwartz@gmail.com
+env:
+	global:
+		- _R_CHECK_FORCE_SUGGESTS_: false
