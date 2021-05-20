@@ -1,6 +1,6 @@
 getSummary <- function(charisma_obj, mapping = charisma::color.map,
                        method = c("both", "freq", "spatial"),
-                       freq.threshold = .05, spatial.threshold = .05) {
+                       freq.threshold = .5, spatial.threshold = .5) {
 
   # check if valid summary method
   method <- tolower(method)
