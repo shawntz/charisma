@@ -8,12 +8,13 @@
 #' add(10, 1)
 #'
 #' @export
-runPipeline <- function(images, mapping = charisma::color.map,
+runPipeline <- function(images,
                         summary.method = c("both", "freq", "spatial"),
                         freq.threshold = .05, spatial.threshold = .05,
                         validate.color.map = FALSE, validation.simple = TRUE, lower = NULL, upper = NULL,
                         alpha.channel = TRUE, plot.diagnostic = FALSE, save.plots = FALSE, output.dir = getwd(),
-                        save.plot.type = c("pdf", "png", "jpeg", "tiff", "bmp"), plot.width = 10, plot.height = 5) {
+                        save.plot.type = c("pdf", "png", "jpeg", "tiff", "bmp"), plot.width = 10, plot.height = 5,
+                        mapping = color.map) {
 
   # check if valid summary method
   summary.method <- tolower(summary.method)

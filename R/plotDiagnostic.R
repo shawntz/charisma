@@ -8,8 +8,8 @@
 #' add(10, 1)
 #'
 #' @export
-plotDiagnostic <- function(charisma_obj, mapping = charisma::color.map,
-                           freq.threshold = .05, spatial.threshold = .01) {
+plotDiagnostic <- function(charisma_obj, freq.threshold = .05, spatial.threshold = .01,
+                           mapping = color.map,) {
 
 
   # for resetting

@@ -8,7 +8,7 @@
 #' add(10, 1)
 #'
 #' @export
-getMappedHex <- function(mapping = charisma::color.map) {
+getMappedHex <- function(mapping = color.map) {
 
   return(unique(mapping$default.hex))
 

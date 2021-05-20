@@ -8,7 +8,7 @@
 #' add(10, 1)
 #'
 #' @export
-parseMapping <- function(color.name, mapping = charisma::color.map) {
+parseMapping <- function(color.name, mapping = color.map) {
 
   # check if color.name exists in mapping
   if(!color.name %in% mapping[,1])

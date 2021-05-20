@@ -8,7 +8,7 @@
 #' add(10, 1)
 #'
 #' @export
-getSpatialDensityScores <- function(charisma_obj, mapping = charisma::color.map) {
+getSpatialDensityScores <- function(charisma_obj, mapping = color.map) {
 
   # get all color names from color mapping
   color_names <- getMappedColors(mapping)

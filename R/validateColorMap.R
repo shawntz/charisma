@@ -8,7 +8,7 @@
 #' add(10, 1)
 #'
 #' @export
-validateColorMap <- function(mapping = charisma::color.map, simple = TRUE) {
+validateColorMap <- function(mapping = color.map, simple = TRUE) {
 
   ##get all color names from mapping
   color_names <- getMappedColors(mapping)

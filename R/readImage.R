@@ -74,7 +74,7 @@
 #' \link{https://cran.r-project.org/web/packages/colordistance/}
 #'
 #' @export
-readImage <- function(path, lower = NULL, upper = NULL, alpha.channel = TRUE, mapping = charisma::color.map) {
+readImage <- function(path, lower = NULL, upper = NULL, alpha.channel = TRUE, mapping = color.map) {
 
   # Read in the file as either JPG or PNG (or, if neither, stop execution and
   # return error message)

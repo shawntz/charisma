@@ -8,7 +8,7 @@
 #' add(10, 1)
 #'
 #' @export
-plotColors <- function(charisma_obj, mapping = charisma::color.map, type = c("freq", "spatial"), threshold = .05, multi.plot = FALSE) {
+plotColors <- function(charisma_obj, type = c("freq", "spatial"), threshold = .05, multi.plot = FALSE, mapping = color.map) {
 
   # check if valid plot type
   type <- tolower(type)

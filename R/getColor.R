@@ -9,7 +9,7 @@
 #'
 #' @export
 getColor <- function(color_triplet, color.space = c("rgb", "hsv"),
-                     mapping = charisma::color.map, verbose = FALSE) {
+                     verbose = FALSE, mapping = color.map) {
 
   # check if valid color space
   color.space <- tolower(color.space)

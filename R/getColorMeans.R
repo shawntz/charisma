@@ -8,7 +8,7 @@
 #' add(10, 1)
 #'
 #' @export
-getColorMeans <- function(charisma_obj, mapping = charisma::color.map) {
+getColorMeans <- function(charisma_obj, mapping = color.map) {
 
   # get all color names from color mapping
   color_names <- getMappedColors(mapping)

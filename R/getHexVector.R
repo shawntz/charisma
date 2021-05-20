@@ -8,7 +8,7 @@
 #' add(10, 1)
 #'
 #' @export
-getHexVector <- function(mapping = charisma::color.map) {
+getHexVector <- function(mapping = color.map) {
 
   # get all color names from color mapping
   color_names <- getMappedColors(mapping)
