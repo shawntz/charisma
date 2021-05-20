@@ -156,6 +156,9 @@ readImage <- function(path, lower = NULL, upper = NULL, alpha.channel = TRUE, ma
   # get spatial density scores for fast color plotting
   end.list$spatial.density <- getSpatialDensityScores(end.list)
 
+  # set class
+  class(end.list) <- "charisma"
+
   return(end.list)
 
 }
