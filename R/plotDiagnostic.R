@@ -9,7 +9,7 @@
 #'
 #' @export
 plotDiagnostic <- function(charisma_obj, freq.threshold = .05, spatial.threshold = .01,
-                           mapping = color.map,) {
+                           mapping = color.map) {
 
 
   # for resetting
