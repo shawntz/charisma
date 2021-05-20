@@ -1,3 +1,13 @@
+#' Add together two numbers
+#'
+#' @param x A number
+#' @param y A number
+#' @return The sum of \code{x} and \code{y}
+#' @examples
+#' add(1, 1)
+#' add(10, 1)
+#'
+#' @export
 getSummary <- function(charisma_obj, mapping = charisma::color.map,
                        method = c("both", "freq", "spatial"),
                        freq.threshold = .5, spatial.threshold = .5) {
