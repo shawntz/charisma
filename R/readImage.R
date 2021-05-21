@@ -76,7 +76,7 @@
 #' \link{https://cran.r-project.org/web/packages/colordistance/}
 #'
 #' @export
-readImage <- function(path, lower = NULL, upper = NULL, alpha.channel = TRUE, mapping = color.map) {
+readImage <- function(path, resize = NULL, lower = NULL, upper = NULL, alpha.channel = TRUE, mapping = color.map) {
 
   # Read in the file as either JPG or PNG (or, if neither, stop execution and
   # return error message)
@@ -87,27 +87,28 @@ readImage <- function(path, lower = NULL, upper = NULL, alpha.channel = TRUE, ma
   # Get absolute filepath in case relative one was provided
   path <- normalizePath(path)
 
-  # Get filetype so we know how to read it in; make lowercase so checking later
-  # is easier
-  filetype <- tolower(tail(strsplit(path, split = "[.]")[[1]], 1))
-
-  if (filetype %in% "png") {
-    img <- png::readPNG(path)
-  } else if (filetype %in% c("jpg", "jpeg")) {
-    img <- jpeg::readJPEG(path)
+  # Read in image
+  img_ext <- tolower(tools::file_ext(path))
+  if (img_ext %in% c("jpeg", "jpg", "png", "bmp")) {
+    img <- imager::load.image(path)
   } else {
-    stop("Images must be either JPEG (.jpg or .jpeg) or PNG (.png) format")
+    stop("Image must be either JPG, PNG, or BMP")
   }
 
-  # Once the file is read in, eliminate transparent background pixels
+  # Resize image if specified
+  if(!is.null(resize)) {
+    img <- imager::imresize(img, scale = resize, interpolation = 6)
+  }
 
+  # Undo rotation by imager::load.image
+  img <- imager::imrotate(img, -90)
+
+  # Once the file is read in, eliminate transparent background pixels
   # assume no background masking to start
   idx <- NULL
 
   # and store RGB channels
   original.rgb <- img[ , , 1:3]
-
-  plot(original.rgb)
 
   # if there's transparency, use that for background indexing
   # set transparent pixels to white
