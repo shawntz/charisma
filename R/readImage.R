@@ -9,6 +9,8 @@
 #' and the spatial density scores for each color classified in the image.
 #'
 #' @param path Path to image (a string).
+#' @param resize Fraction by which to reduce image size. Important for speed.
+#' Inherited from \code{\link{[recolorize::readImage]}}.
 #' @param lower RGB or HSV triplet specifying the lower bounds for background pixels.
 #'   Default upper and lower bounds are set to \code{NULL} given that no background
 #'   filtering is needed for images with transparent backgrounds

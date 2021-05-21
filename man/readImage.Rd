@@ -12,6 +12,7 @@ were either copied directly or modified/adapted from \code{\link{[colordistance:
 \usage{
 readImage(
   path,
+  resize = NULL,
   lower = NULL,
   upper = NULL,
   alpha.channel = TRUE,
@@ -20,6 +21,9 @@ readImage(
 }
 \arguments{
 \item{path}{Path to image (a string).}
+
+\item{resize}{Fraction by which to reduce image size. Important for speed.
+Inherited from \code{\link{[recolorize::readImage]}}.}
 
 \item{lower}{RGB or HSV triplet specifying the lower bounds for background pixels.
 Default upper and lower bounds are set to \code{NULL} given that no background
