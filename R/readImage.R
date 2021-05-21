@@ -107,6 +107,8 @@ readImage <- function(path, lower = NULL, upper = NULL, alpha.channel = TRUE, ma
   # and store RGB channels
   original.rgb <- img[ , , 1:3]
 
+  plot(original.rgb)
+
   # if there's transparency, use that for background indexing
   # set transparent pixels to white
   if (dim(img)[3] == 4 & alpha.channel == TRUE) {
