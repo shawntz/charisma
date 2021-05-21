@@ -4,7 +4,7 @@
 \alias{plotSprite}
 \title{Add together two numbers}
 \usage{
-plotSprite(charisma_obj, mapping = charisma::color.map, multi.plot = FALSE)
+plotSprite(charisma_obj, multi.plot = FALSE, mapping = color.map)
 }
 \arguments{
 \item{x}{A number}

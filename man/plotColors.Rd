@@ -6,10 +6,10 @@
 \usage{
 plotColors(
   charisma_obj,
-  mapping = charisma::color.map,
   type = c("freq", "spatial"),
   threshold = 0.05,
-  multi.plot = FALSE
+  multi.plot = FALSE,
+  mapping = color.map
 )
 }
 \arguments{

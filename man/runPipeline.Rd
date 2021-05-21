@@ -6,7 +6,6 @@
 \usage{
 runPipeline(
   images,
-  mapping = charisma::color.map,
   summary.method = c("both", "freq", "spatial"),
   freq.threshold = 0.05,
   spatial.threshold = 0.05,
@@ -20,7 +19,8 @@ runPipeline(
   output.dir = getwd(),
   save.plot.type = c("pdf", "png", "jpeg", "tiff", "bmp"),
   plot.width = 10,
-  plot.height = 5
+  plot.height = 5,
+  mapping = color.map
 )
 }
 \arguments{

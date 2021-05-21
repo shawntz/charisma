@@ -13,6 +13,7 @@
 #'   Default upper and lower bounds are set to \code{NULL} given that no background
 #'   filtering is needed for images with transparent backgrounds
 #'   (the default assumed image type with file extension ".png").
+#'   Inherited from \code{\link{[colordistance::loadImage]}}.
 #' @param upper RGB or HSV triplet specifying the upper bounds for background pixels.
 #'   Default upper and lower bounds are set to \code{NULL} given that no background
 #'   filtering is needed for images with transparent backgrounds
@@ -24,6 +25,7 @@
 #'   lower=c(0, 0, 0.55); upper=c(0.24, 0.24, 1) } If no background filtering is
 #'   needed, set bounds to some non-numeric value (\code{NULL}, \code{FALSE},
 #'   \code{"off"}, etc); any non-numeric value is interpreted as \code{NULL}.
+#'   Inherited from \code{\link{[colordistance::loadImage]}}.
 #' @param alpha.channel Logical. If available, should alpha channel transparency be
 #'   used to mask background?
 #' @param mapping Data Frame. Color mapping definitions with min and max ranges for
@@ -49,7 +51,7 @@
 #'
 #' demoImgWhiteBG <- charisma::readImage(system.file("extdata",
 #' "Tangara/Tangara_whitebg/Tangara_01.jpeg", package = "charisma"),
-#' lower = c(0.8, 0.8, 0.8); upper = c(1, 1, 1), alpha.channel = FALSE)
+#' lower = c(0.8, 0.8, 0.8), upper = c(1, 1, 1), alpha.channel = FALSE)
 #'
 #' @details The upper and lower limits for background pixel elimination set the
 #' inclusive bounds for which pixels should be ignored for the 2D arrays; while
@@ -69,7 +71,7 @@
 #' considered background because 0.3 >= 0.2.
 #'
 #' @source Many of the pixel filtering functions, documentation, and descriptions here
-#' were either copied directly or modified/adapted from \link[colordistance]{loadImage}.
+#' were either copied directly or modified/adapted from \code{\link{[colordistance::loadImage]}}.
 #'
 #' \link{https://cran.r-project.org/web/packages/colordistance/}
 #'
@@ -112,7 +114,8 @@ readImage <- function(path, lower = NULL, upper = NULL, alpha.channel = TRUE, ma
     if (min(img[ , , 4]) < 1) {
 
 
-      message("Using PNG transparency (alpha channel) as background mask")
+      message("Using PNG transparency (alpha channel) as background mask... This may take a moment for large images
+              (consider resizing image with `resize` paramemter)... Please wait...")
 
 
       # index background pixels based on opacity
@@ -147,6 +150,8 @@ readImage <- function(path, lower = NULL, upper = NULL, alpha.channel = TRUE, ma
     }
 
   }
+
+  message("This may take a moment for large images (consider resizing image with `resize` paramemter)... Please wait...")
 
   # make filtered.rgb.2d: all the non-indexed pixels from img
   pix <- original.rgb

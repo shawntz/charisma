@@ -4,7 +4,7 @@
 \alias{getSpatialDensityScores}
 \title{Add together two numbers}
 \usage{
-getSpatialDensityScores(charisma_obj, mapping = charisma::color.map)
+getSpatialDensityScores(charisma_obj, mapping = color.map)
 }
 \arguments{
 \item{x}{A number}

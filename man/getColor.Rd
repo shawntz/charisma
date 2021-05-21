@@ -7,8 +7,8 @@
 getColor(
   color_triplet,
   color.space = c("rgb", "hsv"),
-  mapping = charisma::color.map,
-  verbose = FALSE
+  verbose = FALSE,
+  mapping = color.map
 )
 }
 \arguments{

@@ -4,7 +4,7 @@
 \alias{getMappedColors}
 \title{Add together two numbers}
 \usage{
-getMappedColors(mapping = charisma::color.map)
+getMappedColors(mapping = color.map)
 }
 \arguments{
 \item{x}{A number}

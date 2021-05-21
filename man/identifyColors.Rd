@@ -4,7 +4,7 @@
 \alias{identifyColors}
 \title{Add together two numbers}
 \usage{
-identifyColors(charisma_obj, mapping = charisma::color.map)
+identifyColors(charisma_obj, mapping = color.map)
 }
 \arguments{
 \item{x}{A number}

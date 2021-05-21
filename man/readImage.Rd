@@ -5,8 +5,9 @@
 \title{Import image and generate discrete color classification(s)}
 \source{
 Many of the pixel filtering functions, documentation, and descriptions here
-were either copied directly or modified/adapted from \link[colordistance]{loadImage}.
-\link{https://cran.r-project.org/web/packages/colordistance/index.html}
+were either copied directly or modified/adapted from \code{\link{[colordistance::loadImage]}}.
+
+\link{https://cran.r-project.org/web/packages/colordistance/}
 }
 \usage{
 readImage(
@@ -14,7 +15,7 @@ readImage(
   lower = NULL,
   upper = NULL,
   alpha.channel = TRUE,
-  mapping = charisma::color.map
+  mapping = color.map
 )
 }
 \arguments{
@@ -23,7 +24,8 @@ readImage(
 \item{lower}{RGB or HSV triplet specifying the lower bounds for background pixels.
 Default upper and lower bounds are set to \code{NULL} given that no background
 filtering is needed for images with transparent backgrounds
-(the default assumed image type with file extension ".png").}
+(the default assumed image type with file extension ".png").
+Inherited from \code{\link{[colordistance::loadImage]}}.}
 
 \item{upper}{RGB or HSV triplet specifying the upper bounds for background pixels.
 Default upper and lower bounds are set to \code{NULL} given that no background
@@ -35,7 +37,8 @@ upper=c(0.1, 0.1, 0.1) \item White: lower=c(0.8, 0.8, 0.8); upper=c(1, 1, 1)
 \item Green: lower=c(0, 0.55, 0); upper=c(0.24, 1, 0.24) \item Blue:
 lower=c(0, 0, 0.55); upper=c(0.24, 0.24, 1) } If no background filtering is
 needed, set bounds to some non-numeric value (\code{NULL}, \code{FALSE},
-\code{"off"}, etc); any non-numeric value is interpreted as \code{NULL}.}
+\code{"off"}, etc); any non-numeric value is interpreted as \code{NULL}.
+Inherited from \code{\link{[colordistance::loadImage]}}.}
 
 \item{alpha.channel}{Logical. If available, should alpha channel transparency be
 used to mask background?}
@@ -92,6 +95,6 @@ demoImg <- charisma::readImage(system.file("extdata",
 
 demoImgWhiteBG <- charisma::readImage(system.file("extdata",
 "Tangara/Tangara_whitebg/Tangara_01.jpeg", package = "charisma"),
-lower = c(0.8, 0.8, 0.8); upper = c(1, 1, 1), alpha.channel = FALSE)
+lower = c(0.8, 0.8, 0.8), upper = c(1, 1, 1), alpha.channel = FALSE)
 
 }

@@ -4,7 +4,7 @@
 \alias{validateColorMap}
 \title{Add together two numbers}
 \usage{
-validateColorMap(mapping = charisma::color.map, simple = TRUE)
+validateColorMap(mapping = color.map, simple = TRUE)
 }
 \arguments{
 \item{x}{A number}

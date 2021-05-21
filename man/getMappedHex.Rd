@@ -4,7 +4,7 @@
 \alias{getMappedHex}
 \title{Add together two numbers}
 \usage{
-getMappedHex(mapping = charisma::color.map)
+getMappedHex(mapping = color.map)
 }
 \arguments{
 \item{x}{A number}

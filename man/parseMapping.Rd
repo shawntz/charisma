@@ -4,7 +4,7 @@
 \alias{parseMapping}
 \title{Add together two numbers}
 \usage{
-parseMapping(color.name, mapping = charisma::color.map)
+parseMapping(color.name, mapping = color.map)
 }
 \arguments{
 \item{x}{A number}

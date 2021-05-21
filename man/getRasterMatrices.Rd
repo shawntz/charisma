@@ -4,7 +4,7 @@
 \alias{getRasterMatrices}
 \title{Add together two numbers}
 \usage{
-getRasterMatrices(charisma_obj, mapping = charisma::color.map)
+getRasterMatrices(charisma_obj, mapping = color.map)
 }
 \arguments{
 \item{x}{A number}

@@ -4,7 +4,7 @@
 \alias{getHexVector}
 \title{Add together two numbers}
 \usage{
-getHexVector(mapping = charisma::color.map)
+getHexVector(mapping = color.map)
 }
 \arguments{
 \item{x}{A number}

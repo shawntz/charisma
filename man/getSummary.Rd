@@ -6,10 +6,10 @@
 \usage{
 getSummary(
   charisma_obj,
-  mapping = charisma::color.map,
   method = c("both", "freq", "spatial"),
   freq.threshold = 0.5,
-  spatial.threshold = 0.5
+  spatial.threshold = 0.5,
+  mapping = color.map
 )
 }
 \arguments{

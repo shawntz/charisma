@@ -6,9 +6,9 @@
 \usage{
 plotDiagnostic(
   charisma_obj,
-  mapping = charisma::color.map,
   freq.threshold = 0.05,
-  spatial.threshold = 0.01
+  spatial.threshold = 0.01,
+  mapping = color.map
 )
 }
 \arguments{

@@ -4,7 +4,7 @@
 \alias{getColorMeans}
 \title{Add together two numbers}
 \usage{
-getColorMeans(charisma_obj, mapping = charisma::color.map)
+getColorMeans(charisma_obj, mapping = color.map)
 }
 \arguments{
 \item{x}{A number}
