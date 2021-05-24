@@ -14,20 +14,25 @@ getCentroidCoordinate <- function(charisma_obj, color.name, dimension = c("x", "
   df <- subset(df, is.bg == 0)
 
   # filter by color
-  df <- df[df[[color]] == 1,]
+  df <- df[df[[color.name]] == 1,]
 
-  # get x or y coordinates of the centroid
-  if(dimension == "x")
-    mean_coord <- sum(df$x.coord) / nrow(df)
-  else if(dimension == "y")
-    mean_coord <- sum(df$y.coord) / nrow(df)
-
-  # scale for sprite plot overlay if requested
-  if(scale)
+  # check if color has at least three points in image
+  if(nrow(df) > 2) {
+    # get x or y coordinates of the centroid
     if(dimension == "x")
-      mean_coord <- mean_coord / df$ncols
+      mean_coord <- sum(df$x.coord) / nrow(df)
     else if(dimension == "y")
-      mean_coord <- mean_coord / df$nrows
+      mean_coord <- sum(df$y.coord) / nrow(df)
+
+    # scale for sprite plot overlay if requested
+    if(scale)
+      if(dimension == "x")
+        mean_coord <- mean_coord / df$ncols[1]
+    else if(dimension == "y")
+      mean_coord <- mean_coord / df$nrows[1]
+  } else {
+    return(NaN)
+  }
 
   return(mean_coord)
 

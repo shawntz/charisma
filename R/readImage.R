@@ -179,10 +179,11 @@ readImage <- function(path, resize = NULL, lower = NULL, upper = NULL, alpha.cha
   # 3D RGB array, 2D RGB+HSV array with background pixels
   # removed and labeled, matrix of hex values for raster,
   # and matrix of paired color names to hex values for raster
-  end.list <- vector("list", length = 7)
+  end.list <- vector("list", length = 12)
   endList_names <- c("path", "original.rgb", "filtered.2d",
-                     "hex.matrix", "cname.matrix", "color.frequencies",
-                     "spatial.density")
+                     "hex.matrix", "cname.matrix", "alpha.matrix",
+                     "silhouette.matrix", "color.frequencies", "spatial.density",
+                     "centroid.dists", "centroid.x", "centroid.y")
   names(end.list) <- endList_names
 
   end.list[1:3] <- list(path,
@@ -236,11 +237,26 @@ readImage <- function(path, resize = NULL, lower = NULL, upper = NULL, alpha.cha
   # get matched color mapping matrix for fast raster sprite plotting
   end.list$cname.matrix <- raster_objects$cname.matrix
 
+  # get semi-transparent matched color mapping matrix for fast raster sprite plotting with centroids
+  end.list$alpha.matrix <- raster_objects$alpha.matrix
+
+  # get silhouette matrix for fast raster sprite plotting with centroids
+  end.list$silhouette.matrix <- raster_objects$silhouette.matrix
+
   # get color means for fast color plotting
   end.list$color.frequencies <- getColorMeans(end.list)
 
   # get spatial density scores for fast color plotting
   end.list$spatial.density <- getSpatialDensityScores(end.list)
+
+  # get centroid distances for fast color plotting
+  end.list$centroid.dists <- getCentroidDistances(end.list)
+
+  # get centroid x-coordinates per color
+  end.list$centroid.x <- getCentroidCoordinates(end.list, "x", TRUE)
+
+  # get centroid y-coordinates per color
+  end.list$centroid.y <- getCentroidCoordinates(end.list, "y", TRUE)
 
   # set class
   class(end.list) <- "charisma"

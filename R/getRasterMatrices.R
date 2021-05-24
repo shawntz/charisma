@@ -35,22 +35,35 @@ getRasterMatrices <- function(charisma_obj, mapping = color.map) {
   # get raw color name character strings based on combos to then convert to hex values in matrix
   color_names <- ifelse(combos$is.bg == 10, "is.bg", as.character(combos$color.name))
 
+  # get silhouette version of color_names
+  silhouette_color_names <- ifelse(combos$is.bg == 10, "is.bg", as.character("black"))
+
   # get vector of hex value lookups
   hex_lookup <- getHexVector(mapping)
 
+  # get vector of hex value lookups with alpha
+  hex_lookup_transparent <- colorspace::adjust_transparency(getHexVector(mapping), alpha = .4)
+  names(hex_lookup_transparent) <- names(hex_lookup)
+
   # convert raw color name strings into corresponding hex values
   hex_values <- sapply(color_names, getMatchedHex, hex_lookup, simplify = TRUE)
+  alpha_values <- sapply(color_names, getMatchedHex, hex_lookup_transparent, simplify = TRUE)
+  silhouette_values <- sapply(silhouette_color_names, getMatchedHex, hex_lookup, simplify = TRUE)
 
   # make matrices for raster plotting
   dim(color_names) <- c(charisma_obj$nrows[1], charisma_obj$ncols[1])
   dim(hex_values) <- c(charisma_obj$nrows[1], charisma_obj$ncols[1])
+  dim(alpha_values) <- c(charisma_obj$nrows[1], charisma_obj$ncols[1])
+  dim(silhouette_values) <- c(charisma_obj$nrows[1], charisma_obj$ncols[1])
 
-  end.list <- vector("list", length = 2)
-  endList_names <- c("hex.matrix", "cname.matrix")
+  end.list <- vector("list", length = 4)
+  endList_names <- c("hex.matrix", "cname.matrix", "alpha.matrix", "silhouette.matrix")
   names(end.list) <- endList_names
 
   end.list$hex.matrix <- hex_values
   end.list$cname.matrix <- color_names
+  end.list$silhouette.matrix <- silhouette_values
+  end.list$alpha.matrix <- alpha_values
 
   return(end.list)
 

@@ -7,7 +7,7 @@ getAverageCentroidDistance <- function(charisma_obj, color.name) {
   df <- subset(df, is.bg == 0)
 
   # filter by color
-  df <- df[df[[color]] == 1,]
+  df <- df[df[[color.name]] == 1,]
 
   # get x and y coordinates of the centroid
   meanx <- sum(df$x.coord) / nrow(df)
