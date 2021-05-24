@@ -105,6 +105,15 @@ readImage <- function(path, resize = NULL, lower = NULL, upper = NULL, alpha.cha
   # Undo rotation by imager::load.image
   img <- imager::imrotate(img, -90)
 
+  # drop depth channel
+  temp <- array(dim = dim(img)[c(1:2, 4)])
+  temp <- img[ , , 1, ]
+
+  # flip the image
+  temp[ , , ] <- apply(temp, 3, function(mat) mat[ , ncol(mat):1, drop=FALSE])
+  img <- temp
+  rm(temp)
+
   # Once the file is read in, eliminate transparent background pixels
   # assume no background masking to start
   idx <- NULL
