@@ -1,5 +1,16 @@
+# whitelist branches
+branches:
+    only:
+        - main
+
 language: r
 cache: packages
+
+dist: trusty
+sudo: required
+group: edge
+warnings_are_errors: false
+
 notifications:
     email:
         shawn.t.schwartz@gmail.com
