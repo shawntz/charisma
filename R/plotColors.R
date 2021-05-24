@@ -72,6 +72,10 @@ plotColors <- function(charisma_obj, type = c("freq", "spatial", "centroid"), th
     barplot(height = color_scores, names = names(color_scores), col = hex, main = paste0("Color Frequency (k=", color_summary$k, ", ", (threshold*100), "%)"),
             ylim = c(0,1), ylab = "Proportion of Image", las = 2)
   } else if(type == "spatial") {
+    # transform values before plotting
+    # replace colors with frequency less than 1% with 0
+    color_scores[which(charisma_obj$color.frequencies < .01)] <- 0
+
     # make plot
     barplot(height = color_scores, names = names(color_scores), col = hex, main = paste0("Spatial Density (k=", color_summary$k, ", ", (threshold*100), "%)"),
             ylim = c(0,1), ylab = "Proportion of Maximized Patchiness", las = 2)
@@ -79,8 +83,13 @@ plotColors <- function(charisma_obj, type = c("freq", "spatial", "centroid"), th
     # transform values before plotting
     # replace NaN values with 0
     color_scores[is.na(color_scores)] <- 0
+
+    # replace colors with frequency less than 1% with 0
+    color_scores[which(charisma_obj$color.frequencies < .01)] <- 0
+
     # scale all distances to the max distances
     color_scores <- color_scores / max(color_scores)
+
     # make plot
     barplot(height = color_scores, names = names(color_scores), col = hex, main = paste0("Scaled Centroid Distances (k=", color_summary$k, ", ", (threshold*100), "%)"),
             ylim = c(0,1), ylab = "Scaled Centroid Distances", las = 2)
