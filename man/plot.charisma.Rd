@@ -10,8 +10,11 @@
   plot.original = TRUE,
   plot.sprite = TRUE,
   plot.spatial = TRUE,
+  plot.centroids = FALSE,
+  plot.centroids.type = c("alpha", "silhouette", "original"),
   freq.threshold = 0.5,
-  spatial.threshold = 0.5
+  spatial.threshold = 0.5,
+  centroid.threshold = 0.5
 )
 }
 \arguments{

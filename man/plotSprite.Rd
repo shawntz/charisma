@@ -4,7 +4,14 @@
 \alias{plotSprite}
 \title{Add together two numbers}
 \usage{
-plotSprite(charisma_obj, multi.plot = FALSE, mapping = color.map)
+plotSprite(
+  charisma_obj,
+  centroids = FALSE,
+  plot.centroids.type = c("alpha", "silhouette", "original"),
+  cex = 3,
+  multi.plot = FALSE,
+  mapping = color.map
+)
 }
 \arguments{
 \item{x}{A number}

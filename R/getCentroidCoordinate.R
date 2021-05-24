@@ -29,7 +29,7 @@ getCentroidCoordinate <- function(charisma_obj, color.name, dimension = c("x", "
       if(dimension == "x")
         mean_coord <- mean_coord / df$ncols[1]
     else if(dimension == "y")
-      mean_coord <- mean_coord / df$nrows[1]
+      mean_coord <- 1 - (mean_coord / df$nrows[1])
   } else {
     return(NaN)
   }
