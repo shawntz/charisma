@@ -8,7 +8,7 @@
 #' add(10, 1)
 #'
 #' @export
-plotSprite <- function(charisma_obj, centroids = FALSE, plot.centroids = c("alpha", "silhouette", "original"), pch = 8, cex = 3, multi.plot = FALSE, mapping = color.map) {
+plotSprite <- function(charisma_obj, centroids = FALSE, plot.centroids = c("alpha", "silhouette", "original"), cex = 3, multi.plot = FALSE, mapping = color.map) {
 
   # for resetting
   if(!multi.plot)
@@ -44,7 +44,7 @@ plotSprite <- function(charisma_obj, centroids = FALSE, plot.centroids = c("alph
 
   asp <- img$nrows[1] / img$ncols[1]
 
-  plot(0:1, 0:1, type = "n", axes = TRUE,
+  plot(0:1, 0:1, type = "n", axes = FALSE,
        asp = asp, main = "Sprite Plot", xlab = "", ylab = "")
 
   graphics::rasterImage(hex_values, 0, 0, 1, 1)
@@ -62,32 +62,9 @@ plotSprite <- function(charisma_obj, centroids = FALSE, plot.centroids = c("alph
     # iteratively plot x-y centroids in matching color on plot
     for(i in 1:length(x_coords)) {
       cur_color <- names(hexes[which(names(hexes) == names(x_coords)[i])])
-      points(x_coords[i], y_coords[i], bg = cur_color, col = "black", pch = pch, cex = cex)
+      points(x_coords[i], y_coords[i], bg = cur_color, col = "black", pch = 23, cex = cex)
     }
-
-
   }
-
-
-
-
-  # # get spatial density score for each color
-  # scores <- rep(NA, num_colors)
-  # for(i in 1:num_colors) {
-  #   scores[i] <- getSpatialDensity(charisma_obj, color_names[i])
-  # }
-  # names(scores) <- color_names
-  #
-  # points(.168, .502, col = "black", pch = 8, cex = 3)
-  # points(.502, .502, col = "black", pch = 9, cex = 3)
-  # points(0.836, .502, col = "black", pch = 10, cex = 3)
-  #
-  # #points(0.48, 0.5009, col = "purple", pch = 8, cex = 3)
-  # #points(0.503, 0.500, col = "white", pch = 8, cex = 3)
-  # #points(0.4542, 0.5407, col = "red", pch = 8, cex = 3)
-  # #points(0.505, .5017, col = "orange", pch = 8, cex = 3)
-  # #points(0.36, 0.49, col = "yellow", pch = 8, cex = 3)
-  # #points(0.4023, 0.5057, col = "green", pch = 8, cex = 3)
 
   # reset parameters
   if(!multi.plot)
