@@ -8,17 +8,17 @@
 #' add(10, 1)
 #'
 #' @export
-plotSprite <- function(charisma_obj, centroids = FALSE, plot.centroids = c("alpha", "silhouette", "original"), cex = 3, multi.plot = FALSE, mapping = color.map) {
+plotSprite <- function(charisma_obj, centroids = FALSE, plot.centroids.type = c("alpha", "silhouette", "original"), cex = 3, multi.plot = FALSE, mapping = color.map) {
 
   # for resetting
   if(!multi.plot)
     user_par <- graphics::par(no.readonly = TRUE)
 
-  # check if valid plot.centroids method
-  plot.centroids <- tolower(plot.centroids)
-  plot.centroids <- match.arg(plot.centroids)
-  if(is.null(plot.centroids))
-    stop("Invalid plot.centroids method specified.
+  # check if valid plot.centroids.type method
+  plot.centroids.type <- tolower(plot.centroids.type)
+  plot.centroids.type <- match.arg(plot.centroids.type)
+  if(is.null(plot.centroids.type))
+    stop("Invalid plot.centroids.type method specified.
          Please select from 'alpha', 'silhouette', or 'original'.")
 
   # get all color names from color mapping
@@ -35,17 +35,21 @@ plotSprite <- function(charisma_obj, centroids = FALSE, plot.centroids = c("alph
   if(!centroids)
     hex_values <- charisma_obj$hex.matrix
   else if(centroids)
-    if(plot.centroids == "alpha")
+    if(plot.centroids.type == "alpha")
       hex_values <- charisma_obj$alpha.matrix
-    else if(plot.centroids == "silhouette")
+    else if(plot.centroids.type == "silhouette")
       hex_values <- charisma_obj$silhouette.matrix
-    else if(plot.centroids == "original")
+    else if(plot.centroids.type == "original")
       hex_values <- charisma_obj$hex.matrix
 
   asp <- img$nrows[1] / img$ncols[1]
 
+  main_title <- "Sprite Plot"
+  if(centroids)
+    main_title <- "Centroid Plot"
+
   plot(0:1, 0:1, type = "n", axes = FALSE,
-       asp = asp, main = "Sprite Plot", xlab = "", ylab = "")
+       asp = asp, main = main_title, xlab = "", ylab = "")
 
   graphics::rasterImage(hex_values, 0, 0, 1, 1)
 
@@ -53,11 +57,11 @@ plotSprite <- function(charisma_obj, centroids = FALSE, plot.centroids = c("alph
   if(centroids) {
     # get scaled x-coordinates for centroid plots
     x_coords <- charisma_obj$centroid.x[which(charisma_obj$centroid.x > 0)]
-    print(x_coords)
+    print(x_coords) #temp for debugging
 
     # get scaled y-coordinates for centroid plots
     y_coords <- charisma_obj$centroid.y[which(charisma_obj$centroid.y > 0)]
-    print(y_coords)
+    print(y_coords) #temp for debugging
 
     # iteratively plot x-y centroids in matching color on plot
     for(i in 1:length(x_coords)) {

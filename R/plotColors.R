@@ -8,13 +8,13 @@
 #' add(10, 1)
 #'
 #' @export
-plotColors <- function(charisma_obj, type = c("freq", "spatial"), threshold = .05, multi.plot = FALSE, mapping = color.map) {
+plotColors <- function(charisma_obj, type = c("freq", "spatial", "centroid"), threshold = .05, multi.plot = FALSE, mapping = color.map) {
 
   # check if valid plot type
   type <- tolower(type)
   type <- match.arg(type)
   if(is.null(type))
-    stop("Invalid plot type specified. Please select from `freq` or `spatial`.")
+    stop("Invalid plot type specified. Please select from 'freq', 'spatial', or 'centroid'.")
 
   # get all color names from color mapping
   color_names <- getMappedColors(mapping)
@@ -33,11 +33,14 @@ plotColors <- function(charisma_obj, type = c("freq", "spatial"), threshold = .0
   } else if(type == "spatial") {
     # extract spatial density scores
     color_scores <- charisma_obj$spatial.density
+  } else if(type == "centroid") {
+    # extract centroid distances
+    color_scores <- charisma_obj$centroid.dists
   }
 
   # get k-value (i.e., total number of discrete color classes)
-  # extract color means for each color
   if(type == "freq") {
+    # extract color means for each color
     color_means <- charisma_obj$color.frequencies
     color_means <- color_means[color_means >= threshold]
     called_colors_freq <- names(color_means)
@@ -48,6 +51,12 @@ plotColors <- function(charisma_obj, type = c("freq", "spatial"), threshold = .0
     spatial_scores <- spatial_scores[spatial_scores >= threshold]
     called_colors_spatial <- names(spatial_scores)
     color_summary <- ifelse(color_names %in% called_colors_spatial, 1, 0)
+  } else if(type == "centroid") {
+    # extract centroid distances for each color
+    centroid_distances <- charisma_obj$centroid.dists
+    centroid_distances <- centroid_distances[centroid_distances >= threshold]
+    called_colors_centroid <- names(centroid_distances)
+    color_summary <- ifelse(color_names %in% called_colors_centroid, 1, 0)
   }
 
   names(color_summary) <- color_names
@@ -66,6 +75,15 @@ plotColors <- function(charisma_obj, type = c("freq", "spatial"), threshold = .0
     # make plot
     barplot(height = color_scores, names = names(color_scores), col = hex, main = paste0("Spatial Density (k=", color_summary$k, ", ", (threshold*100), "%)"),
             ylim = c(0,1), ylab = "Proportion of Maximized Patchiness", las = 2)
+  } else if(type == "centroid") {
+    # transform values before plotting
+    # replace NaN values with 0
+    color_scores[is.na(color_scores)] <- 0
+    # scale all distances to the max distances
+    color_scores <- color_scores / max(color_scores)
+    # make plot
+    barplot(height = color_scores, names = names(color_scores), col = hex, main = paste0("Scaled Centroid Distances (k=", color_summary$k, ", ", (threshold*100), "%)"),
+            ylim = c(0,1), ylab = "Scaled Centroid Distances", las = 2)
   }
   abline(h = threshold, col = "red", lty = "dashed")
 
