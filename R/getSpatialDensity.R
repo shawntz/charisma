@@ -10,6 +10,7 @@
 #' @export
 getSpatialDensity <- function(charisma_obj, color_name) {
 
+  # extract color name matrix
   img <- charisma_obj$cname.matrix
 
   # save a copy of color name matrix before manipulating
@@ -37,25 +38,32 @@ getSpatialDensity <- function(charisma_obj, color_name) {
   # get the square root of the number of colors to build the ideal square matrix
   # of optimal "patchiness" such that the density of the patch is maximized
   num_colors_sq <- sqrt(num_colors)
-
   ideal_img <- matrix(1, nrow = num_colors_sq, ncol = num_colors_sq)
   ideal_img_original_ncol <- ncol(ideal_img)
   ideal_img_original_nrow <- nrow(ideal_img) + 1
-
   square_area <- nrow(ideal_img) * ncol(ideal_img)
   new_row_size <- num_colors - square_area
   ideal_img <- rbind(ideal_img, rep(0, ideal_img_original_ncol))
   ideal_img <- cbind(ideal_img, rep(0, ideal_img_original_nrow))
-
   row_fill <- new_row_size
   col_fill <- 0
-  if(row_fill > nrow(ideal_img)) {
-    col_fill <- row_fill - nrow(ideal_img)
-    row_fill <- 4
+  img_size <- nrow(ideal_img)
+  if(row_fill > img_size - 1) {
+    col_fill = row_fill - img_size + 1
+    row_fill = img_size - 1
   }
+
+  #create new row and column to set into image
+  new_row <- c(rep(1, row_fill), rep(0, img_size - row_fill))
+  new_col <- c(rep(1, col_fill), rep(0, img_size - col_fill))
+
+  #set ideal_image
+  ideal_img[img_size, ] = new_row
+  ideal_img[, img_size] = new_col
 
   # get Manhattan neighbor score on ideal square patch
   ideal_neighbor_sums <- rbind(ideal_img[-1,],0) + rbind(0,ideal_img[-nrow(ideal_img),]) + cbind(ideal_img[,-1],0) + cbind(0,ideal_img[,-ncol(ideal_img)])
+  ideal_neighbor_sums[which(ideal_img != 1)] <- 0
 
   return(sum(neighbor_sums) / sum(ideal_neighbor_sums))
 
