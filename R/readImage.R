@@ -128,7 +128,7 @@ readImage <- function(path, resize = NULL, lower = NULL, upper = NULL, alpha.cha
     if (min(img[ , , 4]) < 1) {
 
 
-      message("Using PNG transparency (alpha channel) as background mask...")
+      message("Using PNG transparency (alpha channel) as background mask.")
 
 
       # index background pixels based on opacity
