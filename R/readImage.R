@@ -187,11 +187,11 @@ readImage <- function(path, resize = NULL, lower = NULL, upper = NULL, alpha.cha
   # 3D RGB array, 2D RGB+HSV array with background pixels
   # removed and labeled, matrix of hex values for raster,
   # and matrix of paired color names to hex values for raster
-  end.list <- vector("list", length = 12)
+  end.list <- vector("list", length = 13)
   endList_names <- c("path", "original.rgb", "filtered.2d",
                      "hex.matrix", "cname.matrix", "alpha.matrix",
                      "silhouette.matrix", "color.frequencies", "spatial.density",
-                     "centroid.dists", "centroid.x", "centroid.y")
+                     "centroid.dists", "centroid.x", "centroid.y", "color.clusters")
   names(end.list) <- endList_names
 
   end.list[1:3] <- list(path,
@@ -216,7 +216,8 @@ readImage <- function(path, resize = NULL, lower = NULL, upper = NULL, alpha.cha
 
   # get x,y coordinates of each hsv pixel value for spatial centroid analysis
   surface.area <- nrows * ncols
-  a <- matrix(1:surface.area, nrow = ncols, ncol = nrows)
+  #a <- matrix(1:surface.area, nrow = ncols, ncol = nrows)
+  a <- matrix(1:surface.area, nrow = nrows, ncol = ncols)
   out <- which(a != 0, arr.ind = TRUE)
 
   # refactor filtered.hsv.rgb.2d dataframe necessary for charisma analyses
@@ -265,6 +266,8 @@ readImage <- function(path, resize = NULL, lower = NULL, upper = NULL, alpha.cha
 
   # get centroid y-coordinates per color
   end.list$centroid.y <- getCentroidCoordinates(end.list, "y", TRUE)
+
+  end.list$color.clusters <- raster_objects$color.clusters
 
   # set class
   class(end.list) <- "charisma"

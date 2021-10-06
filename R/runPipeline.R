@@ -10,7 +10,7 @@
 #' @export
 runPipeline <- function(images,
                         summary.method = c("both", "freq", "spatial"),
-                        freq.threshold = .05, spatial.threshold = .05,
+                        freq.threshold = 0.1, spatial.threshold = .85,
                         validate.color.map = FALSE, validation.simple = TRUE, lower = NULL, upper = NULL,
                         alpha.channel = TRUE, plot.diagnostic = FALSE, save.plots = FALSE, output.dir = getwd(),
                         save.plot.type = c("pdf", "png", "jpeg", "tiff", "bmp"), plot.width = 10, plot.height = 5,
@@ -94,7 +94,9 @@ runPipeline <- function(images,
           bmp(filename = filename, width = plot.width, height = plot.height, units = "in", res = 300)
       }
 
-      plotDiagnostic(img, mapping = mapping, freq.threshold = freq.threshold, spatial.threshold = spatial.threshold)
+      #plotDiagnostic(img, mapping = mapping, freq.threshold = freq.threshold, spatial.threshold = spatial.threshold)
+      plot(img, plot.centroids = T)
+      plotCentroidGrid(img)
 
       if(save.plots)
         dev.off()

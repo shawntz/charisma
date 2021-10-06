@@ -8,7 +8,7 @@
 #' add(10, 1)
 #'
 #' @export
-plotSprite <- function(charisma_obj, centroids = FALSE, plot.centroids.type = c("alpha", "silhouette", "original"), cex = 3, multi.plot = FALSE, mapping = color.map) {
+plotSprite <- function(charisma_obj, centroids = FALSE, plot.centroids.type = c("alpha", "silhouette", "original"), cex = 1, multi.plot = FALSE, mapping = color.map) {
 
   # for resetting
   if(!multi.plot)
@@ -52,15 +52,28 @@ plotSprite <- function(charisma_obj, centroids = FALSE, plot.centroids.type = c(
        asp = asp, main = main_title, xlab = "", ylab = "")
 
   graphics::rasterImage(hex_values, 0, 0, 1, 1)
+  #points(0.2661157, 1-0.4738292, col = "black", pch = 8, cex = 5)
+  #temp_mat <- cbind(charisma_obj$filtered.2d$x.coord/1210, charisma_obj$filtered.2d$y.coord/1815)
+  #print(head(temp_mat))
+  #selectedPoints <- fhs(temp_mat)
+  #points(0.3991736, 0.1404959, col = "black", pch = 8, cex = 5)
+  #points(0.3991736, 1-0.1404959, col = "red", pch = 8, cex = 5)
+  #points(0.1404959, 0.3991736, col = "blue", pch = 8, cex = 5)
+  #points(1-0.1404959, 0.3991736, col = "orange", pch = 8, cex = 5)
+  #print(selectedPoints)
 
   # plot centroids if requested
   if(centroids) {
     # get scaled x-coordinates for centroid plots
-    x_coords <- charisma_obj$centroid.x[which(charisma_obj$centroid.x > 0)]
+    x_coords <- charisma_obj$centroid.x
+    #x_coords <- charisma_obj$centroid.x[which(charisma_obj$centroid.x > 0)]
+    x_coords[which(charisma_obj$color.frequencies < .01)] <- NaN
     print(x_coords) #temp for debugging
 
     # get scaled y-coordinates for centroid plots
-    y_coords <- charisma_obj$centroid.y[which(charisma_obj$centroid.y > 0)]
+    y_coords <- charisma_obj$centroid.y
+    #y_coords <- charisma_obj$centroid.y[which(charisma_obj$centroid.y > 0)]
+    y_coords[which(charisma_obj$color.frequencies < .01)] <- NaN
     print(y_coords) #temp for debugging
 
     # iteratively plot x-y centroids in matching color on plot

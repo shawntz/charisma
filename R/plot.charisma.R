@@ -14,8 +14,8 @@ plot.charisma <- function(x, ...,
                           plot.spatial = TRUE,
                           plot.centroids = FALSE,
                           plot.centroids.type = c("alpha", "silhouette", "original"),
-                          freq.threshold = 0.5,
-                          spatial.threshold = 0.5,
+                          freq.threshold = 0.1,
+                          spatial.threshold = 0.85,
                           centroid.threshold = 0.5) {
 
   # for resetting
