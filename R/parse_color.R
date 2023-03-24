@@ -110,9 +110,23 @@ parse_conditional <- function(parsed_mapping, destination = c("pipeline", "gette
 #' add(10, 1)
 #'
 #' @export
-parse_color <- function(color_triplet, verbose = FALSE, mapping = color.map) {
-  # convert color space to hsv
-  color_triplet <- as.data.frame(t(rgb2hsv(color_triplet[1], color_triplet[2], color_triplet[3])))
+parse_color <- function(color_triplet, hsv = FALSE, verbose = FALSE, mapping = color.map) {
+  if(!hsv) {
+    # convert color space to hsv
+    color_triplet <- as.data.frame(t(rgb2hsv(color_triplet[1], color_triplet[2], color_triplet[3])))
+  } else {
+    # this is to feed in a single row of h, s, and v values (a la the patch set in long format that whitney sent me)
+    color_triplet <- as.data.frame(cbind(h = color_triplet$h[1], s = color_triplet$s[1], v = color_triplet$v[1]))
+  }
+
+  #print(color_triplet)
+
+  # check if any NAs in color triplet and return NA if true
+  if(is.na(sum(color_triplet[1,])))
+    return("NA")
+  # if(apply(color_triplet, 0, function(x) is.na(x))) {
+  #   return("NA")
+  # }
 
   if(verbose) print(color_triplet)
 
@@ -120,6 +134,8 @@ parse_color <- function(color_triplet, verbose = FALSE, mapping = color.map) {
   h <- round(color_triplet[1] * 360, 2)
   s <- round(color_triplet[2] * 100, 2)
   v <- round(color_triplet[3] * 100, 2)
+
+  #print(c(h, s, v))
 
   # get all color names from color mapping
   color_names <- unique(mapping[,1])
