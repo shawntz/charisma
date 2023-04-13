@@ -19,7 +19,8 @@ load_image <- function(img_path = system.file("extdata/corbetti.png", package = 
     plot(recolorize_defaults)
 
     SWAP_RESPONSE <- readline("Would you like to SWAP any colors? [Y/N] ")
-    CONTINUE_SWAPPING <-TRUE
+    CONTINUE_SWAPPING <- TRUE
+    CONTINUE_MERGING <- TRUE
     UNDO <- FALSE
 
     if (tolower(SWAP_RESPONSE) == "y") {
@@ -44,8 +45,19 @@ load_image <- function(img_path = system.file("extdata/corbetti.png", package = 
 
     MERGE_RESPONSE <- readline("Would you like to MERGE any colors? [Y/N] ")
     if (tolower(MERGE_RESPONSE) == "y") {
-      MERGE_RESPONSE <- readline("Enter each color pair to merge as follows: [e.g., c(2,3), c(4,7), c(9,10)] ")
-      recolorize_defaults <- merge_colors(recolorize_defaults, MERGE_RESPONSE)
+      while (CONTINUE_MERGING) {
+        MERGE_RESPONSE <- readline("Enter each color pair to merge as follows: [e.g., c(2,3), c(4,7), c(9,10)] ")
+        # recolorize_defaults <- merge_colors(recolorize_defaults, MERGE_RESPONSE)
+        merged_img <- merge_colors(recolorize_defaults, MERGE_RESPONSE)
+        CONTINUE_MERGE_RESPONSE <- readline("Would you like to MERGE any other colors? [Y/N] ")
+        if (tolower(CONTINUE_MERGE_RESPONSE) == "y") {
+          recolorize_defaults <- merged_img
+          CONTINUE_MERGING <- TRUE
+        } else {
+          recolorize_defaults <- merged_img
+          CONTINUE_MERGING <- FALSE
+        }
+      }
     }
   }
 
