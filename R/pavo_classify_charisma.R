@@ -64,7 +64,7 @@ pavo_classify_charisma <- function(charisma_obj, tmp_dir = "pavo_tmp") {
   imagedata2 <- mirrorx(imagedata2)
   imagedata2 <- apply(t(as.matrix(imagedata2)), 2, rev)
 
-  plot(0:1, 0:1, type = "n", axes = FALSE, asp = asp, main = "input to pavo", xlab = "", ylab = "")
+  plot(0:1, 0:1, type = "n", axes = FALSE, asp = asp, main = "input2pavo", xlab = "", ylab = "")
   graphics::rasterImage(imagedata2, 0, 0, 1, 1)
 
   tmp_pavo_cols <- attr(pavo_class, "classRGB")
@@ -76,7 +76,7 @@ pavo_classify_charisma <- function(charisma_obj, tmp_dir = "pavo_tmp") {
   # print(palette)
   image(seq_along(palette), 1, as.matrix(seq_along(palette)),
         col = palette,
-        main = paste0("pavo classification (charisma k=", charisma_k_cols, ")"),
+        main = paste0("pavo class (k=", charisma_k_cols, ")"),
         xlab = paste("Color class IDs: 1 -", length(palette)),
         ylab = "",
         xaxt = "n",
@@ -88,7 +88,7 @@ pavo_classify_charisma <- function(charisma_obj, tmp_dir = "pavo_tmp") {
 ## TODO: force out the white classification from the plot + figure out it's id within the array to pass to the adjacency funcs [Done -- just need to pass into the adjacency function by making a custom wrapper for this that passes the ignore value in as well]
 
 ## [pretty much fully done for now]:
-## TODO: add in a graphic for the proportion of colors selected by charisma to determine k (like the old plots w/ threshold line) [Done]
+## TODO: add in a graphic for the proportion of colors selected by charisma to determine k (like the old plots w/ threshold line) [Done -- currently only showing color bars that have any value > 0 .. should we show all 10 colors with empty slots instead?]
 ## TODO: in the final version of classification plot (hide the color id for the background) -- stick with pure white for now [Done -- need to address potential issue of values being close to (but not exactly) pure white [i.e., "the 0.99" problem, and what happens if there are meaningful colors in the image that fall within this range?...]]
 ## TODO: fix aspect ratio of 3rd pavo plot [Done -- "input to pavo" plot now fixed by replotting it from source]
 ## TODO: bypass manual intervention step [Done -- this is accomplished by passing verbose = FALSE to the charisma() function call, which is then passed to the load_image() function call]
