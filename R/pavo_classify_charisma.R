@@ -82,7 +82,16 @@ pavo_classify_charisma <- function(charisma_obj, tmp_dir = "pavo_tmp") {
         xaxt = "n",
         yaxt = "n",
         asp = asp)
+
+  # run the adjacency analysis
+  print(dim(imagedata2))
+  color_stats <- pavo::adjacent(pavo_class, bkgID = as.numeric(white_bg_id), xscale = dim(imagedata2)[2])
+  return(color_stats)
 }
+
+## TODO: figure out the xscale dimensions what happens if we use procimg() {find the original script and match the scaling parameters}
+## TODO: build in the stepwise rerun of pavo until desired output is achieved, then directly run adjacency stats and save to a csv file
+##
 
 ## [still needs a bit more work with getting the adjacency function wrapper written...]
 ## TODO: force out the white classification from the plot + figure out it's id within the array to pass to the adjacency funcs [Done -- just need to pass into the adjacency function by making a custom wrapper for this that passes the ignore value in as well]
