@@ -67,7 +67,13 @@ pavo_classify_charisma <- function(charisma_obj, tmp_dir = "pavo_tmp") {
   plot(0:1, 0:1, type = "n", axes = FALSE, asp = asp, main = "input to pavo", xlab = "", ylab = "")
   graphics::rasterImage(imagedata2, 0, 0, 1, 1)
 
-  palette <- rgb(attr(pavo_class, "classRGB"))
+  tmp_pavo_cols <- attr(pavo_class, "classRGB")
+  white_bg_id <- rownames(subset(tmp_pavo_cols, rowSums(tmp_pavo_cols[,1:3] > 0.99) > 0)) ## TODO: this works for now as an ID to pass into the pavo adjaceny function, but will fail if there are multiple ID's that fall within the white boundary, so it'll be critical to figure out an elegant solution for this
+  tmp_pavo_cols <- subset(tmp_pavo_cols, rowSums(tmp_pavo_cols[,1:3] > 0.99) == 0)
+  print(tmp_pavo_cols)
+  print(white_bg_id)
+  palette <- rgb(tmp_pavo_cols)
+  print(palette)
   image(seq_along(palette), 1, as.matrix(seq_along(palette)),
         col = palette,
         main = paste0("pavo classification (charisma k=", charisma_k_cols, ")"),
@@ -78,9 +84,12 @@ pavo_classify_charisma <- function(charisma_obj, tmp_dir = "pavo_tmp") {
         asp = asp)
 }
 
+## [still needs a bit more work with getting the adjacency function wrapper written...]
+## TODO: force out the white classification from the plot + figure out it's id within the array to pass to the adjacency funcs [Done -- just need to pass into the adjacency function by making a custom wrapper for this that passes the ignore value in as well]
+
+## [pretty much fully done for now]:
 ## TODO: add in a graphic for the proportion of colors selected by charisma to determine k (like the old plots w/ threshold line) [Done]
-## TODO: in the final version of classification plot (hide the color id for the background) -- stick with pure white for now
-## TODO: force out the white classification from the plot + figure out it's id within the array to pass to the adjacency funcs
+## TODO: in the final version of classification plot (hide the color id for the background) -- stick with pure white for now [Done -- need to address potential issue of values being close to (but not exactly) pure white [i.e., "the 0.99" problem, and what happens if there are meaningful colors in the image that fall within this range?...]]
 ## TODO: fix aspect ratio of 3rd pavo plot [Done -- "input to pavo" plot now fixed by replotting it from source]
 ## TODO: bypass manual intervention step [Done -- this is accomplished by passing verbose = FALSE to the charisma() function call, which is then passed to the load_image() function call]
 ## TODO: make sure all charisma objects are forced to have an image path upon initial load [Done -- this is accomplished when image is loaded via the charisma() function]
