@@ -38,7 +38,7 @@ pavo_classify_charisma <- function(charisma_obj, tmp_dir = "pavo_tmp") {
         asp = asp)
 }
 
-## TODO: add in a graphic for the proportion of colors selected by charisma to determine k (like the old plots w/ threshold line)
+## TODO: add in a graphic for the proportion of colors selected by charisma to determine k (like the old plots w/ threshold line) [Done]
 ## TODO: in the final version of classification plot (hide the color id for the background) -- stick with pure white for now
 ## TODO: force out the white classification from the plot + figure out it's id within the array to pass to the adjacency funcs
 ## TODO: fix aspect ratio of 3rd pavo plot
