@@ -116,9 +116,7 @@ pavo_classify_charisma <- function(charisma_obj, tmp_dir = "pavo_tmp") {
   pavo_class <- pavo::classify(pavo_img, kcols = charisma_k_cols + 1)
   classifications <- list()
   classifications[[1]] <- pavo_class
-  print(basename(charisma_obj$path))
   names(classifications) <- basename(charisma_obj$path)
-  print(classifications)
   # # print out summary plot
   # summary(pavo_class, plot = TRUE)
 
