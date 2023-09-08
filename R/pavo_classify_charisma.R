@@ -92,7 +92,7 @@ getCleanedupStats <- function(adj_k_dists_list) {
   return(img_adj_k_dists_select)
 }
 
-pavo_classify_charisma <- function(charisma_obj, tmp_dir = "pavo_tmp") {
+pavo_classify_charisma <- function(charisma_obj, tmp_dir = "pavo_tmp", plot = TRUE) {
   # create tmp directory to store recolored jpeg outputs
   if (!dir.exists(tmp_dir)) {
     dir.create(tmp_dir)
@@ -146,8 +146,10 @@ pavo_classify_charisma <- function(charisma_obj, tmp_dir = "pavo_tmp") {
   imagedata2 <- mirrorx(imagedata2)
   imagedata2 <- apply(t(as.matrix(imagedata2)), 2, rev)
 
-  plot(0:1, 0:1, type = "n", axes = FALSE, asp = asp, main = "input2pavo", xlab = "", ylab = "")
-  graphics::rasterImage(imagedata2, 0, 0, 1, 1)
+  if (plot) {
+    plot(0:1, 0:1, type = "n", axes = FALSE, asp = asp, main = "input2pavo", xlab = "", ylab = "")
+    graphics::rasterImage(imagedata2, 0, 0, 1, 1)
+  }
 
   tmp_pavo_cols <- attr(pavo_class, "classRGB")
   white_bg_id <- rownames(subset(tmp_pavo_cols, rowSums(tmp_pavo_cols[,1:3] > 0.99) > 0)) ## TODO: this works for now as an ID to pass into the pavo adjaceny function, but will fail if there are multiple ID's that fall within the white boundary, so it'll be critical to figure out an elegant solution for this
@@ -155,15 +157,19 @@ pavo_classify_charisma <- function(charisma_obj, tmp_dir = "pavo_tmp") {
   # print(tmp_pavo_cols)
   # print(white_bg_id)
   palette <- rgb(tmp_pavo_cols)
+  # print(tmp_pavo_cols)
   # print(palette)
-  image(seq_along(palette), 1, as.matrix(seq_along(palette)),
-        col = palette,
-        main = paste0("pavo class (k=", charisma_k_cols, ")"),
-        xlab = paste("Color class IDs: 1 -", length(palette)),
-        ylab = "",
-        xaxt = "n",
-        yaxt = "n",
-        asp = asp)
+  # print(palette
+  if (plot) {
+    image(seq_along(palette), 1, as.matrix(seq_along(palette)),
+          col = palette,
+          main = paste0("pavo class (k=", charisma_k_cols, ")"),
+          xlab = paste("Color class IDs: 1 -", length(palette)),
+          ylab = "",
+          xaxt = "n",
+          yaxt = "n",
+          asp = asp)
+  }
 
   # get relevant coldists data before running adjacency
   classified_k_dists <- getImgClassKDists(classifications, calcEucLumDists)
@@ -173,7 +179,17 @@ pavo_classify_charisma <- function(charisma_obj, tmp_dir = "pavo_tmp") {
   # print(dim(imagedata2))
   # color_stats <- pavo::adjacent(pavo_class, bkgID = as.numeric(white_bg_id), xscale = dim(imagedata2)[2])
   # return(color_stats)
-  return(adj_stats)
+  output.list <- vector("list", length = 3)
+  output.list_names <- c("adj_stats",
+                         "adj_class",
+                         "adj_class_plot_cols")
+  names(output.list) <- output.list_names
+  output.list$adj_stats <- adj_stats
+  output.list$adj_class <- tmp_pavo_cols
+  output.list$adj_class_plot_cols <- palette
+
+  # return(adj_stats)
+  return(output.list)
 }
 
 ## TODO: figure out the xscale dimensions what happens if we use procimg() {find the original script and match the scaling parameters}

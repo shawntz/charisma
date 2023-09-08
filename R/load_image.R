@@ -9,7 +9,7 @@
 #'
 #' @export
 load_image <- function(img_path = system.file("extdata/corbetti.png", package = "recolorize"),
-                       verbose = TRUE) {
+                       verbose = TRUE, plot = TRUE) {
   img <- recolorize::readImage(img_path, resize = NULL, rotate = NULL)
   recolorize_defaults <- suppressMessages(recolorize::recolorize2(img = img,
                                                                  bins = 4,
@@ -71,7 +71,9 @@ load_image <- function(img_path = system.file("extdata/corbetti.png", package = 
 
   # return(recolorize_defaults_rerun)
 
-  plot_recolored(recolorize_defaults)
+  if (plot) {
+    plot_recolored(recolorize_defaults)
+  }
 
   return(recolorize_defaults)
 }

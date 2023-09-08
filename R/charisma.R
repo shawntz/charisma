@@ -8,9 +8,9 @@
 #' add(10, 1)
 #'
 #' @export
-charisma <- function(img_path, stack_colors = TRUE, threshold = 0.0, verbose = TRUE) {
+charisma <- function(img_path, stack_colors = TRUE, threshold = 0.0, verbose = TRUE, plot = TRUE) {
   # load image with clustered centers
-  img <- load_image(img_path, verbose = verbose)
+  img <- load_image(img_path, verbose = verbose, plot = plot)
 
   # plot final product
   #plot_recolored(img)
@@ -41,7 +41,7 @@ charisma <- function(img_path, stack_colors = TRUE, threshold = 0.0, verbose = T
   # sort classifications
   color_data <- color_data[order(color_data$prop, decreasing = TRUE), ]
 
-  output.list <- vector("list", length = 10)
+  output.list <- vector("list", length = 13)
   output.list_names <- c("path",
                          "colors",
                          "k",
@@ -51,7 +51,10 @@ charisma <- function(img_path, stack_colors = TRUE, threshold = 0.0, verbose = T
                          "pixel_assignments",
                          "sizes",
                          "centers",
-                         "scaled_color_clusters")
+                         "scaled_color_clusters",
+                         "pavo_adj_stats",
+                         "pav_adj_class",
+                         "pavo_adj_class_plot_cols")
 
   names(output.list) <- output.list_names
 
@@ -67,6 +70,11 @@ charisma <- function(img_path, stack_colors = TRUE, threshold = 0.0, verbose = T
   output.list$scaled_color_clusters <- NULL #TODO
 
   class(output.list) <- "charisma"
+
+  tmp_pavo_adj <- charisma::pavo_classify_charisma(output.list, plot = plot)
+  output.list$pavo_adj_stats <- tmp_pavo_adj$adj_stats
+  output.list$pav_adj_class <- tmp_pavo_adj$adj_class
+  output.list$pavo_adj_class_plot_cols <- tmp_pavo_adj$adj_class_plot_cols
 
   return(output.list)
 

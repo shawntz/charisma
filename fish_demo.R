@@ -12,11 +12,16 @@ if (!dir.exists(out_dir))
   dir.create(out_dir)
 
 run_charisma <- function(img = "Anampses_Anampses caeruleopunctatus_1511191576.png", out_dir = out_dir) {
-  fname <- paste0(tools::file_path_sans_ext(basename(img)), ".jpeg")
-  fish_c <- charisma(img, verbose = FALSE)
-  jpeg(file.path(out_dir, fname), width = 1920, height = 300, units = "px")
-  plot_diagnostics(fish_c)
-  dev.off()
+  # fname <- paste0(tools::file_path_sans_ext(basename(img)), ".jpeg")
+  fish_c <- charisma(img, verbose = FALSE, plot = FALSE)
+  # assuming appropriate output dirs
+  saveRDS(fish_c, file.path(out_dir, paste0("charisma_", basename(img), ".RDS")))
+
+  # then, save out all the relevant data to csvs for analysis later
+  write.csv(fish_c$pavo_adj_stats, file.path(out_dir, paste0("charisma_", basename(img), "_pavo.csv")), row.names = FALSE)
+  # jpeg(file.path(out_dir, fname), width = 1920, height = 300, units = "px")
+  # plot_diagnostics(fish_c)
+  # dev.off()
 }
 
 
@@ -39,3 +44,11 @@ male_files <- list.files(in_dir_m, pattern = ".png", all.files = TRUE, full.name
 for (male in male_files) {
   run_charisma(img = male, out_dir = file.path(out_dir, "male_segmented"))
 }
+
+#### later on
+all_pavo_data.df <- dir_with_all_csvs %>%
+  list.files(path = out_dir,
+             pattern = "*.csv",
+             full.names = TRUE) %>%
+  read_csv(show_col_types = FALSE) %>%
+  bind_rows()
