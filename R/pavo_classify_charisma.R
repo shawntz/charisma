@@ -71,9 +71,9 @@ getImgClassKDists <- function(classifications, euclidean_lum_dists) {
 #calculate the adjacency stats for each image, using the calculated distances as proxies for dS and dL
 getAdjStats <- function(classifications, img_class_k_dists, imagedata2, xpts=100, xscale=100, bkgID=NULL) {
   adj_k_dists_list <- list()
-  # pavo::adjacent(pavo_class, , xscale = dim(imagedata2)[2])
   for(i in 1:length(classifications)) {
-    adj_k_dists_list[[i]] <- pavo::adjacent(classimg = classifications[[i]],coldists=img_class_k_dists[[i]],xscale=dim(imagedata2)[2],bkgID = as.numeric(bkgID))
+    #adj_k_dists_list[[i]] <- pavo::adjacent(classimg = classifications[[i]],coldists=img_class_k_dists[[i]],xscale=dim(imagedata2)[2],bkgID = as.numeric(bkgID))
+    adj_k_dists_list[[i]] <- pavo::adjacent(classimg = classifications[[i]],coldists=img_class_k_dists[[i]],xpts=xpts,xscale=xscale,bkgID = as.numeric(bkgID))
     cat("\n")
   }
 
