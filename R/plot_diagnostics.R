@@ -1,5 +1,9 @@
 plot_diagnostics <- function(charisma_obj, pavo = TRUE) {
-  par(mfrow=c(1,5))
+  if (pavo) {
+    par(mfrow=c(1,5))
+  } else {
+    par(mfrow=c(1,3))
+  }
   plot_original(charisma_obj)
   plot_recolored(charisma_obj)
   plot_freqs(charisma_obj)
