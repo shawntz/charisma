@@ -58,10 +58,9 @@ charisma <- function(img_path, stack_colors = TRUE, threshold = 0.0, verbose = T
     ), .before = 1)
 
   px_assignments_copy <- img$pixel_assignments
-  # Find the rows and columns where the old values match
+
   match_indices <- px_assignments_copy %in% color_mask_LUT$assignment_class
 
-  # Replace old values with new values using indexing
   px_assignments_copy[match_indices] <- color_mask_LUT$hex[match(px_assignments_copy[match_indices], color_mask_LUT$assignment_class)]
 
   # stack by color (if requested)
