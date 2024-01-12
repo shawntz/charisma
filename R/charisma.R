@@ -8,7 +8,7 @@
 #' add(10, 1)
 #'
 #' @export
-charisma <- function(img_path, stack_colors = TRUE, threshold = 0.0, verbose = TRUE, plot = TRUE) {
+charisma <- function(img_path, stack_colors = TRUE, threshold = 0.0, verbose = TRUE, plot = TRUE, pavo = TRUE) {
   # load image with clustered centers
   img <- load_image(img_path, verbose = verbose, plot = plot)
 
@@ -71,10 +71,12 @@ charisma <- function(img_path, stack_colors = TRUE, threshold = 0.0, verbose = T
 
   class(output.list) <- "charisma"
 
-  tmp_pavo_adj <- charisma::pavo_classify_charisma(output.list, plot = plot)
-  output.list$pavo_adj_stats <- tmp_pavo_adj$adj_stats
-  output.list$pav_adj_class <- tmp_pavo_adj$adj_class
-  output.list$pavo_adj_class_plot_cols <- tmp_pavo_adj$adj_class_plot_cols
+  if (pavo) {
+    tmp_pavo_adj <- charisma::pavo_classify_charisma(output.list, plot = plot)
+    output.list$pavo_adj_stats <- tmp_pavo_adj$adj_stats
+    output.list$pav_adj_class <- tmp_pavo_adj$adj_class
+    output.list$pavo_adj_class_plot_cols <- tmp_pavo_adj$adj_class_plot_cols
+  }
 
   return(output.list)
 
