@@ -32,6 +32,38 @@ charisma <- function(img_path, stack_colors = TRUE, threshold = 0.0, verbose = T
   # combine label classifications with color data
   color_data <- cbind(color_data, classification = t(t(color_labels)))
 
+  # masked plot
+  color_mask_LUT <- color_data %>%
+    group_by(classification) %>%
+    mutate(r_avg = mean(r),
+           g_avg = mean(g),
+           b_avg = mean(b)) %>%
+    ungroup() %>%
+    rowwise() %>%
+    mutate(hex = rgb(r_avg, g_avg, b_avg, maxColorValue = 255)) %>%
+    ungroup() %>%
+    mutate(assignment_class = rownames(.)) %>%
+    add_row(data.frame(
+      r = NA,
+      g = NA,
+      b = NA,
+      size = NA,
+      prop = NA,
+      classification = NA,
+      r_avg = NA,
+      g_avg = NA,
+      b_avg = NA,
+      hex = "#FFFFFF",
+      assignment_class = '0'
+    ), .before = 1)
+
+  px_assignments_copy <- img$pixel_assignments
+  # Find the rows and columns where the old values match
+  match_indices <- px_assignments_copy %in% color_mask_LUT$assignment_class
+
+  # Replace old values with new values using indexing
+  px_assignments_copy[match_indices] <- color_mask_LUT$hex[match(px_assignments_copy[match_indices], color_mask_LUT$assignment_class)]
+
   # stack by color (if requested)
   if (stack_colors) color_data <- aggregate(cbind(size, prop) ~ classification, data = color_data, FUN = sum)
 
@@ -41,7 +73,7 @@ charisma <- function(img_path, stack_colors = TRUE, threshold = 0.0, verbose = T
   # sort classifications
   color_data <- color_data[order(color_data$prop, decreasing = TRUE), ]
 
-  output.list <- vector("list", length = 13)
+  output.list <- vector("list", length = 15)
   output.list_names <- c("path",
                          "colors",
                          "k",
@@ -49,6 +81,8 @@ charisma <- function(img_path, stack_colors = TRUE, threshold = 0.0, verbose = T
                          "prop_threshold",
                          "original_img",
                          "pixel_assignments",
+                         "color_mask",
+                         "color_mask_LUT",
                          "sizes",
                          "centers",
                          "scaled_color_clusters",
@@ -65,6 +99,8 @@ charisma <- function(img_path, stack_colors = TRUE, threshold = 0.0, verbose = T
   output.list$prop_threshold <- threshold
   output.list$original_img <- img$original_img
   output.list$pixel_assignments <- img$pixel_assignments
+  output.list$color_mask <- px_assignments_copy
+  output.list$color_mask_LUT <- color_mask_LUT
   output.list$sizes <- img$sizes
   output.list$centers <- img$centers
   output.list$scaled_color_clusters <- NULL #TODO
