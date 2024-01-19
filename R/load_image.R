@@ -61,16 +61,6 @@ load_image <- function(img_path = system.file("extdata/corbetti.png", package = 
     }
   }
 
-  # TODO: Ask Whitney.. so swapping the colors out in the
-  # recolorize_defaults_rerun <- suppressMessages(recolorize::recolorize2(img = recolorize::recoloredImage(recolorize_defaults),
-  #                                                                       bins = 4,
-  #                                                                       cutoff = 20,
-  #                                                                       plotting = FALSE))
-  #
-  # plot(recolorize_defaults_rerun)
-
-  # return(recolorize_defaults_rerun)
-
   if (plot) {
     plot_recolored(recolorize_defaults)
   }

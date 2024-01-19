@@ -177,10 +177,7 @@ pavo_classify_charisma <- function(charisma_obj, plot = TRUE) {
   classified_k_dists <- getImgClassKDists(classifications, calcEucLumDists)
   adj_stats_raw <- getAdjStats(classifications=classifications, img_class_k_dists=classified_k_dists, imagedata2=imagedata2, bkgID=white_bg_id)
   adj_stats <- getCleanedupStats(adj_stats_raw)
-  # run the adjacency analysis
-  # print(dim(imagedata2))
-  # color_stats <- pavo::adjacent(pavo_class, bkgID = as.numeric(white_bg_id), xscale = dim(imagedata2)[2])
-  # return(color_stats)
+
   output.list <- vector("list", length = 3)
   output.list_names <- c("adj_stats",
                          "adj_class",
@@ -190,28 +187,5 @@ pavo_classify_charisma <- function(charisma_obj, plot = TRUE) {
   output.list$adj_class <- tmp_pavo_cols
   output.list$adj_class_plot_cols <- palette
 
-  # return(adj_stats)
   return(output.list)
 }
-
-## TODO: figure out the xscale dimensions what happens if we use procimg() {find the original script and match the scaling parameters}
-## TODO: build in the stepwise rerun of pavo until desired output is achieved, then directly run adjacency stats and save to a csv file
-##
-
-## [still needs a bit more work with getting the adjacency function wrapper written...]
-## TODO: force out the white classification from the plot + figure out it's id within the array to pass to the adjacency funcs [Done -- just need to pass into the adjacency function by making a custom wrapper for this that passes the ignore value in as well]
-
-## [pretty much fully done for now]:
-## TODO: add in a graphic for the proportion of colors selected by charisma to determine k (like the old plots w/ threshold line) [Done -- currently only showing color bars that have any value > 0 .. should we show all 10 colors with empty slots instead?]
-## TODO: in the final version of classification plot (hide the color id for the background) -- stick with pure white for now [Done -- need to address potential issue of values being close to (but not exactly) pure white [i.e., "the 0.99" problem, and what happens if there are meaningful colors in the image that fall within this range?...]]
-## TODO: fix aspect ratio of 3rd pavo plot [Done -- "input to pavo" plot now fixed by replotting it from source]
-## TODO: bypass manual intervention step [Done -- this is accomplished by passing verbose = FALSE to the charisma() function call, which is then passed to the load_image() function call]
-## TODO: make sure all charisma objects are forced to have an image path upon initial load [Done -- this is accomplished when image is loaded via the charisma() function]
-
-## NOTES:
-## https://book.colrverse.com/analysing-data.html
-## https://github.com/rmaia/pavo/blob/master/R/summary.rimg.R#L101
-## https://github.com/ShawnTylerSchwartz/charisma/blob/955c45840c521372903f49a81b00a3fb9333061e/R/plotImage.R
-## https://github.com/hiweller/recolorize/blob/master/R/plotImageArray.R
-
-

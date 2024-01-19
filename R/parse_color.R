@@ -1,6 +1,6 @@
 parse_mapping <- function(color.name, mapping = color.map) {
   # check if color.name exists in mapping
-  if(!color.name %in% mapping[,1])
+  if (!color.name %in% mapping[,1])
     stop("Error: specified color name is not defined in color mapping.
          Please check definitions in color mapping file.")
 
@@ -15,7 +15,7 @@ parse_mapping <- function(color.name, mapping = color.map) {
   s <- strsplit(as.character(s), ",")[[1]]
   v <- strsplit(as.character(v), ",")[[1]]
   col_lens <- c(length(h), length(s), length(v))
-  if(length(unique(col_lens)) != 1)
+  if (length(unique(col_lens)) != 1)
     stop("Error: specified color ranges are not of equal length.
          Please check definitions in color mapping file.")
 
@@ -56,32 +56,32 @@ parse_conditional <- function(parsed_mapping, destination = c("pipeline", "gette
     v_string <- rep(NA, num_ors_v + 1)
 
     # generate H conditional string
-    for(jj in 1:length(h_string)) {
-      if(destination == "pipeline")
+    for (jj in 1:length(h_string)) {
+      if (destination == "pipeline")
         h_string[jj] <- paste0("(img$h >= ", h_split[[jj]][1], ".0000", " & img$h < ", h_split[[jj]][2], ".9999", ")")
-      else if(destination == "getter")
+      else if (destination == "getter")
         h_string[jj] <- paste0("(h >= ", h_split[[jj]][1], ".0000", " & h < ", h_split[[jj]][2], ".9999", ")")
-      else if(destination == "python")
+      else if (destination == "python")
         h_string[jj] <- paste0("(df['H'].ge(", h_split[[jj]][1], ".0000", ") & df['H'].lt(", h_split[[jj]][2], ".9999", "))")
     }
 
     # generate S conditional string
-    for(jj in 1:length(s_string)) {
-      if(destination == "pipeline")
+    for (jj in 1:length(s_string)) {
+      if (destination == "pipeline")
         s_string[jj] <- paste0("(img$s >= ", s_split[[jj]][1], ".0000", " & img$s < ", s_split[[jj]][2], ".9999", ")")
-      else if(destination == "getter")
+      else if (destination == "getter")
         s_string[jj] <- paste0("(s >= ", s_split[[jj]][1], ".0000", " & s < ", s_split[[jj]][2], ".9999", ")")
-      else if(destination == "python")
+      else if (destination == "python")
         s_string[jj] <- paste0("(df['S'].ge(", s_split[[jj]][1], ".0000", ") & df['S'].lt(", s_split[[jj]][2], ".9999", "))")
     }
 
     # generate V conditional string
-    for(jj in 1:length(v_string)) {
-      if(destination == "pipeline")
+    for (jj in 1:length(v_string)) {
+      if (destination == "pipeline")
         v_string[jj] <- paste0("(img$v >= ", v_split[[jj]][1], ".0000", " & img$v < ", v_split[[jj]][2], ".9999", ")")
-      else if(destination == "getter")
+      else if (destination == "getter")
         v_string[jj] <- paste0("(v >= ", v_split[[jj]][1], ".0000", " & v < ", v_split[[jj]][2], ".9999", ")")
-      else if(destination == "python")
+      else if (destination == "python")
         v_string[jj] <- paste0("(df['V'].ge(", v_split[[jj]][1], ".0000", ") & df['V'].lt(", v_split[[jj]][2], ".9999", "))")
     }
 
@@ -111,7 +111,7 @@ parse_conditional <- function(parsed_mapping, destination = c("pipeline", "gette
 #'
 #' @export
 parse_color <- function(color_triplet, hsv = FALSE, verbose = FALSE, mapping = color.map) {
-  if(!hsv) {
+  if (!hsv) {
     # convert color space to hsv
     color_triplet <- as.data.frame(t(rgb2hsv(color_triplet[1], color_triplet[2], color_triplet[3])))
   } else {
@@ -122,7 +122,7 @@ parse_color <- function(color_triplet, hsv = FALSE, verbose = FALSE, mapping = c
   #print(color_triplet)
 
   # check if any NAs in color triplet and return NA if true
-  if(is.na(sum(color_triplet[1,])))
+  if (is.na(sum(color_triplet[1,])))
     return("NA")
   # if(apply(color_triplet, 0, function(x) is.na(x))) {
   #   return("NA")
@@ -144,7 +144,7 @@ parse_color <- function(color_triplet, hsv = FALSE, verbose = FALSE, mapping = c
   calls <- rep(NA, length(color_names))
   names(calls) <- color_names
 
-  for(color in 1:length(color_names)) {
+  for (color in 1:length(color_names)) {
     parsed_mapping <- parse_mapping(color_names[color], mapping)
     parsed_conditional <- parse_conditional(parsed_mapping, destination = "getter")
     calls[color] <- ifelse(eval(parse(text = parsed_conditional)), 1, 0)
@@ -153,9 +153,9 @@ parse_color <- function(color_triplet, hsv = FALSE, verbose = FALSE, mapping = c
   # see which color was matched (should only return 1 match)
   matched_color <- names(calls)[which.max(calls)]
 
-  if(verbose) print(calls)
+  if (verbose) print(calls)
 
-  if(length(which.max(calls)) > 1)
+  if (length(which.max(calls)) > 1)
     warning("More than 1 color matched on color triplet -- overlapping color boundaries.
             Check and update color mapping boundary definitions.")
 
