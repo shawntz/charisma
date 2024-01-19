@@ -92,17 +92,18 @@ getCleanedupStats <- function(adj_k_dists_list) {
   return(img_adj_k_dists_select)
 }
 
-pavo_classify_charisma <- function(charisma_obj, tmp_dir = "pavo_tmp", plot = TRUE) {
+pavo_classify_charisma <- function(charisma_obj, plot = TRUE) {
   # create tmp directory to store recolored jpeg outputs
-  if (!dir.exists(tmp_dir)) {
-    dir.create(tmp_dir)
-  }
+  # if (!dir.exists(tmp_dir)) {
+  #   dir.create(tmp_dir)
+  # }
 
   # tmp filepath
-  tmp_out_target <- file.path(tmp_dir, basename(charisma_obj$path))
+  tmp_out_target <- file.path(tempdir(), basename(charisma_obj$path))
 
   # number of colors classes to classify in pavo
   charisma_k_cols <- charisma_obj$k
+  # charisma_k_cols <- attr(charisma_obj, 'k')
 
   # save out tmp recolored jpeg
   charisma_to_jpeg(charisma_obj, tmp_out_target)
@@ -114,9 +115,10 @@ pavo_classify_charisma <- function(charisma_obj, tmp_dir = "pavo_tmp", plot = TR
   ## remember, this includes the background color as one of the k classes...
   ## ... which can be identified to be excluded before running the adjacency analyses
   pavo_class <- pavo::classify(pavo_img, kcols = charisma_k_cols + 1)
+  # pavo_class <- pavo::classify(charisma_obj, kcols = charisma_k_cols + 1)
   classifications <- list()
   classifications[[1]] <- pavo_class
-  names(classifications) <- basename(charisma_obj$path)
+  # names(classifications) <- basename(charisma_obj$path)
   # # print out summary plot
   # summary(pavo_class, plot = TRUE)
 

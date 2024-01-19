@@ -16,3 +16,4 @@ Depends:
   magrittr,
   dplyr,
   tibble
+RoxygenNote: 7.2.3
