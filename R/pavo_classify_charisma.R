@@ -106,7 +106,8 @@ pavo_classify_charisma <- function(charisma_obj, plot = TRUE) {
   # charisma_k_cols <- attr(charisma_obj, 'k')
 
   # save out tmp recolored jpeg
-  charisma_to_jpeg(charisma_obj, tmp_out_target)
+  ## inherit out_type from current file extension
+  charisma_to_img(charisma_obj, out_type = tools::file_ext(charisma_obj$path), render_method = 'array', filename = tmp_out_target)
 
   # read back in
   pavo_img <- pavo::getimg(tmp_out_target, max.size = 3)
