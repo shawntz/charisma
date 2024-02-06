@@ -39,8 +39,8 @@ calcEucLumDists <- function(classified_image) {
   euc_dists <- matrix(nrow=choose(nrow(class_rgb),2),ncol=4)
 
   combos_simple <- t(combn(rownames(class_rgb),2)) %>%
-    as_tibble %>%
-    transmute(c1 = as.numeric(V1), c2 = as.numeric(V2)) %>%
+    as_tibble(.name_repair = 'unique') %>%
+    transmute(c1 = as.numeric(`...1`), c2 = as.numeric(`...2`)) %>%
     as.data.frame()
 
   combos <- matrix(nrow=nrow(combos_simple),ncol=4)
@@ -179,7 +179,7 @@ pavo_classify_charisma <- function(charisma_obj, plot = TRUE) {
   }
 
   # get relevant coldists data before running adjacency
-  classified_k_dists <- getImgClassKDists(classifications, calcEucLumDists)
+  classified_k_dists <- suppressMessages(getImgClassKDists(classifications, calcEucLumDists))
   adj_stats_raw <- getAdjStats(classifications=classifications, img_class_k_dists=classified_k_dists, imagedata2=imagedata2, bkgID=white_bg_id)
   adj_stats <- getCleanedupStats(adj_stats_raw)
 
