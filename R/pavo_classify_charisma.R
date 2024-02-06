@@ -183,11 +183,14 @@ pavo_classify_charisma <- function(charisma_obj, plot = TRUE) {
   adj_stats_raw <- getAdjStats(classifications=classifications, img_class_k_dists=classified_k_dists, imagedata2=imagedata2, bkgID=white_bg_id)
   adj_stats <- getCleanedupStats(adj_stats_raw)
 
-  output.list <- vector("list", length = 3)
-  output.list_names <- c("adj_stats",
+  output.list <- vector("list", length = 4)
+  output.list_names <- c("input2pavo",
+                         "adj_stats",
                          "adj_class",
                          "adj_class_plot_cols")
   names(output.list) <- output.list_names
+
+  output.list$input2pavo <- imagedata2
   output.list$adj_stats <- adj_stats
   output.list$adj_class <- tmp_pavo_cols
   output.list$adj_class_plot_cols <- palette
