@@ -78,7 +78,7 @@ charisma <- function(img_path, stack_colors = TRUE, threshold = 0.0, verbose = T
 
   if (pavo) {
     if (length(dropped_colors) > 0) {
-      message(paste0(length(dropped_colors), " color classes were dropped based on your threshold of ", threshold, ".\n\nYou must specify replacement colors for these dropped classes for `pavo` to receive a complete image mask for downstream calculations! "))
+      message(paste0("\n", length(dropped_colors), " color classes were dropped based on your threshold of ", threshold, ".\n\nYou must specify replacement colors for these dropped classes for `pavo` to receive a complete image mask for downstream calculations! "))
 
       possible_color_choices <- get_colors(color_data)
       message("\n>> Please select from the following color categories:")
@@ -138,6 +138,8 @@ charisma <- function(img_path, stack_colors = TRUE, threshold = 0.0, verbose = T
         color_mask_LUT_filtered[old.color.matching_rows_ids, "b_avg"] <- new.color.b_avg
         color_mask_LUT_filtered[old.color.matching_rows_ids, "hex"] <- new.color.hex
       }
+
+      message(" ")
     }
   }
 

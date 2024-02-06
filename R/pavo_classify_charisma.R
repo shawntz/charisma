@@ -114,7 +114,7 @@ pavo_classify_charisma <- function(charisma_obj, plot = TRUE) {
   charisma_to_img(charisma_obj, out_type = tools::file_ext(charisma_obj$path), render_method = 'array', render_with_threshold = use_threshold, filename = tmp_out_target)
 
   # read back in
-  pavo_img <- pavo::getimg(tmp_out_target, max.size = 3)
+  pavo_img <- suppressMessages(pavo::getimg(tmp_out_target, max.size = 3))
 
   # run classification
   ## remember, this includes the background color as one of the k classes...
