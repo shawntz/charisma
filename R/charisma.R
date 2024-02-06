@@ -8,7 +8,7 @@
 #' add(10, 1)
 #'
 #' @export
-charisma <- function(img_path, stack_colors = TRUE, threshold = 0.0, verbose = TRUE, plot = FALSE, pavo = TRUE) {
+charisma <- function(img_path, stack_colors = TRUE, threshold = 0.0, verbose = TRUE, plot = FALSE, pavo = TRUE, logdir = NULL) {
   # load image with clustered centers
   img <- load_image(img_path, verbose = verbose, plot = plot)
 
@@ -194,6 +194,29 @@ charisma <- function(img_path, stack_colors = TRUE, threshold = 0.0, verbose = T
     output.list$pavo_adj_stats <- tmp_pavo_adj$adj_stats
     output.list$pavo_adj_class <- tmp_pavo_adj$adj_class
     output.list$pavo_adj_class_plot_cols <- tmp_pavo_adj$adj_class_plot_cols
+  }
+
+  if (!is.null(logdir)) {
+    if (!dir.exists(logdir))
+      dir.create(logdir)
+
+    cur_date_time <- format(Sys.time(), "%m-%d-%Y_%H.%M.%S")
+
+    # create subdirs
+    if (!dir.exists(file.path(logdir, "charisma_objects"))) {
+      dir.create(file.path(logdir, "charisma_objects"))
+    }
+
+    if (!dir.exists(file.path(logdir, "diagnostic_plots"))) {
+      dir.create(file.path(logdir, "diagnostic_plots"))
+    }
+
+    saveRDS(output.list, file.path(logdir, "charisma_objects", paste0(basename(img_path), "_charisma_", cur_date_time, ".RDS")))
+
+    pdf(file.path(logdir, "diagnostic_plots", paste0(tools::file_path_sans_ext(basename(img_path)), "_charisma_", cur_date_time, ".pdf")), width = 14, height = 3)
+    plot_diagnostics(output.list, pavo = TRUE)
+    dev.off()
+
   }
 
   return(output.list)
