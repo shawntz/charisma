@@ -103,11 +103,15 @@ pavo_classify_charisma <- function(charisma_obj, plot = TRUE) {
 
   # number of colors classes to classify in pavo
   charisma_k_cols <- charisma_obj$k
-  # charisma_k_cols <- attr(charisma_obj, 'k')
 
   # save out tmp recolored jpeg
   ## inherit out_type from current file extension
-  charisma_to_img(charisma_obj, out_type = tools::file_ext(charisma_obj$path), render_method = 'array', filename = tmp_out_target)
+  ## also determine if mask should be rendered with threshold depending on whether there are any dropped colors
+  use_threshold <- FALSE
+  if (length(charisma_obj$dropped_colors) > 0) {
+    use_threshold <- TRUE
+  }
+  charisma_to_img(charisma_obj, out_type = tools::file_ext(charisma_obj$path), render_method = 'array', render_with_threshold = use_threshold, filename = tmp_out_target)
 
   # read back in
   pavo_img <- pavo::getimg(tmp_out_target, max.size = 3)

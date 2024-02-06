@@ -9,7 +9,7 @@
 #' add(10, 1)
 #'
 #' @export
-charisma_to_img <- function(charisma_obj, out_type = c('jpg', 'jpeg', 'png'), bg_color = "white", render_method = c('array', 'raster'), filename = "") {
+charisma_to_img <- function(charisma_obj, out_type = c('jpg', 'jpeg', 'png'), bg_color = "white", render_method = c('array', 'raster'), render_with_threshold = FALSE, filename = "") {
   out_type <- tolower(out_type)
   out_type <- match.arg(out_type)
 
@@ -37,10 +37,14 @@ charisma_to_img <- function(charisma_obj, out_type = c('jpg', 'jpeg', 'png'), bg
 
   # color in every color center:
   for (i in 1:nrow(charisma_obj$centers)) {
+    if (render_with_threshold) {
+      hex_values <- charisma_obj$color_mask_LUT_filtered$hex
+    } else {
+      hex_values <- charisma_obj$color_mask_LUT$hex
+    }
     final_cimg <- imager::colorise(final_cimg,
                                    index_cimg == i,
-                                   # charisma_obj$centers[i, ])
-                                   charisma_obj$color_mask_LUT$hex[i+1])
+                                   hex_values[i+1])
   }
 
   # convert to a regular array:
