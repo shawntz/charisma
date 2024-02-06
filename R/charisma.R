@@ -147,7 +147,7 @@ charisma <- function(img_path, stack_colors = TRUE, threshold = 0.0, verbose = T
   }
   color_data <- color_data[order(color_data$prop, decreasing = TRUE), ]
 
-  output.list <- vector("list", length = 17)
+  output.list <- vector("list", length = 18)
   output.list_names <- c("path",
                          "colors",
                          "k",
@@ -164,7 +164,8 @@ charisma <- function(img_path, stack_colors = TRUE, threshold = 0.0, verbose = T
                          "centers",
                          "pavo_adj_stats",
                          "pav_adj_class",
-                         "pavo_adj_class_plot_cols")
+                         "pavo_adj_class_plot_cols",
+                         "call")
 
   names(output.list) <- output.list_names
 
@@ -182,6 +183,7 @@ charisma <- function(img_path, stack_colors = TRUE, threshold = 0.0, verbose = T
   output.list$color_mask_LUT_filtered <- color_mask_LUT_filtered
   output.list$sizes <- img$sizes
   output.list$centers <- img$centers
+  output.list$call <- match.call()
 
   class(output.list) <- "charisma"
 
