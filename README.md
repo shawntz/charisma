@@ -10,7 +10,7 @@
 install.packages("devtools")
 
 # install charisma from GitHub
-remotes::install_github("shawntylerschwartz/charisma")
+remotes::install_github("shawntschwartz/charisma")
 ``` 
 
 # Help
