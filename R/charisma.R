@@ -8,7 +8,7 @@
 #' add(10, 1)
 #'
 #' @export
-charisma <- function(img_path, stack_colors = TRUE, threshold = 0.0, verbose = TRUE, plot = FALSE, pavo = TRUE, logdir = NULL) {
+charisma <- function(img_path, stack_colors = TRUE, threshold = 0.0, verbose = TRUE, plot = FALSE, pavo = TRUE, logdir = NULL, mapping = color.map) {
   # load image with clustered centers
   img <- load_image(img_path, verbose = verbose, plot = plot)
 
@@ -23,7 +23,7 @@ charisma <- function(img_path, stack_colors = TRUE, threshold = 0.0, verbose = T
   color_labels <- rep(NA, nrow(color_data))
 
   for (color in 1:length(color_labels)) {
-    color_labels[color] <- parse_color(c(color_data$r[color], color_data$g[color], color_data$b[color]))
+    color_labels[color] <- parse_color(c(color_data$r[color], color_data$g[color], color_data$b[color]), mapping = mapping)
   }
 
   # combine label classifications with color data
