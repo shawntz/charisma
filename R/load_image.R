@@ -9,13 +9,13 @@
 #'
 #' @export
 load_image <- function(img_path = system.file("extdata/corbetti.png", package = "recolorize"),
-                       verbose = TRUE, plot = TRUE) {
+                       interactive = TRUE, plot = TRUE) {
   img <- recolorize::readImage(img_path, resize = NULL, rotate = NULL)
   recolorize_defaults <- suppressMessages(recolorize::recolorize2(img = img,
                                                                  bins = 4,
                                                                  cutoff = 20,
                                                                  plotting = FALSE))
-  if (verbose) {
+  if (interactive) {
     plot(recolorize_defaults)
 
     SWAP_RESPONSE <- readline("Would you like to SWAP any colors? [Y/N] ")

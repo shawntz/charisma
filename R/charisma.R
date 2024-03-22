@@ -8,9 +8,9 @@
 #' add(10, 1)
 #'
 #' @export
-charisma <- function(img_path, stack_colors = TRUE, threshold = 0.0, verbose = TRUE, plot = FALSE, pavo = TRUE, logdir = NULL, mapping = color.map) {
+charisma <- function(img_path, stack_colors = TRUE, threshold = 0.0, interactive = FALSE, plot = FALSE, pavo = TRUE, logdir = NULL, auto.drop = TRUE, mapping = color.map) {
   # load image with clustered centers
-  img <- load_image(img_path, verbose = verbose, plot = plot)
+  img <- load_image(img_path, interactive = interactive, plot = plot)
 
   # get proportion table for cluster centers
   sizes_prop <- prop.table(img$sizes)
@@ -78,36 +78,119 @@ charisma <- function(img_path, stack_colors = TRUE, threshold = 0.0, verbose = T
 
   if (pavo) {
     if (length(dropped_colors) > 0) {
-      message(paste0("\n", length(dropped_colors), " color classes were dropped based on your threshold of ", threshold, ".\n\nYou must specify replacement colors for these dropped classes for `pavo` to receive a complete image mask for downstream calculations! "))
-
       possible_color_choices <- get_colors(color_data)
-      message("\n>> Please select from the following color categories:")
-      for (choice in possible_color_choices) {
-        message(paste0(" - ", choice))
-      }
-
-      message(" ")
-
       color_mask_LUT_filtered <- color_mask_LUT
 
-      for (dropped_color in dropped_colors) {
-        IS_VALID_COLOR <- FALSE
-        TMP_REPLACEMENT_COLOR <- readline(paste0(" ** replace ", dropped_color, " with -> "))
-        TMP_REPLACEMENT_COLOR <- as.character(TMP_REPLACEMENT_COLOR)
+      if (auto.drop) {
+        message(paste0("\n", length(dropped_colors), " color classes were dropped based on your threshold of ", threshold, ".\n\nReplacement colors for these dropped classes are being automatically selected based on the pairwise Euclidean distances between colors classes in the RGB space so that `pavo` will receive a complete image mask for downstream calculations! "))
 
-        if (TMP_REPLACEMENT_COLOR %in% possible_color_choices) {
-          IS_VALID_COLOR <- TRUE
+        message("\n>> The following color categories will be used for remapping:")
+
+        remappable_colors <- list()
+
+        for (choice in possible_color_choices) {
+          message(paste0(" - ", choice))
+          row_ids <- color_mask_LUT$classification == choice
+          row_ids[1] <- FALSE
+          matching_rows <- color_mask_LUT[row_ids,]
+          remappable_colors[[choice]] <- c(matching_rows$r_avg[1],
+                                        matching_rows$g_avg[1],
+                                        matching_rows$b_avg[1])
+          # print(remappable_colors)
+          # print(matching_rows)
         }
 
-        while (!IS_VALID_COLOR) {
-          if (!TMP_REPLACEMENT_COLOR %in% possible_color_choices) {
-            TMP_REPLACEMENT_COLOR <- readline(paste0(" ** TRY AGAIN: replace ", dropped_color, " with -> "))
+        message(" ")
+
+        for (dropped_color in dropped_colors) {
+          dropped.color.matching_rows_ids <- color_mask_LUT$classification == dropped_color
+          dropped.color.matching_rows_ids[1] <- FALSE
+          dropped.color.matching_rows <- color_mask_LUT[dropped.color.matching_rows_ids,]
+          # print(dropped.color.matching_rows)
+
+          get_color_distance <- function(color1, color2) {
+            # print(color1)
+            # print(color2)
+            sqrt(sum((color1 - color2)^2))
+          }
+
+          dropped_color_rgb <- c(dropped.color.matching_rows$r_avg[1],
+                                 dropped.color.matching_rows$g_avg[1],
+                                 dropped.color.matching_rows$b_avg[1])
+          # print(dropped_color_rgb)
+
+          # calculate pairwise distances
+          distances <- list()
+          for (choice in possible_color_choices) {
+            distances[[choice]] <- get_color_distance(dropped_color_rgb,
+                                                      remappable_colors[[choice]])
+          }
+          print(distances)
+          distances <- unlist(distances)
+          min_dist <- min(distances)
+          n_mins <- sum(distances == min_dist)
+          min_dist_names <- names(which(distances == min_dist))
+          if (n_mins > 1) {
+            warning(paste0("There are > 1 (", n_mins, ") distances minimized:"))
+
+            for (name in min_dist_names) {
+              message(paste0(" - ", name))
+            }
+
+            message(" ")
+
+            IS_VALID_COLOR <- FALSE
+            TMP_REPLACEMENT_COLOR <- readline(paste0(" ** replace ", dropped_color, " with (", min_dist_names, ") -> "))
             TMP_REPLACEMENT_COLOR <- as.character(TMP_REPLACEMENT_COLOR)
+
             if (TMP_REPLACEMENT_COLOR %in% possible_color_choices) {
               IS_VALID_COLOR <- TRUE
             }
+
+            while (!IS_VALID_COLOR) {
+              if (!TMP_REPLACEMENT_COLOR %in% possible_color_choices) {
+                TMP_REPLACEMENT_COLOR <- readline(paste0(" ** TRY AGAIN: replace ", dropped_color, " with (", min_dist_names, ") -> "))
+                TMP_REPLACEMENT_COLOR <- as.character(TMP_REPLACEMENT_COLOR)
+                if (TMP_REPLACEMENT_COLOR %in% possible_color_choices) {
+                  IS_VALID_COLOR <- TRUE
+                }
+              }
+            }
+          } else {
+            TMP_REPLACEMENT_COLOR <- names(which.min(distances))
+          }
+          message(paste0("Replacing ", dropped_color, " with ", TMP_REPLACEMENT_COLOR, "..."))
+        }
+      } else {
+        message(paste0("\n", length(dropped_colors), " color classes were dropped based on your threshold of ", threshold, ".\n\nYou must manually specify replacement colors for these dropped classes for `pavo` to receive a complete image mask for downstream calculations! "))
+
+        message("\n>> Please select from the following color categories:")
+        for (choice in possible_color_choices) {
+          message(paste0(" - ", choice))
+        }
+
+        message(" ")
+
+        for (dropped_color in dropped_colors) {
+          IS_VALID_COLOR <- FALSE
+          TMP_REPLACEMENT_COLOR <- readline(paste0(" ** replace ", dropped_color, " with -> "))
+          TMP_REPLACEMENT_COLOR <- as.character(TMP_REPLACEMENT_COLOR)
+
+          if (TMP_REPLACEMENT_COLOR %in% possible_color_choices) {
+            IS_VALID_COLOR <- TRUE
+          }
+
+          while (!IS_VALID_COLOR) {
+            if (!TMP_REPLACEMENT_COLOR %in% possible_color_choices) {
+              TMP_REPLACEMENT_COLOR <- readline(paste0(" ** TRY AGAIN: replace ", dropped_color, " with -> "))
+              TMP_REPLACEMENT_COLOR <- as.character(TMP_REPLACEMENT_COLOR)
+              if (TMP_REPLACEMENT_COLOR %in% possible_color_choices) {
+                IS_VALID_COLOR <- TRUE
+              }
+            }
           }
         }
+      }
 
         new.color.matching_rows_ids <- color_mask_LUT$classification == TMP_REPLACEMENT_COLOR
         new.color.matching_rows_ids[1] <- FALSE
@@ -140,7 +223,6 @@ charisma <- function(img_path, stack_colors = TRUE, threshold = 0.0, verbose = T
       }
 
       message(" ")
-    }
   }
 
   # sort classifications
