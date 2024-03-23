@@ -160,7 +160,38 @@ charisma <- function(img_path, stack_colors = TRUE, threshold = 0.0, interactive
             TMP_REPLACEMENT_COLOR <- names(which.min(distances))
           }
           message(paste0("Replacing ", dropped_color, " with ", TMP_REPLACEMENT_COLOR, "..."))
+
+          new.color.matching_rows_ids <- color_mask_LUT$classification == TMP_REPLACEMENT_COLOR
+          new.color.matching_rows_ids[1] <- FALSE
+          new.color.matching_rows <- color_mask_LUT[new.color.matching_rows_ids,]
+
+          old.color.matching_rows_ids <- color_mask_LUT$classification == dropped_color
+          old.color.matching_rows_ids[1] <- FALSE
+          old.color.matching_rows <- color_mask_LUT[old.color.matching_rows_ids,]
+          old.color.matching_rows_n <- nrow(old.color.matching_rows)
+
+          # get new values
+          new.color.r <- rep(NA, old.color.matching_rows_n)
+          new.color.g <- rep(NA, old.color.matching_rows_n)
+          new.color.b <- rep(NA, old.color.matching_rows_n)
+          new.color.classification <- rep(TMP_REPLACEMENT_COLOR, old.color.matching_rows_n)
+          new.color.r_avg <- rep(new.color.matching_rows$r_avg[1], old.color.matching_rows_n)
+          new.color.g_avg <- rep(new.color.matching_rows$g_avg[1], old.color.matching_rows_n)
+          new.color.b_avg <- rep(new.color.matching_rows$b_avg[1], old.color.matching_rows_n)
+          new.color.hex <- rep(new.color.matching_rows$hex[1], old.color.matching_rows_n)
+
+          # set new values
+          color_mask_LUT_filtered[old.color.matching_rows_ids, "r"] <- new.color.r
+          color_mask_LUT_filtered[old.color.matching_rows_ids, "g"] <- new.color.g
+          color_mask_LUT_filtered[old.color.matching_rows_ids, "b"] <- new.color.b
+          color_mask_LUT_filtered[old.color.matching_rows_ids, "classification"] <- new.color.classification
+          color_mask_LUT_filtered[old.color.matching_rows_ids, "r_avg"] <- new.color.r_avg
+          color_mask_LUT_filtered[old.color.matching_rows_ids, "g_avg"] <- new.color.g_avg
+          color_mask_LUT_filtered[old.color.matching_rows_ids, "b_avg"] <- new.color.b_avg
+          color_mask_LUT_filtered[old.color.matching_rows_ids, "hex"] <- new.color.hex
         }
+
+        message(" ")
       } else {
         message(paste0("\n", length(dropped_colors), " color classes were dropped based on your threshold of ", threshold, ".\n\nYou must manually specify replacement colors for these dropped classes for `pavo` to receive a complete image mask for downstream calculations! "))
 
@@ -189,42 +220,41 @@ charisma <- function(img_path, stack_colors = TRUE, threshold = 0.0, interactive
               }
             }
           }
+
+          new.color.matching_rows_ids <- color_mask_LUT$classification == TMP_REPLACEMENT_COLOR
+          new.color.matching_rows_ids[1] <- FALSE
+          new.color.matching_rows <- color_mask_LUT[new.color.matching_rows_ids,]
+
+          old.color.matching_rows_ids <- color_mask_LUT$classification == dropped_color
+          old.color.matching_rows_ids[1] <- FALSE
+          old.color.matching_rows <- color_mask_LUT[old.color.matching_rows_ids,]
+          old.color.matching_rows_n <- nrow(old.color.matching_rows)
+
+          # get new values
+          new.color.r <- rep(NA, old.color.matching_rows_n)
+          new.color.g <- rep(NA, old.color.matching_rows_n)
+          new.color.b <- rep(NA, old.color.matching_rows_n)
+          new.color.classification <- rep(TMP_REPLACEMENT_COLOR, old.color.matching_rows_n)
+          new.color.r_avg <- rep(new.color.matching_rows$r_avg[1], old.color.matching_rows_n)
+          new.color.g_avg <- rep(new.color.matching_rows$g_avg[1], old.color.matching_rows_n)
+          new.color.b_avg <- rep(new.color.matching_rows$b_avg[1], old.color.matching_rows_n)
+          new.color.hex <- rep(new.color.matching_rows$hex[1], old.color.matching_rows_n)
+
+          # set new values
+          color_mask_LUT_filtered[old.color.matching_rows_ids, "r"] <- new.color.r
+          color_mask_LUT_filtered[old.color.matching_rows_ids, "g"] <- new.color.g
+          color_mask_LUT_filtered[old.color.matching_rows_ids, "b"] <- new.color.b
+          color_mask_LUT_filtered[old.color.matching_rows_ids, "classification"] <- new.color.classification
+          color_mask_LUT_filtered[old.color.matching_rows_ids, "r_avg"] <- new.color.r_avg
+          color_mask_LUT_filtered[old.color.matching_rows_ids, "g_avg"] <- new.color.g_avg
+          color_mask_LUT_filtered[old.color.matching_rows_ids, "b_avg"] <- new.color.b_avg
+          color_mask_LUT_filtered[old.color.matching_rows_ids, "hex"] <- new.color.hex
         }
+
+        message(" ")
       }
-
-        new.color.matching_rows_ids <- color_mask_LUT$classification == TMP_REPLACEMENT_COLOR
-        new.color.matching_rows_ids[1] <- FALSE
-        new.color.matching_rows <- color_mask_LUT[new.color.matching_rows_ids,]
-
-        old.color.matching_rows_ids <- color_mask_LUT$classification == dropped_color
-        old.color.matching_rows_ids[1] <- FALSE
-        old.color.matching_rows <- color_mask_LUT[old.color.matching_rows_ids,]
-        old.color.matching_rows_n <- nrow(old.color.matching_rows)
-
-        # get new values
-        new.color.r <- rep(NA, old.color.matching_rows_n)
-        new.color.g <- rep(NA, old.color.matching_rows_n)
-        new.color.b <- rep(NA, old.color.matching_rows_n)
-        new.color.classification <- rep(TMP_REPLACEMENT_COLOR, old.color.matching_rows_n)
-        new.color.r_avg <- rep(new.color.matching_rows$r_avg[1], old.color.matching_rows_n)
-        new.color.g_avg <- rep(new.color.matching_rows$g_avg[1], old.color.matching_rows_n)
-        new.color.b_avg <- rep(new.color.matching_rows$b_avg[1], old.color.matching_rows_n)
-        new.color.hex <- rep(new.color.matching_rows$hex[1], old.color.matching_rows_n)
-
-        # set new values
-        color_mask_LUT_filtered[old.color.matching_rows_ids, "r"] <- new.color.r
-        color_mask_LUT_filtered[old.color.matching_rows_ids, "g"] <- new.color.g
-        color_mask_LUT_filtered[old.color.matching_rows_ids, "b"] <- new.color.b
-        color_mask_LUT_filtered[old.color.matching_rows_ids, "classification"] <- new.color.classification
-        color_mask_LUT_filtered[old.color.matching_rows_ids, "r_avg"] <- new.color.r_avg
-        color_mask_LUT_filtered[old.color.matching_rows_ids, "g_avg"] <- new.color.g_avg
-        color_mask_LUT_filtered[old.color.matching_rows_ids, "b_avg"] <- new.color.b_avg
-        color_mask_LUT_filtered[old.color.matching_rows_ids, "hex"] <- new.color.hex
-      }
-
-      message(" ")
+    }
   }
-
   # sort classifications
   if (threshold > 0) {
     color_data_no_threshold <- color_data_no_threshold[order(color_data_no_threshold$prop, decreasing = TRUE), ]
