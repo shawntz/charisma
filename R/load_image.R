@@ -18,7 +18,7 @@ load_image <- function(img_path = system.file("extdata/corbetti.png", package = 
   if (interactive) {
     plot(recolorize_defaults)
 
-    SWAP_RESPONSE <- readline("Would you like to SWAP any colors? [Y/N] ")
+    SWAP_RESPONSE <- readline("Would you like to REPLACE any colors? [Y/N] ")
     CONTINUE_SWAPPING <- TRUE
     CONTINUE_MERGING <- TRUE
     UNDO <- FALSE
@@ -28,7 +28,7 @@ load_image <- function(img_path = system.file("extdata/corbetti.png", package = 
         SWAP_RESPONSE_FROM <- readline(" > Enter the number of the color you'd like to swap: ")
         SWAP_RESPONSE_TO <- readline(paste(" > Which color (number) would you like to replace", SWAP_RESPONSE_FROM, "with: "))
         swapped_img <- swap_color(recolorize_defaults, SWAP_RESPONSE_FROM, SWAP_RESPONSE_TO)
-        CONTINUE_SWAPPING_RESP <- readline("Would you like to SWAP any other colors? [Y/N/Undo] ")
+        CONTINUE_SWAPPING_RESP <- readline("Would you like to REPLACE any other colors? [Y/N/Undo] ")
         if (tolower(CONTINUE_SWAPPING_RESP) == "y") {
           recolorize_defaults <- swapped_img$img
           CONTINUE_SWAPPING = TRUE
