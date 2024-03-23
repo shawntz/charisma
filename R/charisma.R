@@ -8,9 +8,10 @@
 #' add(10, 1)
 #'
 #' @export
-charisma <- function(img_path, stack_colors = TRUE, threshold = 0.0, interactive = FALSE, plot = FALSE, pavo = TRUE, logdir = NULL, auto.drop = TRUE, mapping = color.map) {
+charisma <- function(img_path, stack_colors = TRUE, threshold = 0.0, interactive = FALSE, plot = FALSE, pavo = TRUE, logdir = NULL, auto.drop = TRUE, bins = 4, cutoff = 20, mapping = color.map) {
   # load image with clustered centers
-  img <- load_image(img_path, interactive = interactive, plot = plot)
+  img <- load_image(img_path, interactive = interactive, plot = plot,
+                    bins = bins, cutoff = cutoff)
 
   # get proportion table for cluster centers
   sizes_prop <- prop.table(img$sizes)
@@ -261,8 +262,10 @@ charisma <- function(img_path, stack_colors = TRUE, threshold = 0.0, interactive
   }
   color_data <- color_data[order(color_data$prop, decreasing = TRUE), ]
 
-  output.list <- vector("list", length = 19)
+  output.list <- vector("list", length = 21)
   output.list_names <- c("path",
+                         "bins",
+                         "cutoff",
                          "colors",
                          "k",
                          "prop_threshold",
@@ -285,6 +288,8 @@ charisma <- function(img_path, stack_colors = TRUE, threshold = 0.0, interactive
   names(output.list) <- output.list_names
 
   output.list$path <- img_path
+  output.list$bins <- bins
+  output.list$cutoff <- cutoff
   output.list$colors <- get_colors(color_data)
   output.list$k <- get_k(color_data)
   output.list$prop_threshold <- threshold

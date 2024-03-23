@@ -9,11 +9,11 @@
 #'
 #' @export
 load_image <- function(img_path = system.file("extdata/corbetti.png", package = "recolorize"),
-                       interactive = TRUE, plot = TRUE) {
+                       interactive = TRUE, plot = TRUE, bins = 4, cutoff = 20) {
   img <- recolorize::readImage(img_path, resize = NULL, rotate = NULL)
   recolorize_defaults <- suppressMessages(recolorize::recolorize2(img = img,
-                                                                 bins = 4,
-                                                                 cutoff = 20,
+                                                                 bins = bins,
+                                                                 cutoff = cutoff,
                                                                  plotting = FALSE))
   if (interactive) {
     plot(recolorize_defaults)
