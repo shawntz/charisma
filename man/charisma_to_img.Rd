@@ -9,6 +9,7 @@ charisma_to_img(
   out_type = c("jpg", "jpeg", "png"),
   bg_color = "white",
   render_method = c("array", "raster"),
+  render_with_threshold = FALSE,
   filename = ""
 )
 }

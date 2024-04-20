@@ -8,9 +8,14 @@ charisma(
   img_path,
   stack_colors = TRUE,
   threshold = 0,
-  verbose = TRUE,
-  plot = TRUE,
-  pavo = TRUE
+  interactive = FALSE,
+  plot = FALSE,
+  pavo = TRUE,
+  logdir = NULL,
+  auto.drop = TRUE,
+  bins = 4,
+  cutoff = 20,
+  mapping = color.map
 )
 }
 \arguments{

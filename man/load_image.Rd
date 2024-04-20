@@ -4,11 +4,7 @@
 \alias{load_image}
 \title{Add together two numbers}
 \usage{
-load_image(
-  img_path = system.file("extdata/corbetti.png", package = "recolorize"),
-  verbose = TRUE,
-  plot = TRUE
-)
+load_image(img_path, interactive = TRUE, bins = 4, cutoff = 20)
 }
 \arguments{
 \item{x}{A number}
