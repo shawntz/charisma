@@ -409,7 +409,7 @@ charisma <- function(img_path, stack_colors = TRUE, threshold = 0.0, interactive
     saveRDS(output.list, file.path(logdir, "charisma_objects", paste0(basename(img_path), "_charisma_", cur_date_time, ".RDS")))
 
     pdf(file.path(logdir, "diagnostic_plots", paste0(tools::file_path_sans_ext(basename(img_path)), "_charisma_", cur_date_time, ".pdf")), width = 14, height = 3)
-    plot_diagnostics(output.list, pavo = TRUE)
+    plot.charisma(output.list, plot.all = TRUE)
     dev.off()
 
   }

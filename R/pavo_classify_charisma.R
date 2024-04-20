@@ -92,6 +92,16 @@ getCleanedupStats <- function(adj_k_dists_list) {
   return(img_adj_k_dists_select)
 }
 
+#' Add together two numbers
+#'
+#' @param x A number
+#' @param y A number
+#' @return The sum of \code{x} and \code{y}
+#' @examples
+#' add(1, 1)
+#' add(10, 1)
+#'
+#' @export
 pavo_classify_charisma <- function(charisma_obj, plot = TRUE) {
   # create tmp directory to store recolored jpeg outputs
   # if (!dir.exists(tmp_dir)) {
