@@ -15,7 +15,6 @@ merge_colors <- function(img, color.list) {
 
 
 interactive_merge_session <- function(rc, is.charisma2 = FALSE) {
-  print('here7')
   plot(rc)
 
   show_init_message <- FALSE
@@ -188,22 +187,14 @@ interactive_replacement_session <- function(rc) {
     print(data.frame(list(from = replacement_from_ids_history,
                           to = replacement_to_ids_history)) %>% tidyr::drop_na())
     undo_step_one <- TRUE
-    # message("\nWarning: undoing color replacements in this next step *after* you have just undone a color merge sequence in the previous step will result in a conflict between the current color assignment ID's and those that you had set to replace at the time of the original replacement.
-    #         \n * It is advised that you run a completely new charisma(...) command with your desired color merge sequence + new color replacements.
-    #         \n * Otherwise, if you do not plan to undo any color replacements below -- but instead just want to add new color replacements -- then please proceed with caution.")
     message(" ")
   }
 
   while (continue_replacing) {
     if (length(replacement_objs_history) > 1 || undo_step_one) {
-    # if (length(replacement_objs_history) > 0) {
       replacement_input <- readline(
         "Replace any additional colors? [Yes/No/Undo] "
       )
-
-      # if (length(replacement_objs_history) == 1) {
-      #   undo_step_one <- FALSE
-      # }
     }
 
     rp_inpt <- tolower(replacement_input)
@@ -226,18 +217,10 @@ interactive_replacement_session <- function(rc) {
       replacement_to_ids_history <- append(replacement_to_ids_history,
                                            replacement_color)
 
-      print(current_replacement_index)
       rc <- replacement_objs_history[[current_replacement_index]]
       saveRDS(rc, "INTERMEDIATE_RC.rds")
       plot(rc)
     } else if (rp_inpt == "u" || rp_inpt == "undo") {
-      # if (current_replacement_index == 1) {
-      #   undo_step_one <- TRUE
-      # } else {
-      # if (!undo_step_one) {
-      #   stop("nothing to undo!")
-      # }
-
       undo_step_one <- TRUE
 
         replacement_objs_history <- replacement_objs_history[
@@ -252,42 +235,20 @@ interactive_replacement_session <- function(rc) {
           -length(replacement_to_ids_history)
         ]
 
-        print(current_replacement_index)
-
         current_replacement_index <- current_replacement_index - 1
 
         if (current_replacement_index < 1) {
           stop("nothing to undo!")
         }
 
-        print('lets see it:')
-        print(current_replacement_index)
-        if (current_replacement_index == 1) {
-          print('its 1')
-          # print(replacement_objs_history)
-          print(length(replacement_objs_history))
-        }
-        # rc_tmp <- replacement_objs_history[[length(replacement_objs_history)]]
-        # rc <- rc_tmp$final_img
         rc <- replacement_objs_history[[length(replacement_objs_history)]]
-        # plot(rc$final_img)
         plot(rc)
-
-      # }
     } else {
       continue_replacing <- FALSE
       new_img <- replace_color(rc, color_from = NULL, color_to = NULL)
-      print(current_replacement_index)
       replacement_objs_history[[current_replacement_index]] <- new_img$img
       rc <- replacement_objs_history[[current_replacement_index]]
     }
-
-    # if (continue_replacing) {
-    #   print(length(replacement_objs_history))
-    #   # print(rc)
-    #   # saveRDS(rc, 'TEST_RC.rds')
-    #   plot(rc$final_img)
-    # }
   }
 
   if (length(replacement_from_ids_history) > 0) {

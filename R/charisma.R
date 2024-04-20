@@ -12,7 +12,6 @@ charisma <- function(img_path, stack_colors = TRUE, threshold = 0.0, interactive
   # load image with clustered centers
   if (inherits(img_path, "recolorize")) {
     if (interactive) {
-      print('here6')
       img_interactive <- interactive_session(img_path, is.charisma2 = TRUE)
       img <- img_interactive$final_img
     } else {
@@ -118,8 +117,6 @@ charisma <- function(img_path, stack_colors = TRUE, threshold = 0.0, interactive
           remappable_colors[[choice]] <- c(matching_rows$r_avg[1],
                                         matching_rows$g_avg[1],
                                         matching_rows$b_avg[1])
-          # print(remappable_colors)
-          # print(matching_rows)
         }
 
         message(" ")
@@ -128,18 +125,14 @@ charisma <- function(img_path, stack_colors = TRUE, threshold = 0.0, interactive
           dropped.color.matching_rows_ids <- color_mask_LUT$classification == dropped_color
           dropped.color.matching_rows_ids[1] <- FALSE
           dropped.color.matching_rows <- color_mask_LUT[dropped.color.matching_rows_ids,]
-          # print(dropped.color.matching_rows)
 
           get_color_distance <- function(color1, color2) {
-            # print(color1)
-            # print(color2)
             sqrt(sum((color1 - color2)^2))
           }
 
           dropped_color_rgb <- c(dropped.color.matching_rows$r_avg[1],
                                  dropped.color.matching_rows$g_avg[1],
                                  dropped.color.matching_rows$b_avg[1])
-          # print(dropped_color_rgb)
 
           # calculate pairwise distances
           distances <- list()
@@ -147,19 +140,24 @@ charisma <- function(img_path, stack_colors = TRUE, threshold = 0.0, interactive
             distances[[choice]] <- get_color_distance(dropped_color_rgb,
                                                       remappable_colors[[choice]])
           }
-          # print(distances)
+
           sorted_distances <- round(sort(unlist(distances)), 2)
+
           formatted_distances <- sapply(names(sorted_distances), function(name) {
             paste0("  * ", name, " => ", sorted_distances[name])
           })
+
           message(paste("Distances between", dropped_color, "and:"))
+
           for (comparison in formatted_distances) {
             message(comparison)
           }
+
           distances <- unlist(distances)
           min_dist <- min(distances)
           n_mins <- sum(distances == min_dist)
           min_dist_names <- names(which(distances == min_dist))
+
           if (n_mins > 1) {
             warning(paste0("There are > 1 (", n_mins, ") distances minimized:"))
 
