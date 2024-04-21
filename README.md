@@ -29,7 +29,7 @@ Below is an example use of the primary `charisma()` function. The resulting `cha
 
 ✅ Because each saved object is stored with all relevant data (as well as the history of any color merge/replacement operations performed during an `interactive` session), the `charisma` pipeline is fully reproducible. See the `charisma2()` function to be able to step through (and edit) any previously run `charisma` object.
 
-## Example Usage
+## Example
 ```r
 # load the charisma package
 library(charisma)
@@ -61,11 +61,11 @@ plot(c_img)
 #  and then turning on whatever components you'd like to show up in the plot
 plot(c_img, plot.all = F, plot.original = T, plot.masked = T, plot.props = T)
 ```
-### Charisma results (with no threshold)
-<img src="man/figures/charisma_no_thresh.png" align="center" width="600" />
+## Charisma results (with no threshold)
+<img src="man/figures/charisma_no_thresh.png" align="center" width="750" />
 
-### Charisma results (with a 5% threshold)
-<img src="man/figures/charisma_0p05_thresh.png" align="center" width="600" />
+## Charisma results (with a 5% threshold)
+<img src="man/figures/charisma_0p05_thresh.png" align="center" width="750" />
 
 ## Comments/Suggestions/Questions/Feedback
 👋 Don't hesitate to reach out and chat! <shawn.t.schwartz@gmail.com>
