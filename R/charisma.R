@@ -443,7 +443,7 @@ charisma <- function(img_path, threshold = 0.0, auto.drop = T,
   class(output.list) <- "charisma"
 
   if (pavo) {
-    tmp_pavo_adj <- charisma::pavo_classify_charisma(output.list, plot = plot)
+    tmp_pavo_adj <- pavo_classify_charisma(output.list, plot = plot)
     output.list$input2pavo <- tmp_pavo_adj$input2pavo
     output.list$pavo_adj_stats <- tmp_pavo_adj$adj_stats
     output.list$pavo_adj_class <- tmp_pavo_adj$adj_class
@@ -472,7 +472,7 @@ charisma <- function(img_path, threshold = 0.0, auto.drop = T,
     pdf(file.path(logdir, "diagnostic_plots",
                   paste0(tools::file_path_sans_ext(basename(img_path)),
                          "_charisma_", cur_date_time, ".pdf")),
-        width = 14, height = 3)
+        width = 12, height = 9)
     plot.charisma(output.list, plot.all = TRUE)
     dev.off()
   }

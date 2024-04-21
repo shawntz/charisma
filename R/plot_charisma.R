@@ -21,7 +21,7 @@ plot.charisma <- function(x, plot.all = T, plot.original = F,
 
   # set new graphical env defaults
   par(cex.main = font.size, cex.lab = font.size,
-      cex.axis = font.size, mar = c(10,1,8,1))
+      cex.axis = font.size, mar = c(10, 1, 8, 1))
 
   # check whether charisma object contains pavo classifications
   if (
@@ -39,6 +39,14 @@ plot.charisma <- function(x, plot.all = T, plot.original = F,
     plot_layout <- matrix(c(0, 1, 4, 0, 0, 2, 5, 0, 0, 3, 6, 0),
                           ncol = 3, nrow = 4)
     plot_heights <- rep(c(0.15, 0.35, 0.35, 0.15), times = 3)
+    plot.original <- TRUE
+    plot.recolored <- TRUE
+    plot.masked <- TRUE
+    plot.props <- TRUE
+    plot.pavo.img <- TRUE
+    plot.pavo.classes <- TRUE
+    num_plots <- sum(c(plot.original, plot.recolored, plot.masked,
+                       plot.props, plot.pavo.img, plot.pavo.classes))
   } else {
     num_plots <- sum(c(plot.original, plot.recolored, plot.masked,
                        plot.props, plot.pavo.img, plot.pavo.classes))
@@ -79,9 +87,9 @@ plot.charisma <- function(x, plot.all = T, plot.original = F,
 
   if (plot.props) {
     if (num_plots <= 4) {
-      mar = c(7.5, 8, 5, 2)
+      mar <- c(7.5, 8, 5, 2)
     } else {
-      mar = c(5.5, 8, 5, 0)
+      mar <- c(5.5, 8, 5, 0)
     }
     plot_props(x, !real.bar.colors, mar)
   }
@@ -90,10 +98,10 @@ plot.charisma <- function(x, plot.all = T, plot.original = F,
 
   if (plot.pavo.classes) {
     if (num_plots <= 4) {
-      mar = c(2, 2, 5, 2)
+      mar <- c(2, 2, 5, 2)
     } else {
-      mar = c(0, 2, 5, 4.5)
+      mar <- c(0, 2, 5, 4.5)
     }
-    plot_pavo_pal(x, mar)
+    plot_pavo_pal(x, mar = mar)
   }
 }
