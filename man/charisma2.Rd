@@ -6,7 +6,7 @@
 \usage{
 charisma2(
   charisma.obj,
-  interactive = TRUE,
+  interactive = T,
   new.threshold = NULL,
   which.state = c("none", "merge", "replace"),
   state.index = NULL

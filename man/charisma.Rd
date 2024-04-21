@@ -6,16 +6,16 @@
 \usage{
 charisma(
   img_path,
-  stack_colors = TRUE,
   threshold = 0,
-  interactive = FALSE,
-  plot = FALSE,
-  pavo = TRUE,
+  auto.drop = T,
+  interactive = F,
+  plot = F,
+  pavo = T,
   logdir = NULL,
-  auto.drop = TRUE,
+  stack_colors = T,
   bins = 4,
   cutoff = 20,
-  mapping = color.map
+  lut = color.lut
 )
 }
 \arguments{

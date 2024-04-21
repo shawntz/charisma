@@ -4,7 +4,18 @@
 \alias{plot.charisma}
 \title{this is a test}
 \usage{
-\method{plot}{charisma}(x, ...)
+\method{plot}{charisma}(
+  x,
+  plot.all = T,
+  plot.original = F,
+  plot.recolored = F,
+  plot.masked = F,
+  plot.props = F,
+  plot.pavo.img = F,
+  plot.pavo.classes = F,
+  font.size = 1.75,
+  real.bar.colors = T
+)
 }
 \arguments{
 \item{x}{A number}

@@ -1,23 +1,23 @@
-parse_mapping <- function(color.name, mapping = color.map) {
-  # check if color.name exists in mapping
-  if (!color.name %in% mapping[,1])
-    stop("Error: specified color name is not defined in color mapping.
-         Please check definitions in color mapping file.")
+parse_lut <- function(color.name, lut = color.lut) {
+  # check if color.name exists in LUT
+  if (!color.name %in% lut[,1])
+    stop("Error: specified color name is not defined in color lut.
+         Please check definitions in color LUT file.")
 
   # subset color ranges
-  mapping <- mapping[which(mapping$color.name == color.name),]
-  h <- mapping$h
-  s <- mapping$s
-  v <- mapping$v
+  lut <- lut[which(lut$color.name == color.name),]
+  h <- lut$h
+  s <- lut$s
+  v <- lut$v
 
-  # check defined mapping lengths
+  # check defined LUT lengths
   h <- strsplit(as.character(h), ",")[[1]]
   s <- strsplit(as.character(s), ",")[[1]]
   v <- strsplit(as.character(v), ",")[[1]]
   col_lens <- c(length(h), length(s), length(v))
   if (length(unique(col_lens)) != 1)
     stop("Error: specified color ranges are not of equal length.
-         Please check definitions in color mapping file.")
+         Please check definitions in color LUT file.")
 
   # parse: split 'or' pipes
   h <- strsplit(as.character(h), "\\|")
@@ -31,7 +31,7 @@ parse_mapping <- function(color.name, mapping = color.map) {
   return(output)
 }
 
-parse_conditional <- function(parsed_mapping, destination = c("pipeline", "getter", "python")) {
+construct_conditional <- function(parsed_lut, destination = c("pipeline", "getter", "python")) {
   # check if valid destination
   # `pipeline`: parses output to be used in the `callColors.R` pipeline function
   # `getter`: parses output to be used in the `getColor.R` stand-alone function
@@ -39,17 +39,17 @@ parse_conditional <- function(parsed_mapping, destination = c("pipeline", "gette
   destination <- tolower(destination)
   destination <- match.arg(destination)
 
-  num_ranges <- length(parsed_mapping$h) # (assumes equal lengths for each color variable: h, s, v)
+  num_ranges <- length(parsed_lut$h) # (assumes equal lengths for each color variable: h, s, v)
   separate_cond_strings <- rep(NA, num_ranges)
 
   for(ii in 1:num_ranges) {
-    num_ors_h <- length(parsed_mapping$h[[ii]]) - 1
-    num_ors_s <- length(parsed_mapping$s[[ii]]) - 1
-    num_ors_v <- length(parsed_mapping$v[[ii]]) - 1
+    num_ors_h <- length(parsed_lut$h[[ii]]) - 1
+    num_ors_s <- length(parsed_lut$s[[ii]]) - 1
+    num_ors_v <- length(parsed_lut$v[[ii]]) - 1
 
-    h_split <- strsplit(as.character(parsed_mapping$h[[ii]]), "::")
-    s_split <- strsplit(as.character(parsed_mapping$s[[ii]]), "::")
-    v_split <- strsplit(as.character(parsed_mapping$v[[ii]]), "::")
+    h_split <- strsplit(as.character(parsed_lut$h[[ii]]), "::")
+    s_split <- strsplit(as.character(parsed_lut$s[[ii]]), "::")
+    v_split <- strsplit(as.character(parsed_lut$v[[ii]]), "::")
 
     h_string <- rep(NA, num_ors_h + 1)
     s_string <- rep(NA, num_ors_s + 1)
@@ -98,66 +98,4 @@ parse_conditional <- function(parsed_mapping, destination = c("pipeline", "gette
   combo_string <- paste(separate_cond_strings, collapse = " | ")
 
   return(combo_string)
-}
-
-#' Add together two numbers
-#'
-#' @param x A number
-#' @param y A number
-#' @return The sum of \code{x} and \code{y}
-#' @examples
-#' add(1, 1)
-#' add(10, 1)
-#'
-#' @export
-parse_color <- function(color_triplet, hsv = FALSE, verbose = FALSE, mapping = color.map) {
-  if (!hsv) {
-    # convert color space to hsv
-    color_triplet <- as.data.frame(t(rgb2hsv(color_triplet[1], color_triplet[2], color_triplet[3])))
-  } else {
-    # this is to feed in a single row of h, s, and v values (a la the patch set in long format that whitney sent me)
-    color_triplet <- as.data.frame(cbind(h = color_triplet$h[1], s = color_triplet$s[1], v = color_triplet$v[1]))
-  }
-
-  #print(color_triplet)
-
-  # check if any NAs in color triplet and return NA if true
-  if (is.na(sum(color_triplet[1,])))
-    return("NA")
-  # if(apply(color_triplet, 0, function(x) is.na(x))) {
-  #   return("NA")
-  # }
-
-  if(verbose) print(color_triplet)
-
-  # rescale hsv color triplet to match scales used in parsed color mapping
-  h <- round(color_triplet[1] * 360, 2)
-  s <- round(color_triplet[2] * 100, 2)
-  v <- round(color_triplet[3] * 100, 2)
-
-  #print(c(h, s, v))
-
-  # get all color names from color mapping
-  color_names <- unique(mapping[,1])
-
-  # evaluate for each color
-  calls <- rep(NA, length(color_names))
-  names(calls) <- color_names
-
-  for (color in 1:length(color_names)) {
-    parsed_mapping <- parse_mapping(color_names[color], mapping)
-    parsed_conditional <- parse_conditional(parsed_mapping, destination = "getter")
-    calls[color] <- ifelse(eval(parse(text = parsed_conditional)), 1, 0)
-  }
-
-  # see which color was matched (should only return 1 match)
-  matched_color <- names(calls)[which.max(calls)]
-
-  if (verbose) print(calls)
-
-  if (length(which.max(calls)) > 1)
-    warning("More than 1 color matched on color triplet -- overlapping color boundaries.
-            Check and update color mapping boundary definitions.")
-
-  return(matched_color)
 }
