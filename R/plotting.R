@@ -17,7 +17,7 @@ plot_recolored <- function(img, mar = c(0, 0, 5, 0)) {
 plot_masked <- function(img, mar = c(0, 0, 5, 0)) {
   par(mar = mar)
   asp <- dim(img$original_img)[1] / dim(img$original_img)[2]
-  plot(0:1, 0:1, type = "n", axes = FALSE, asp = asp, main = "Masked",
+  plot(0:1, 0:1, type = "n", axes = FALSE, asp = asp, main = "Charisma Mask",
        xlab = "", ylab = "")
   graphics::rasterImage(img$color_mask, 0, 0, 1, 1)
 }
