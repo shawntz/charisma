@@ -16,74 +16,58 @@ remotes::install_github("shawntschwartz/charisma")
 # Help
 
 > [!IMPORTANT]  
-> Please use the issues tab (https://github.com/shawntylerschwartz/charisma/issues) to file any bugs or suggestions.
+> Please use the issues tab (https://github.com/shawntschwartz/charisma/issues) to file any bugs or suggestions.
 
 # Demo Usage
 
 > [!NOTE]  
-> Apologies in advance, I have yet to write documentation for the core functions.
+> Apologies in advance, I have yet to write complete documentation for the core functions. -s-
 
-Below are two example use cases of the primary `charisma()` pipeline wrapper function. I have added some extra support code to facilitate saving the `charisma` color classifications `R` objects, diagnostic plots for visual inspection, as well as summary `dataframes` / `csv` outputs of color pattern geometry statistics computed with [`pavo`](https://github.com/rmaia/pavo).
+Below is an example use of the primary `charisma()` function. The resulting `charisma` object returned by the `charisma()` function includes all relevant data which can be mined as needed. In addition to the discrete color category labels output by `charisma`, it also includes the outputs of color pattern geometry statistics computed with [`pavo`](https://github.com/rmaia/pavo).
+
+⚠️ Note: including a valid path to the `logdir = ...` argument will force `charisma()` to save both a timestamped `.RDS` file (of the returned `charisma` object), as well as a timestamped `.pdf` file which contains the output of running `plot(...)` on the resulting `charisma` object. 
+
+✅ Because each saved object is stored with all relevant data (as well as the history of any color merge/replacement operations performed during an `interactive` session), the `charisma` pipeline is fully reproducible. See the `charisma2()` function to be able to step through (and edit) any previously run `charisma` object.
 
 ## Example Usage
-``` r
-# load charisma package
+```r
+# load the charisma package
 library(charisma)
 
 # settings
-COLOR_PROPORTION_INCLUSION_THRESHOLD <- 0.0 # 0.0 ~> allow any proportion of colors to be considered
-USE_INTERACTIVE_MODE <- FALSE # TRUE ~> interrupt each loaded image with manual intervention interface
+color_prop_thresh <- 0.0 # 0 allows *any* prop of colors to be considered
+use_interactive_mode <- T # interrupt each img with manual intervention
 
-# define input and output dirs
-in_dir <- file.path("~", "path", "to", "images")
-out_dir <- "diagnostic_plots"
+# define input/output paths
+out_dir <- file.path("~", "Documents", "charisma_outputs")
 
-# create output dir to store diagnostic plots
-if (!dir.exists(out_dir)) {
-  dir.create(out_dir)
-}
+# example of running an "interactive" charisma session on a single image
+img <- system.file("extdata", "Anampses_caeruleopunctatus.png",
+                   package = "charisma")
 
-# create subdirs
-if (!dir.exists(file.path(out_dir, "charisma_objects"))) {
-  dir.create(file.path(out_dir, "charisma_objects"))
-}
+c_img <- charisma(img,
+                  threshold = color_prop_thresh,
+                  auto.drop = T,
+                  interactive = use_interactive_mode,
+                  plot = F,
+                  logdir = out_dir)
 
-if (!dir.exists(file.path(out_dir, "color_geometry_stats"))) {
-  dir.create(file.path(out_dir, "color_geometry_stats"))
-}
+# visualize output in the RStudio Viewer:
+#  fyi -- since we set a logdir above, we've already automatically saved out
+#  this same plot to that directory (so this is just to see it again in RStudio)
+plot(c_img)
 
-if (!dir.exists(file.path(out_dir, "diagnostic_plots"))) {
-  dir.create(file.path(out_dir, "diagnostic_plots"))
-}
-
-# make a pipeline wrapper function
-run_charisma <- function(img, out_dir) {
-  if (USE_INTERACTIVE_MODE) {
-    # interactive mode
-    img_c <- charisma(img, threshold = COLOR_PROPORTION_INCLUSION_THRESHOLD, verbose = TRUE, plot = TRUE)
-  } else {
-    # high-throughput / automation mode)
-    img_c <- charisma(img, threshold = COLOR_PROPORTION_INCLUSION_THRESHOLD, verbose = FALSE, plot = FALSE)
-  }
-  
-  # assuming appropriate output dirs
-  saveRDS(img_c, file.path(out_dir, "charisma_objects", paste0("charisma_", basename(img), ".RDS")))
-
-  # then, save out all the relevant data to csvs for analysis later
-  write.csv(img_c$pavo_adj_stats, file.path(out_dir, "color_geometry_stats", paste0("charisma_", basename(img), "_pavo.csv")), row.names = FALSE)
-  
-  # and save out the diagnostic plots to the specified directory
-  fname <- paste0(tools::file_path_sans_ext(basename(img)), ".jpeg")
-  jpeg(file.path(out_dir, "diagnostic_plots", fname), width = 1920, height = 300, units = "px")
-  plot_diagnostics(img_c)
-  dev.off()
-}
-
-# run the pipeline!
-my_image_files <- list.files(in_dir, pattern = "*.png", all.files = TRUE, full.names = TRUE)
-
-for (my_image in my_image_files) {
-  run_charisma(img = my_image, out_dir = out_dir)
-}
-
+# modify which aspects are shown in the plot by turning `plot.all` to FALSE
+#  and then turning on whatever components you'd like to show up in the plot
+plot(c_img, plot.all = F, plot.original = T, plot.masked = T, plot.props = T)
 ```
+### Charisma results (with no threshold)
+<img src="man/figures/charisma_no_thresh.png" align="center" width="600" />
+
+### Charisma results (with a 5% threshold)
+<img src="man/figures/charisma_0p05_thresh.png" align="center" width="600" />
+
+## Comments/Suggestions/Questions/Feedback
+👋 Don't hesitate to reach out and chat! <shawn.t.schwartz@gmail.com>
+
+
