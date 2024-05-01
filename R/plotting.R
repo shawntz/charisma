@@ -52,14 +52,11 @@ plot_props <- function(charisma_obj, use.default.bar.colors = T,
     bar_colors = cluster_specific_hex_vals$new.hex
   }
 
-  spacer <- "                   "
-
   freq_bar <- barplot(height = cluster_specific_hex_vals$prop,
                       names = cluster_specific_hex_vals$classification,
                       col = bar_colors,
-                      main = paste0("(k = ", charisma_obj$k, ", ",
-                                    (charisma_obj$prop_threshold*100), "%)",
-                                    spacer),
+                      main = paste0("Color Profile (k = ", charisma_obj$k, ", ",
+                                    (charisma_obj$prop_threshold*100), "%)"),
                       ylim = c(0,1), ylab = "Proportion of Image\n", las = 2)
 
   if (charisma_obj$prop_threshold > 0) {
