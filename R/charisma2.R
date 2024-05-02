@@ -75,12 +75,16 @@ charisma2 <- function(charisma.obj, interactive = T, new.threshold = NULL,
     # select the newest possible state
     if (!is.null(charisma.obj$replacement_states)) {
       new.charisma <- charisma.obj$replacement_states[[n_replacement_states]]
-    } else {
+    } else if (!is.null(charisma.obj$merge_states)) {
       new.charisma <- charisma.obj$merge_states[[n_merge_states]]
+    } else {
+      new.charisma <- charisma.obj$path
     }
   }
 
-  new.charisma$path <- charisma.obj$path
+  if (class(new.charisma) != "character") {
+    new.charisma$path <- charisma.obj$path
+  }
 
   if (is.null(new.threshold)) {
     thresh <- charisma.obj$prop_threshold
