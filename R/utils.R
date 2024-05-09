@@ -101,6 +101,9 @@ generate_filename <- function(filepath) {
       } else {
         stop("No valid directory provided.")
       }
+    } else {
+      check_logdir <- FALSE
+      new_dir <- dir
     }
   }
 
