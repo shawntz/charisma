@@ -11,8 +11,16 @@
 charisma <- function(img_path, threshold = 0.0, auto.drop = T,
                      interactive = F, plot = F, pavo = T, logdir = NULL,
                      stack_colors = T, bins = 4, cutoff = 20, lut = color.lut) {
-  # load image with clustered centers
+  # load image with clustered centers (i.e., for the charisma2 function)
   if (inherits(img_path, "recolorize")) {
+    # input var "img_path" is not actually a path to an image in this case
+    # but rather is an object that inherits class `recolorize`
+    # therefore, store original path to image first for later saving out
+    PATH_TO_IMG <- img_path$path
+    PATH_TO_IMG_SET <- generate_filename(PATH_TO_IMG)
+    PATH_TO_IMG <- PATH_TO_IMG_SET$new_filename
+    logdir <- PATH_TO_IMG_SET$new_basepath
+
     if (interactive) {
       img_interactive <- interactive_session(img_path, is.charisma2 = TRUE)
       img <- img_interactive$final_img
@@ -20,6 +28,7 @@ charisma <- function(img_path, threshold = 0.0, auto.drop = T,
       img <- img_path
     }
   } else {
+    PATH_TO_IMG <- img_path
     list.img <- load_image(img_path, interactive = interactive,
                            bins = bins, cutoff = cutoff)
     img <- list.img$final_img
@@ -356,6 +365,10 @@ charisma <- function(img_path, threshold = 0.0, auto.drop = T,
   }
   color_data <- color_data[order(color_data$prop, decreasing = TRUE),]
 
+  if (!is.null(logdir)) {
+    if (!dir.exists(logdir))
+      dir.create(logdir)
+
   output.list <- vector("list", length = 31)
   output.list_names <- c("path",
                          "bins",
@@ -450,10 +463,6 @@ charisma <- function(img_path, threshold = 0.0, auto.drop = T,
     output.list$pavo_adj_class_plot_cols <- tmp_pavo_adj$adj_class_plot_cols
   }
 
-  if (!is.null(logdir)) {
-    if (!dir.exists(logdir))
-      dir.create(logdir)
-
     cur_date_time <- format(Sys.time(), "%m-%d-%Y_%H.%M.%S")
 
     # create subdirs
@@ -465,14 +474,17 @@ charisma <- function(img_path, threshold = 0.0, auto.drop = T,
       dir.create(file.path(logdir, "diagnostic_plots"))
     }
 
-    saveRDS(output.list, file.path(logdir, "charisma_objects",
-                                   paste0(basename(img_path),
-                                          "_charisma_", cur_date_time, ".RDS")))
+    RDS_OUT <- file.path(logdir, "charisma_objects", paste0(basename(PATH_TO_IMG),
+                                                  "_charisma_",
+                                                  cur_date_time, ".RDS"))
+    message(paste("Writing out charisma object to:", RDS_OUT))
+    saveRDS(output.list, RDS_OUT)
 
-    pdf(file.path(logdir, "diagnostic_plots",
-                  paste0(tools::file_path_sans_ext(basename(img_path)),
-                         "_charisma_", cur_date_time, ".pdf")),
-        width = 12, height = 9)
+    PDF_OUT <- file.path(logdir, "diagnostic_plots",
+                         paste0(tools::file_path_sans_ext(basename(PATH_TO_IMG)),
+                                "_charisma_", cur_date_time, ".pdf"))
+    message(paste("Writing out charisma plot to:", PDF_OUT))
+    pdf(PDF_OUT, width = 12, height = 9)
     plot.charisma(output.list, plot.all = TRUE)
     dev.off()
   }
