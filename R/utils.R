@@ -78,7 +78,7 @@ cimg_to_array <- function(x) {
   return(img)
 }
 
-generate_filename <- function(filepath) {
+generate_filename <- function(filepath, check_dir_plus_base = FALSE) {
   dir <- dirname(filepath)
   base <- tools::file_path_sans_ext(basename(filepath))
   ext <- tools::file_ext(filepath)
@@ -87,27 +87,35 @@ generate_filename <- function(filepath) {
   # allow user to force a new directory to avoid saving errors
   check_logdir <- TRUE
 
-  while (check_logdir) {
-    if (!dir.exists(dir)) {
-      message(paste("\nCRITICAL MESSAGE:\n", dir, "\nThis charisma `logdir` (directory) does not exist on this computer.\n>> Please enter a new logdir:"))
-      new_dir <- readline()
-      if (new_dir != "") {
-        if (dir.exists(new_dir)) {
-          dir <- new_dir
-          check_logdir <- FALSE
-        } else {
-          message("Log directory provided does not exist.")
-        }
-      } else {
-        stop("No valid directory provided.")
-      }
-    } else {
-      check_logdir <- FALSE
-      new_dir <- dir
-    }
+  if (check_dir_plus_base) {
+    dir_to_check <- file.path(dir, base)
+  } else {
+    dir_to_check <- dir
   }
 
-  new_filename <- file.path(dir, sprintf("%s_charisma2.%s", base, ext))
+  print(paste0("dir_to_check: ", dir_to_check))
+
+  if (!dir.exists(dir_to_check)) {
+    message(paste("\nCRITICAL MESSAGE:\n", dir_to_check, "\nThis charisma `logdir` (directory) does not exist on this computer.\n>> Please enter a new logdir:"))
+    new_dir <- readline()
+    if (new_dir != "") {
+      if (dir.exists(new_dir)) {
+        dir <- new_dir
+      } else {
+        message("Log directory provided does not exist. Creating new directory...")
+      }
+    } else {
+      stop("No valid directory provided.")
+    }
+  } else {
+    new_dir <- dir
+  }
+
+  if (!check_dir_plus_base) {
+    new_filename <- file.path(new_dir, sprintf("%s.%s", base, ext))
+  } else {
+    new_filename <- new_dir
+  }
 
   list.out <- list(
     new_filename = new_filename,

@@ -11,6 +11,9 @@
 charisma <- function(img_path, threshold = 0.0, auto.drop = T,
                      interactive = F, plot = F, pavo = T, logdir = NULL,
                      stack_colors = T, bins = 4, cutoff = 20, lut = color.lut) {
+  cur_date_time <- format(Sys.time(), "%m-%d-%Y_%H.%M.%S")
+  original_img_path_class <- inherits(img_path, "charisma2")
+
   # load image with clustered centers (i.e., for the charisma2 function)
   if (inherits(img_path, "recolorize")) {
     # input var "img_path" is not actually a path to an image in this case
@@ -19,7 +22,13 @@ charisma <- function(img_path, threshold = 0.0, auto.drop = T,
     PATH_TO_IMG <- img_path$path
     PATH_TO_IMG_SET <- generate_filename(PATH_TO_IMG)
     PATH_TO_IMG <- PATH_TO_IMG_SET$new_filename
-    logdir <- PATH_TO_IMG_SET$new_basepath
+    if (!is.null(logdir)) {
+      check_logdir <- dir.exists(logdir)
+      if (!check_logdir) {
+        new_logdir <- generate_filename(logdir, check_dir_plus_base = TRUE)
+        logdir <- new_logdir$new_filename
+      }
+    }
 
     if (interactive) {
       img_interactive <- interactive_session(img_path, is.charisma2 = TRUE)
@@ -32,6 +41,23 @@ charisma <- function(img_path, threshold = 0.0, auto.drop = T,
     list.img <- load_image(img_path, interactive = interactive,
                            bins = bins, cutoff = cutoff)
     img <- list.img$final_img
+  }
+
+  if (original_img_path_class) {
+    RDS_OUT <- file.path(logdir, "charisma_objects", paste0(tools::file_path_sans_ext(basename(PATH_TO_IMG)),
+                                                            "_charisma2_",
+                                                            cur_date_time, ".RDS"))
+    PDF_OUT <- file.path(logdir, "diagnostic_plots",
+                         paste0(tools::file_path_sans_ext(basename(PATH_TO_IMG)),
+                                "_charisma2_", cur_date_time, ".pdf"))
+
+  } else {
+    RDS_OUT <- file.path(logdir, "charisma_objects", paste0(tools::file_path_sans_ext(basename(PATH_TO_IMG)),
+                                                            "_charisma_",
+                                                            cur_date_time, ".RDS"))
+    PDF_OUT <- file.path(logdir, "diagnostic_plots",
+                         paste0(tools::file_path_sans_ext(basename(PATH_TO_IMG)),
+                                "_charisma_", cur_date_time, ".pdf"))
   }
 
   # get proportion table for cluster centers
@@ -365,9 +391,7 @@ charisma <- function(img_path, threshold = 0.0, auto.drop = T,
   }
   color_data <- color_data[order(color_data$prop, decreasing = TRUE),]
 
-  if (!is.null(logdir)) {
-    if (!dir.exists(logdir))
-      dir.create(logdir)
+
 
   output.list <- vector("list", length = 31)
   output.list_names <- c("path",
@@ -463,7 +487,9 @@ charisma <- function(img_path, threshold = 0.0, auto.drop = T,
     output.list$pavo_adj_class_plot_cols <- tmp_pavo_adj$adj_class_plot_cols
   }
 
-    cur_date_time <- format(Sys.time(), "%m-%d-%Y_%H.%M.%S")
+  if (!is.null(logdir)) {
+    if (!dir.exists(logdir))
+      dir.create(logdir)
 
     # create subdirs
     if (!dir.exists(file.path(logdir, "charisma_objects"))) {
@@ -474,15 +500,9 @@ charisma <- function(img_path, threshold = 0.0, auto.drop = T,
       dir.create(file.path(logdir, "diagnostic_plots"))
     }
 
-    RDS_OUT <- file.path(logdir, "charisma_objects", paste0(basename(PATH_TO_IMG),
-                                                  "_charisma_",
-                                                  cur_date_time, ".RDS"))
     message(paste("Writing out charisma object to:", RDS_OUT))
     saveRDS(output.list, RDS_OUT)
 
-    PDF_OUT <- file.path(logdir, "diagnostic_plots",
-                         paste0(tools::file_path_sans_ext(basename(PATH_TO_IMG)),
-                                "_charisma_", cur_date_time, ".pdf"))
     message(paste("Writing out charisma plot to:", PDF_OUT))
     pdf(PDF_OUT, width = 12, height = 9)
     plot.charisma(output.list, plot.all = TRUE)

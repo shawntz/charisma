@@ -92,6 +92,8 @@ charisma2 <- function(charisma.obj, interactive = T, new.threshold = NULL,
     thresh <- new.threshold
   }
 
+  class(new.charisma) <- c(class(new.charisma), "charisma2")
+
   reverted_img <- charisma(new.charisma,
                            interactive = interactive,
                            threshold = thresh,
