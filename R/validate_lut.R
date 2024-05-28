@@ -10,7 +10,7 @@
 #' @export
 validate_lut <- function(lut = color.lut, simple = T) {
   # get all color names from color look up table (LUT)
-  color_names <- get_mapped_colors(lut)
+  color_names <- get_lut_colors(lut)
 
   # create empty list to hold color calls in
   calls <- list()
