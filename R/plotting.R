@@ -40,7 +40,7 @@ plot_props <- function(charisma_obj, use.default.bar.colors = T,
 
   cluster_specific_hex_vals <- charisma_obj$color_mask_LUT %>%
     group_by(classification, hex) %>%
-    summarise(mean_prop = mean(prop)) %>%
+    dplyr::summarise(mean_prop = mean(prop)) %>%
     select(-mean_prop) %>%
     rename(new.hex = hex) %>%
     right_join(color_summary, by = "classification") %>%
