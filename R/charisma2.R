@@ -14,6 +14,10 @@ charisma2 <- function(charisma.obj, interactive = T, new.threshold = NULL,
   which.state <- tolower(which.state)
   which.state <- match.arg(which.state)
 
+  if (inherits(charisma.obj, "charisma2")) {
+    stop(paste0("You cannot re-run `charisma2` on a `charisma2` object!"))
+  }
+
   if (!inherits(charisma.obj, "charisma")) {
     stop(paste0("Input object is of class `",
                 class(charisma.obj),
@@ -105,6 +109,8 @@ charisma2 <- function(charisma.obj, interactive = T, new.threshold = NULL,
                            auto.drop = charisma.obj$auto_drop,
                            lut = charisma.obj$LUT,
                            stack_colors = charisma.obj$stack_colors)
+
+  class(reverted_img) <- "charisma2"
 
   return(reverted_img)
 }
