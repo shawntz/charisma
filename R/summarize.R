@@ -10,6 +10,7 @@
 #' @export
 summarize <- function(charisma_obj) {
   summary_table <- summarise_colors(charisma_obj$colors)
+  rownames(summary_table) <- basename(charisma_obj$path)
   return(summary_table)
 }
 
