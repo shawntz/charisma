@@ -8,7 +8,8 @@
 #' add(10, 1)
 #'
 #' @export
-color2label <- function(color_triplet, hsv = F, verbose = F, lut = color.lut) {
+color2label <- function(color_triplet, hsv = F, verbose = F,
+                        clut = charisma::clut) {
   if (!hsv) {
     # convert color space to hsv
     color_triplet <- as.data.frame(t(rgb2hsv(color_triplet[1],
@@ -27,20 +28,20 @@ color2label <- function(color_triplet, hsv = F, verbose = F, lut = color.lut) {
 
   if (verbose) print(color_triplet)
 
-  # rescale hsv color triplet to match scales used in parsed color LUT
+  # rescale hsv color triplet to match scales used in parsed CLUT
   h <- round(color_triplet[1] * 360, 2)
   s <- round(color_triplet[2] * 100, 2)
   v <- round(color_triplet[3] * 100, 2)
 
-  # get all color names from color LUT
-  color_names <- unique(lut[,1])
+  # get all color names from CLUT
+  color_names <- unique(clut[,1])
 
   # evaluate for each color
   calls <- rep(NA, length(color_names))
   names(calls) <- color_names
 
   for (color in 1:length(color_names)) {
-    parsed_lut <- parse_lut(color_names[color], lut)
+    parsed_lut <- parse_lut(color_names[color], clut)
     conditional <- construct_conditional(parsed_lut, destination = "getter")
     calls[color] <- ifelse(eval(parse(text = conditional)), 1, 0)
   }
@@ -52,8 +53,8 @@ color2label <- function(color_triplet, hsv = F, verbose = F, lut = color.lut) {
 
   overlap_warning <- paste("More than 1 color label matched on color triplet!",
                            "There are likely overlapping color boundaries in",
-                           "the color LUT. Please check and update color",
-                           "boundary definitions in the LUT.")
+                           "the CLUT. Please check and update color",
+                           "boundary definitions in the CLUT.")
 
   if (length(which.max(calls)) > 1) {
     warning(strwrap(overlap_warning,

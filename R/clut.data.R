@@ -1,4 +1,4 @@
-#' Default Color Labels Look Up Table (LUT)
+#' Default Color (Labels) Look Up Table (CLUT)
 #'
 #' This LUT contains all color boundaries which cut up the continuous HSV
 #' color space into 10 discrete color labels (i.e., black, white, grey, brown,
@@ -22,10 +22,10 @@
 #'
 #' @docType data
 #'
-#' @usage charisma::color.lut
+#' @usage charisma::clut
 #'
 #' @format An object of class \code{"data.frame"} to be passed into
 #' [charisma::charisma()] functions.
 #'
-#' @keywords charisma, look up table, LUT
-"color.lut"
+#' @keywords charisma, color look up table, CLUT
+"clut"

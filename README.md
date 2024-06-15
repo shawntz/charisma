@@ -70,4 +70,33 @@ plot(c_img, plot.all = F, plot.original = T, plot.masked = T, plot.props = T)
 ## Comments/Suggestions/Questions/Feedback
 👋 Don't hesitate to reach out and chat! <shawn.t.schwartz@gmail.com>
 
+# Appendix
 
+## Modifying (and Validating the CLUT)
+
+### Call
+```r
+> new_clut_validation_results <- charisma::validate(clut = my_new_clut)
+```
+
+### Results 
+
+#### Passing ✅
+```
+Parallelizing CLUT validation with 13 cores for 3682561 HSV color coordinates...
+This may take a while, feel free to go grab a latte!
+Total elapsed time for parallelization: 2.98 minutes 
+
+All HSV color coordinates classified! ==> Color LUT validation passed ✅
+```
+
+### Failing ⛔️
+```
+Parallelizing CLUT validation with 13 cores for 3682561 HSV color coordinates...
+This may take a while, feel free to go grab a latte!
+Total elapsed time for parallelization: 2.98 minutes 
+
+Error: missing color classifications for 5,000 
+HSV color coordinates ==> CLUT validation failed ⛔
+See returned output for the HSV coordinates that failed.
+```

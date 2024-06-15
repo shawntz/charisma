@@ -4,7 +4,7 @@
 \alias{color2label}
 \title{Add together two numbers}
 \usage{
-color2label(color_triplet, hsv = F, verbose = F, lut = color.lut)
+color2label(color_triplet, hsv = F, verbose = F, clut = charisma::clut)
 }
 \arguments{
 \item{x}{A number}

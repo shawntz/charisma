@@ -1,11 +1,11 @@
-parse_lut <- function(color.name, lut = color.lut) {
+parse_lut <- function(color.name, clut = charisma::clut) {
   # check if color.name exists in LUT
-  if (!color.name %in% lut[,1])
-    stop("Error: specified color name is not defined in color lut.
-         Please check definitions in color LUT file.")
+  if (!color.name %in% clut[,1])
+    stop("Error: specified color name is not defined in CLUT.
+         Please check definitions in CLUT file.")
 
   # subset color ranges
-  lut <- lut[which(lut$color.name == color.name),]
+  lut <- clut[which(clut$color.name == color.name),]
   h <- lut$h
   s <- lut$s
   v <- lut$v
@@ -17,7 +17,7 @@ parse_lut <- function(color.name, lut = color.lut) {
   col_lens <- c(length(h), length(s), length(v))
   if (length(unique(col_lens)) != 1)
     stop("Error: specified color ranges are not of equal length.
-         Please check definitions in color LUT file.")
+         Please check definitions in CLUT file.")
 
   # parse: split 'or' pipes
   h <- strsplit(as.character(h), "\\|")

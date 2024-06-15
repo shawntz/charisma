@@ -8,9 +8,9 @@
 #' add(10, 1)
 #'
 #' @export
-validate_lut <- function(lut = color.lut, simple = T) {
-  # get all color names from color look up table (LUT)
-  color_names <- get_lut_colors(lut)
+validate <- function(clut = charisma::clut, simple = T) {
+  # get all color names from color look up table (CLUT)
+  color_names <- get_lut_colors(clut)
 
   # create empty list to hold color calls in
   calls <- list()
@@ -38,7 +38,7 @@ validate_lut <- function(lut = color.lut, simple = T) {
   }
 
   check_colors <- function(color) {
-    parsed_lut <- parse_lut(color, lut)
+    parsed_lut <- parse_lut(color, clut)
     conditional <- construct_conditional(parsed_lut, destination = "getter")
     apply(img, 1, function(row) eval_colors(conditional, row))
   }
@@ -64,7 +64,7 @@ validate_lut <- function(lut = color.lut, simple = T) {
 
   start_time <- Sys.time()
   n_cores <- parallel::detectCores() - 1
-  message(paste("Parallelizing color LUT validation with",
+  message(paste("Parallelizing CLUT validation with",
                 n_cores, "cores for", dim(img)[1],
                 "HSV color coordinates..."))
   Sys.sleep(1)
@@ -96,11 +96,11 @@ validate_lut <- function(lut = color.lut, simple = T) {
 
   err_msg <- paste("Error: missing color classifications for",
                    nrow(invalid),
-                   "HSV color coordinates ==> Color LUT validation failed ⛔️",
+                   "HSV color coordinates ==> CLUT validation failed ⛔️",
                    "See returned output for the HSV coordinates that failed.")
 
   passed_msg <- paste("All HSV color coordinates classified!",
-                      "==> Color LUT validation passed ✅")
+                      "==> CLUT validation passed ✅")
 
   if (nrow(invalid) > 0) {
     message(strwrap(err_msg,

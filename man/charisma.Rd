@@ -15,7 +15,7 @@ charisma(
   stack_colors = T,
   bins = 4,
   cutoff = 20,
-  lut = color.lut
+  clut = charisma::clut
 )
 }
 \arguments{

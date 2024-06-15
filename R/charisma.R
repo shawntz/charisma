@@ -10,7 +10,8 @@
 #' @export
 charisma <- function(img_path, threshold = 0.0, auto.drop = T,
                      interactive = F, plot = F, pavo = T, logdir = NULL,
-                     stack_colors = T, bins = 4, cutoff = 20, lut = color.lut) {
+                     stack_colors = T, bins = 4, cutoff = 20,
+                     clut = charisma::clut) {
   cur_date_time <- format(Sys.time(), "%m-%d-%Y_%H.%M.%S")
   original_img_path_class <- inherits(img_path, "charisma2")
 
@@ -76,7 +77,7 @@ charisma <- function(img_path, threshold = 0.0, auto.drop = T,
     color_labels[color] <- color2label(c(color_data$r[color],
                                          color_data$g[color],
                                          color_data$b[color]),
-                                       lut = lut)
+                                       clut = clut)
   }
 
   # combine label classifications with color data
@@ -423,7 +424,7 @@ charisma <- function(img_path, threshold = 0.0, auto.drop = T,
                          "logdir",
                          "auto_drop",
                          "stack_colors",
-                         "LUT",
+                         "clut",
                          "call")
 
   message(paste0("Discrete color classes identified: k=", get_k(color_data)))
@@ -474,7 +475,7 @@ charisma <- function(img_path, threshold = 0.0, auto.drop = T,
   output.list$logdir <- logdir
   output.list$stack_colors <- stack_colors
   output.list$auto_drop <- auto.drop
-  output.list$LUT <- lut
+  output.list$clut <- clut
   output.list$call <- match.call()
 
   class(output.list) <- "charisma"

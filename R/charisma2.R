@@ -107,7 +107,7 @@ charisma2 <- function(charisma.obj, interactive = T, new.threshold = NULL,
                            pavo = charisma.obj$pavo,
                            logdir = charisma.obj$logdir,
                            auto.drop = charisma.obj$auto_drop,
-                           lut = charisma.obj$LUT,
+                           clut = charisma.obj$clut,
                            stack_colors = charisma.obj$stack_colors)
 
   class(reverted_img) <- "charisma2"

@@ -133,12 +133,12 @@ get_k <- function(charisma_obj) {
   return(length(unique(charisma_obj$classification)))
 }
 
-get_lut_colors <- function(lut = color.lut) {
-  return(unique(lut[,1]))
+get_lut_colors <- function(clut = charisma::clut) {
+  return(unique(clut[,1]))
 }
 
-get_lut_hex <- function(lut = color.lut) {
-  return(dplyr::select(lut, color.name, default.hex))
+get_lut_hex <- function(clut = charisma::clut) {
+  return(dplyr::select(clut, color.name, default.hex))
 }
 
 load_image <- function(img_path, interactive = T, bins = 4, cutoff = 20) {
@@ -199,9 +199,9 @@ save_recolored <- function(img, fname) {
   recolorize::recolorize_to_png(img, fname)
 }
 
-summarise_colors <- function(uniq_color_vec, lut = color.lut) {
-  # get all color names from LUT
-  color_names <- get_lut_colors(lut)
+summarise_colors <- function(uniq_color_vec, clut = charisma::clut) {
+  # get all color names from CLUT
+  color_names <- get_lut_colors(clut)
 
   color_summary <- ifelse(color_names %in% uniq_color_vec, 1, 0)
 
