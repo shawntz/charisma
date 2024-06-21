@@ -72,7 +72,7 @@ interactive_merge_session <- function(rc, is.charisma2 = F) {
         new_img <- merge_colors(rc, color.list = NULL)
         merge_objs_history[[current_merge_index]] <- new_img$img
         rc <- merge_objs_history[[current_merge_index]]
-      } else if (merge_input == 2) {
+      } else {
         new_img <- merge_colors(rc, colors_to_merge)
         current_merge_index <- current_merge_index + 1
         merge_objs_history[[current_merge_index]] <- new_img$img
@@ -81,8 +81,6 @@ interactive_merge_session <- function(rc, is.charisma2 = F) {
                                       colors_to_merge)
 
         rc <- merge_objs_history[[current_merge_index]]
-      } else {
-        stop("Invalid input. Please enter 1 for 'yes', or 2 for 'no'.")
       }
     }
   }
@@ -114,10 +112,9 @@ interactive_merge_session <- function(rc, is.charisma2 = F) {
 
       colors_to_merge <- readline(merge_input_str)
 
-      if (tolower(colors_to_merge) == 'none'
-          || tolower(colors_to_merge) == 'n') {
+      if (colors_to_merge == 0) {
         continue_merging <- FALSE
-      } else if (merge_input == 2) {
+      } else {
         new_img <- merge_colors(rc, colors_to_merge)
 
         current_merge_index <- current_merge_index + 1
@@ -125,11 +122,11 @@ interactive_merge_session <- function(rc, is.charisma2 = F) {
 
         merge_pairs_history <- append(merge_pairs_history,
                                       colors_to_merge)
-      } else {
-        stop("Invalid input. Please enter 1 for 'yes', or 2 for 'no'.")
       }
-    } else {
+    } else if (merge_input == 2) {
       continue_merging <- FALSE
+    } else {
+      stop("Invalid input. Please enter 1 for 'yes', or 2 for 'no'.")
     }
 
     rc <- merge_objs_history[[current_merge_index]]
