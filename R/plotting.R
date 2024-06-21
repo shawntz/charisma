@@ -64,9 +64,15 @@ plot_props <- function(charisma_obj, use.default.bar.colors = T, cex = 1.5,
 
   for (i in 1:length(labels)) {
     if (!is.na(cluster_specific_hex_vals$prop[i])) {
-      mtext(labels[i], side = 1, at = freq_bar[i], line = 1, cex = cex, col = "black", srt = 45, font = 2, las = 2) # bold
+      if (cluster_specific_hex_vals$prop[i] > charisma_obj$prop_threshold) {
+        mtext(labels[i], side = 1, at = freq_bar[i], line = 1,
+              cex = cex, col = "black", srt = 45, font = 2, las = 2) # bold
+      } else {
+        mtext(labels[i], side = 1, at = freq_bar[i], line = 1, cex = cex,
+              col = "gray50", srt = 45, font = 3, las = 2) # italicized
+      }
     } else {
-      mtext(labels[i], side = 1, at = freq_bar[i], line = 1, cex = cex, col = "gray", srt = 45, font = 1, las = 2)
+      mtext(labels[i], side = 1, at = freq_bar[i], line = 1, cex = cex, col = "gray85", srt = 45, font = 1, las = 2)
     }
   }
 
