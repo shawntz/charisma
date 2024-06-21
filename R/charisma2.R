@@ -10,7 +10,7 @@
 #' @export
 charisma2 <- function(charisma.obj, interactive = T, new.threshold = NULL,
                       which.state = c("none", "merge", "replace"),
-                      state.index = NULL) {
+                      state.index = NULL, k.override = NULL) {
   which.state <- tolower(which.state)
   which.state <- match.arg(which.state)
 
@@ -107,6 +107,7 @@ charisma2 <- function(charisma.obj, interactive = T, new.threshold = NULL,
                            pavo = charisma.obj$pavo,
                            logdir = charisma.obj$logdir,
                            auto.drop = charisma.obj$auto_drop,
+                           k.override = k.override,
                            clut = charisma.obj$clut,
                            stack_colors = charisma.obj$stack_colors)
 
