@@ -110,7 +110,7 @@ charisma2 <- function(charisma.obj, interactive = T, new.threshold = NULL,
                            clut = charisma.obj$clut,
                            stack_colors = charisma.obj$stack_colors)
 
-  class(reverted_img) <- "charisma2"
+  class(reverted_img) <- c("charisma2", "charisma")
 
   return(reverted_img)
 }
