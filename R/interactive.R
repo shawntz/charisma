@@ -46,7 +46,7 @@ interactive_merge_session <- function(rc, is.charisma2 = F) {
 
   continue_merging <- TRUE
   merge_input_str <- paste(" * Enter each color pair to merge",
-                           "[c(2,3), c(4,7), ...] or 'None': ")
+                           "[c(2,3), c(4,7), ...] or 'all' to merge all to single layer: ")
 
   if (!show_init_message) {
     merge_input <- readline(
@@ -66,8 +66,8 @@ interactive_merge_session <- function(rc, is.charisma2 = F) {
     if (merge_input == 1) {
       colors_to_merge <- readline(merge_input_str)
 
-      if (tolower(colors_to_merge) == 'none'
-          || tolower(colors_to_merge) == 'n') {
+      if (tolower(colors_to_merge) == 'all' ||
+          tolower(colors_to_merge) == 'a') {
         continue_merging <- FALSE
         new_img <- merge_colors(rc, color.list = NULL)
         merge_objs_history[[current_merge_index]] <- new_img$img
