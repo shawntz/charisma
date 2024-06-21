@@ -35,16 +35,16 @@ plot_props <- function(charisma_obj, use.default.bar.colors = T, cex = 1.5,
   hex <- get_lut_hex()
 
   color_summary <- hex %>%
-    rename(classification = color.name) %>%
-    left_join(color_table, by = "classification")
+    dplyr::rename(classification = color.name) %>%
+    dplyr::left_join(color_table, by = "classification")
 
   cluster_specific_hex_vals <- charisma_obj$color_mask_LUT %>%
-    group_by(classification, hex) %>%
+    dplyr::group_by(classification, hex) %>%
     dplyr::summarise(mean_prop = mean(prop)) %>%
-    select(-mean_prop) %>%
-    rename(new.hex = hex) %>%
-    right_join(color_summary, by = "classification") %>%
-    arrange(classification)
+    dplyr::select(-mean_prop) %>%
+    dplyr::rename(new.hex = hex) %>%
+    dplyr::right_join(color_summary, by = "classification") %>%
+    dplyr::arrange(classification)
 
   if (use.default.bar.colors) {
     bar_colors = cluster_specific_hex_vals$default.hex
