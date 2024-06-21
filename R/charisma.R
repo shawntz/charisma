@@ -508,7 +508,7 @@ charisma <- function(img_path, threshold = 0.0, auto.drop = T,
 
     message(paste("Writing out charisma plot to:", PDF_OUT))
     pdf(PDF_OUT, width = 12, height = 9)
-    plot.charisma(output.list, plot.all = TRUE)
+    plot.charisma(output.list, plot.all = TRUE, props.x.cex = 1)
     dev.off()
   }
 

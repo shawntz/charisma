@@ -14,6 +14,7 @@ plot.charisma <- function(x, plot.all = T, plot.original = F,
                           plot.recolored = F, plot.masked = F,
                           plot.props = F, plot.pavo.img = F,
                           plot.pavo.classes = F, font.size = 1.75,
+                          props.x.cex = 1.5,
                           real.bar.colors = T) {
   # reset graphical env
   current_par <- graphics::par(no.readonly = TRUE)
@@ -104,7 +105,7 @@ plot.charisma <- function(x, plot.all = T, plot.original = F,
     } else {
       mar <- c(5.5, 8, 5, 0)
     }
-    plot_props(x, !real.bar.colors, mar)
+    plot_props(x, !real.bar.colors, mar, cex = props.x.cex)
   }
 
   if (plot.pavo.img) plot_pavo_input(x)

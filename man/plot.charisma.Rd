@@ -14,6 +14,7 @@
   plot.pavo.img = F,
   plot.pavo.classes = F,
   font.size = 1.75,
+  props.x.cex = 1.5,
   real.bar.colors = T
 )
 }

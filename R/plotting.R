@@ -22,7 +22,7 @@ plot_masked <- function(img, mar = c(0, 0, 5, 0)) {
   graphics::rasterImage(img$color_mask, 0, 0, 1, 1)
 }
 
-plot_props <- function(charisma_obj, use.default.bar.colors = T,
+plot_props <- function(charisma_obj, use.default.bar.colors = T, cex = 1.5,
                        mar = c(5.5, 8, 5, 0)) {
   par(mar = mar)
 
@@ -53,11 +53,22 @@ plot_props <- function(charisma_obj, use.default.bar.colors = T,
   }
 
   freq_bar <- barplot(height = cluster_specific_hex_vals$prop,
-                      names = cluster_specific_hex_vals$classification,
+                      xaxt = "n",
                       col = bar_colors,
                       main = paste0("Color Profile (k = ", charisma_obj$k, ", ",
                                     (charisma_obj$prop_threshold*100), "%)"),
                       ylim = c(0,1), ylab = "Proportion of Image\n", las = 2)
+
+  labels <- cluster_specific_hex_vals$classification
+  axis(1, at = freq_bar, tick = FALSE, labels = FALSE)
+
+  for (i in 1:length(labels)) {
+    if (!is.na(cluster_specific_hex_vals$prop[i])) {
+      mtext(labels[i], side = 1, at = freq_bar[i], line = 1, cex = cex, col = "black", srt = 45, font = 2, las = 2) # bold
+    } else {
+      mtext(labels[i], side = 1, at = freq_bar[i], line = 1, cex = cex, col = "gray", srt = 45, font = 1, las = 2)
+    }
+  }
 
   if (charisma_obj$prop_threshold > 0) {
     abline(h = charisma_obj$prop_threshold, col = "red",
