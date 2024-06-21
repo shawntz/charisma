@@ -104,12 +104,17 @@ get_cleaned_up_stats <- function(adj_k_dists_list) {
   return(img_adj_k_dists_select)
 }
 
-pavo_classify_charisma <- function(charisma_obj, plot = T) {
+pavo_classify_charisma <- function(charisma_obj, k_override = NULL, plot = T) {
   # create tmp filepath
   tmp_out_target <- file.path(tempdir(), basename(charisma_obj$path))
 
   # get number of colors classes to classify in pavo
-  charisma_k_cols <- charisma_obj$k
+  if (is.null(k_override)) {
+    charisma_k_cols <- charisma_obj$k
+  } else {
+    charisma_k_cols <- k_override
+  }
+
 
   # save out tmp recolored jpeg
   #  inherit out_type from current file extension

@@ -24,29 +24,42 @@ plot.charisma <- function(x, plot.all = T, plot.original = F,
       cex.axis = font.size, mar = c(10, 1, 8, 1))
 
   # check whether charisma object contains pavo classifications
+  has_pavo <- TRUE
+
   if (
     is.null(x$input2pavo) ||
     is.null(x$pavo_adj_stats) ||
     is.null(x$pavo_adj_class) ||
     is.null(x$pavo_adj_class_plot_cols)
   ) {
+    has_pavo <- FALSE
     plot.pavo.img <- FALSE
     plot.pavo.classes <- FALSE
   }
 
   # construct layouts
   if (plot.all) {
-    plot_layout <- matrix(c(0, 1, 4, 0, 0, 2, 5, 0, 0, 3, 6, 0),
-                          ncol = 3, nrow = 4)
-    plot_heights <- rep(c(0.15, 0.35, 0.35, 0.15), times = 3)
     plot.original <- TRUE
     plot.recolored <- TRUE
     plot.masked <- TRUE
     plot.props <- TRUE
-    plot.pavo.img <- TRUE
-    plot.pavo.classes <- TRUE
-    num_plots <- sum(c(plot.original, plot.recolored, plot.masked,
-                       plot.props, plot.pavo.img, plot.pavo.classes))
+
+    if (has_pavo) {
+      plot.pavo.img <- TRUE
+      plot.pavo.classes <- TRUE
+      num_plots <- sum(c(plot.original, plot.recolored, plot.masked,
+                         plot.props, plot.pavo.img, plot.pavo.classes))
+      plot_layout <- matrix(c(0, 1, 4, 0, 0, 2, 5, 0, 0, 3, 6, 0),
+                            ncol = 3, nrow = 4)
+      plot_heights <- rep(c(0.15, 0.35, 0.35, 0.15), times = 3)
+    } else {
+      num_plots <- sum(c(plot.original, plot.recolored, plot.masked,
+                         plot.props))
+      plot_layout <- matrix(c(0, 1, 3, 0, 0, 2, 4, 0),
+                            ncol = 2, nrow = 4)
+      plot_heights <- rep(c(0.15, 0.35, 0.35, 0.15), times = 2)
+    }
+
   } else {
     num_plots <- sum(c(plot.original, plot.recolored, plot.masked,
                        plot.props, plot.pavo.img, plot.pavo.classes))
@@ -102,6 +115,11 @@ plot.charisma <- function(x, plot.all = T, plot.original = F,
     } else {
       mar <- c(0, 2, 5, 4.5)
     }
-    plot_pavo_pal(x, mar = mar)
+    if (!is.null(x$k_override)) {
+      k_arg <- x$k_override
+    } else {
+      k_arg <- NULL
+    }
+    plot_pavo_pal(x, k = k_arg, mar = mar)
   }
 }

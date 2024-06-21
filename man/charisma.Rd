@@ -15,6 +15,7 @@ charisma(
   stack_colors = T,
   bins = 4,
   cutoff = 20,
+  k.override = NULL,
   clut = charisma::clut
 )
 }

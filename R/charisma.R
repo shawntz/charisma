@@ -10,7 +10,7 @@
 #' @export
 charisma <- function(img_path, threshold = 0.0, auto.drop = T,
                      interactive = F, plot = F, pavo = T, logdir = NULL,
-                     stack_colors = T, bins = 4, cutoff = 20,
+                     stack_colors = T, bins = 4, cutoff = 20, k.override = NULL,
                      clut = charisma::clut) {
   cur_date_time <- format(Sys.time(), "%m-%d-%Y_%H.%M.%S")
   original_img_path_class <- inherits(img_path, "charisma2")
@@ -394,12 +394,13 @@ charisma <- function(img_path, threshold = 0.0, auto.drop = T,
 
 
 
-  output.list <- vector("list", length = 31)
+  output.list <- vector("list", length = 32)
   output.list_names <- c("path",
                          "bins",
                          "cutoff",
                          "colors",
                          "k",
+                         "k_override",
                          "prop_threshold",
                          "charisma_calls_table_no_threshold",
                          "charisma_calls_table",
@@ -436,6 +437,7 @@ charisma <- function(img_path, threshold = 0.0, auto.drop = T,
   output.list$cutoff <- cutoff
   output.list$colors <- get_colors(color_data)
   output.list$k <- get_k(color_data)
+  output.list$k_override <- k.override
   output.list$prop_threshold <- threshold
   output.list$charisma_calls_table_no_threshold <- color_data_no_threshold
   output.list$charisma_calls_table <- color_data
@@ -481,7 +483,7 @@ charisma <- function(img_path, threshold = 0.0, auto.drop = T,
   class(output.list) <- "charisma"
 
   if (pavo) {
-    tmp_pavo_adj <- pavo_classify_charisma(output.list, plot = plot)
+    tmp_pavo_adj <- pavo_classify_charisma(output.list, k_override = k.override, plot = plot)
     output.list$input2pavo <- tmp_pavo_adj$input2pavo
     output.list$pavo_adj_stats <- tmp_pavo_adj$adj_stats
     output.list$pavo_adj_class <- tmp_pavo_adj$adj_class
