@@ -145,7 +145,8 @@ load_image <- function(img_path, interactive = T, bins = 4, cutoff = 20) {
   img <- recolorize::readImage(img_path, resize = NULL, rotate = NULL)
 
   recolorize_defaults <- suppressMessages(
-    recolorize::recolorize2(img = img,
+    # recolorize::recolorize2(img = img,
+    charisma_recolorize2(img = img,
                             bins = bins,
                             cutoff = cutoff,
                             plotting = FALSE)
