@@ -1,0 +1,46 @@
+# Suppress R CMD check notes for NSE variables used in dplyr/tidyverse functions
+utils::globalVariables(c(
+  # dplyr/tidyverse NSE variables
+  ".",
+  "classification",
+  "r",
+  "g",
+  "b",
+  "r_avg",
+  "g_avg",
+  "b_avg",
+  "color.name",
+  "prop",
+  "mean_prop",
+  "default.hex",
+  # Column names from data frames
+  "name",
+  "m",
+  "m_r",
+  "m_c",
+  "A",
+  "Sc",
+  "St",
+  "Jc",
+  "Jt",
+  "m_dS",
+  "s_dS",
+  "cv_dS",
+  "m_dL",
+  "s_dL",
+  "cv_dL",
+  "col1",
+  "col2",
+  "lum",
+  # Variables from purrr/tidyr operations
+  "...1",
+  "...2",
+  "V1",
+  "V2",
+  "V3",
+  "V4",
+  # RGB color channel names
+  "R",
+  "G",
+  "B"
+))
