@@ -2,23 +2,67 @@
 % Please edit documentation in R/validate.R
 \name{validate}
 \alias{validate}
-\title{Add together two numbers}
+\title{Validate Color Look-Up Table completeness}
 \usage{
-validate(clut = charisma::clut, simple = T)
+validate(clut = charisma::clut, simple = TRUE)
 }
 \arguments{
-\item{x}{A number}
+\item{clut}{Data frame containing the Color Look-Up Table with HSV boundaries
+for each color class. Default is \code{charisma::clut}.}
 
-\item{y}{A number}
+\item{simple}{Logical. If \code{TRUE} (default), tests a reduced HSV space
+with 1-degree increments (361 x 101 x 101 = 3,682,561 coordinates). If
+\code{FALSE}, uses finer 0.5-degree increments, which is more thorough but
+significantly slower and best suited for cluster computing.}
 }
 \value{
-The sum of \code{x} and \code{y}
+If validation passes, returns 0 and prints a success message. If
+validation fails, returns a data frame containing all HSV coordinates that
+either: (1) were not classified to any color, or (2) were classified to
+multiple colors (indicating overlap).
 }
 \description{
-Add together two numbers
+This function validates that a Color Look-Up Table (CLUT) provides complete
+and non-overlapping coverage of the HSV color space by testing every HSV
+coordinate against the CLUT definitions. Validation ensures each color maps
+to exactly one color class.
+}
+\details{
+The validation process:
+\enumerate{
+\item Generates a complete grid of HSV color space coordinates
+\item Uses parallel processing (all available cores - 1) to classify each
+coordinate using the CLUT definitions
+\item Checks that each coordinate maps to exactly one color class
+\item Reports any missing or duplicate classifications
+}
+
+Validation is essential when modifying the CLUT or creating custom CLUTs for
+different image datasets. The process can take several minutes even with
+\code{simple = TRUE}.
 }
 \examples{
-add(1, 1)
-add(10, 1)
+\dontrun{
+# Validate the default CLUT (takes a few minutes)
+result <- validate()
 
+# Validate a custom CLUT
+my_clut <- charisma::clut  # Start with default
+# ... modify my_clut ...
+result <- validate(clut = my_clut)
+
+# More thorough validation (slower, for final checks)
+result <- validate(simple = FALSE)
+}
+
+}
+\references{
+Schwartz, S.T., Tsai, W.L.E., Karan, E.A., Juhn, M.S., Shultz, A.J.,
+McCormack, J.E., Smith, T.B., and Alfaro, M.E. (2025). charisma: An R package
+to perform reproducible color characterization of digital images for
+biological studies. (In Review).
+}
+\seealso{
+\code{\link{charisma}} for using validated CLUTs,
+\code{\link{color2label}} for color classification
 }

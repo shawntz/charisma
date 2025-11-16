@@ -1,14 +1,62 @@
-#' Add together two numbers
+#' Validate Color Look-Up Table completeness
 #'
-#' @param x A number
-#' @param y A number
-#' @return The sum of \code{x} and \code{y}
+#' This function validates that a Color Look-Up Table (CLUT) provides complete
+#' and non-overlapping coverage of the HSV color space by testing every HSV
+#' coordinate against the CLUT definitions. Validation ensures each color maps
+#' to exactly one color class.
+#'
+#' @param clut Data frame containing the Color Look-Up Table with HSV boundaries
+#'   for each color class. Default is \code{charisma::clut}.
+#' @param simple Logical. If \code{TRUE} (default), tests a reduced HSV space
+#'   with 1-degree increments (361 x 101 x 101 = 3,682,561 coordinates). If
+#'   \code{FALSE}, uses finer 0.5-degree increments, which is more thorough but
+#'   significantly slower and best suited for cluster computing.
+#'
+#' @return If validation passes, returns 0 and prints a success message. If
+#'   validation fails, returns a data frame containing all HSV coordinates that
+#'   either: (1) were not classified to any color, or (2) were classified to
+#'   multiple colors (indicating overlap).
+#'
+#' @details
+#' The validation process:
+#' \enumerate{
+#'   \item Generates a complete grid of HSV color space coordinates
+#'   \item Uses parallel processing (all available cores - 1) to classify each
+#'     coordinate using the CLUT definitions
+#'   \item Checks that each coordinate maps to exactly one color class
+#'   \item Reports any missing or duplicate classifications
+#' }
+#'
+#' Validation is essential when modifying the CLUT or creating custom CLUTs for
+#' different image datasets. The process can take several minutes even with
+#' \code{simple = TRUE}.
+#'
+#' @references
+#' Schwartz, S.T., Tsai, W.L.E., Karan, E.A., Juhn, M.S., Shultz, A.J.,
+#' McCormack, J.E., Smith, T.B., and Alfaro, M.E. (2025). charisma: An R package
+#' to perform reproducible color characterization of digital images for
+#' biological studies. (In Review).
+#'
+#' @seealso
+#' \code{\link{charisma}} for using validated CLUTs,
+#' \code{\link{color2label}} for color classification
+#'
 #' @examples
-#' add(1, 1)
-#' add(10, 1)
+#' \dontrun{
+#' # Validate the default CLUT (takes a few minutes)
+#' result <- validate()
+#'
+#' # Validate a custom CLUT
+#' my_clut <- charisma::clut  # Start with default
+#' # ... modify my_clut ...
+#' result <- validate(clut = my_clut)
+#'
+#' # More thorough validation (slower, for final checks)
+#' result <- validate(simple = FALSE)
+#' }
 #'
 #' @export
-validate <- function(clut = charisma::clut, simple = T) {
+validate <- function(clut = charisma::clut, simple = TRUE) {
   # get all color names from color look up table (CLUT)
   color_names <- get_lut_colors(clut)
 
@@ -22,8 +70,8 @@ validate <- function(clut = charisma::clut, simple = T) {
     v <- rep(0:100)
   } else {
     # this will take a long time to run, best to run on a cluster
-    h <- seq(0, 360, length.out = (361*2))
-    s <- seq(0, 100, length.out = (101*2))
+    h <- seq(0, 360, length.out = (361 * 2))
+    s <- seq(0, 100, length.out = (101 * 2))
     v <- s
   }
 
@@ -64,9 +112,13 @@ validate <- function(clut = charisma::clut, simple = T) {
 
   start_time <- Sys.time()
   n_cores <- parallel::detectCores() - 1
-  message(paste("Parallelizing CLUT validation with",
-                n_cores, "cores for", dim(img)[1],
-                "HSV color coordinates..."))
+  message(paste(
+    "Parallelizing CLUT validation with",
+    n_cores,
+    "cores for",
+    dim(img)[1],
+    "HSV color coordinates..."
+  ))
   Sys.sleep(1)
   message("This may take a while, feel free to go grab a latte!")
   cl <- parallel::makeCluster(n_cores)
@@ -77,8 +129,7 @@ validate <- function(clut = charisma::clut, simple = T) {
   end_time <- Sys.time()
 
   elapsed_time <- format_timer((end_time - start_time))
-  message(paste("Total elapsed time for parallelization:",
-                elapsed_time, "\n"))
+  message(paste("Total elapsed time for parallelization:", elapsed_time, "\n"))
 
   # sum counts per pixel and add column
   h <- img$h
@@ -92,25 +143,29 @@ validate <- function(clut = charisma::clut, simple = T) {
     tibble::add_column(v, .after = "s")
 
   # extract missing or duplicate pixels in HSV space
-  invalid <- calls[calls$total != 1,]
+  invalid <- calls[calls$total != 1, ]
 
-  err_msg <- paste("Error: missing color classifications for",
-                   nrow(invalid),
-                   "HSV color coordinates ==> CLUT validation failed ⛔️",
-                   "See returned output for the HSV coordinates that failed.")
+  err_msg <- paste(
+    "Error: missing color classifications for",
+    nrow(invalid),
+    "HSV color coordinates ==> CLUT validation failed",
+    "See returned output for the HSV coordinates that failed."
+  )
 
-  passed_msg <- paste("All HSV color coordinates classified!",
-                      "==> CLUT validation passed ✅")
+  passed_msg <- paste(
+    "All HSV color coordinates classified!",
+    "==> CLUT validation passed"
+  )
 
   if (nrow(invalid) > 0) {
-    message(strwrap(err_msg,
-                    width = 0.95 * getOption("width"),
-                    prefix = "\n"))
+    message(strwrap(err_msg, width = 0.95 * getOption("width"), prefix = "\n"))
     return(invalid)
   } else {
-    message(strwrap(passed_msg,
-                    width = 0.95 * getOption("width"),
-                    prefix = "\n"))
+    message(strwrap(
+      passed_msg,
+      width = 0.95 * getOption("width"),
+      prefix = "\n"
+    ))
     return(0)
   }
 }
