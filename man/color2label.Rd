@@ -2,23 +2,60 @@
 % Please edit documentation in R/color2label.R
 \name{color2label}
 \alias{color2label}
-\title{Add together two numbers}
+\title{Convert RGB color triplets to discrete color labels}
 \usage{
-color2label(color_triplet, hsv = F, verbose = F, clut = charisma::clut)
+color2label(color_triplet, verbose = FALSE, clut = charisma::clut)
 }
 \arguments{
-\item{x}{A number}
+\item{color_triplet}{Numeric vector of length 3 containing RGB values
+(0-255 scale). The vector should be c(red, green, blue).}
 
-\item{y}{A number}
+\item{verbose}{Logical. If \code{TRUE}, prints the color triplet and
+classification results for debugging. Default is \code{FALSE}.}
+
+\item{clut}{Data frame containing the Color Look-Up Table with HSV boundaries
+for each color class. Default is \code{charisma::clut}.}
 }
 \value{
-The sum of \code{x} and \code{y}
+Character string indicating the matched color label from the CLUT.
+Returns \code{"NA"} if the input contains NA values.
 }
 \description{
-Add together two numbers
+This function classifies an RGB color triplet into one of the discrete
+color categories defined in the Color Look-Up Table (CLUT) by testing for
+membership within non-overlapping HSV ranges.
+}
+\details{
+The classification process involves:
+\enumerate{
+\item Converting RGB to HSV (using \code{rgb2hsv})
+\item Scaling HSV to match CLUT ranges (H: 0-360, S: 0-100, V: 0-100)
+\item Testing the HSV coordinate against all color definitions in the CLUT
+\item Returning the single matching color label
+}
+
+Each color in the CLUT has non-overlapping HSV ranges that partition the
+entire HSV color space. If multiple matches occur, a warning is issued as
+this indicates overlapping color boundaries in the CLUT.
 }
 \examples{
-add(1, 1)
-add(10, 1)
+# Classify a blue RGB color
+color2label(c(0, 0, 255))
 
+# Classify a red RGB color
+color2label(c(255, 0, 0))
+
+# Verbose output for debugging
+color2label(c(128, 128, 128), verbose = TRUE)
+
+}
+\references{
+Schwartz, S.T., Tsai, W.L.E., Karan, E.A., Juhn, M.S., Shultz, A.J.,
+McCormack, J.E., Smith, T.B., and Alfaro, M.E. (2025). charisma: An R package
+to perform reproducible color characterization of digital images for
+biological studies. (In Review).
+}
+\seealso{
+\code{\link{charisma}} for the main classification pipeline,
+\code{\link{validate}} for CLUT validation
 }
