@@ -2,17 +2,17 @@
 % Please edit documentation in R/charisma.R
 \name{charisma}
 \alias{charisma}
-\title{Add together two numbers}
+\title{Characterize color classes in biological images}
 \usage{
 charisma(
   img_path,
   threshold = 0,
-  auto.drop = T,
-  interactive = F,
-  plot = F,
-  pavo = T,
+  auto.drop = TRUE,
+  interactive = FALSE,
+  plot = FALSE,
+  pavo = TRUE,
   logdir = NULL,
-  stack_colors = T,
+  stack_colors = TRUE,
   bins = 4,
   cutoff = 20,
   k.override = NULL,
@@ -20,18 +20,128 @@ charisma(
 )
 }
 \arguments{
-\item{x}{A number}
+\item{img_path}{Character string specifying the path to an image file, or a
+\code{recolorize} object (for use with \code{charisma2}).}
 
-\item{y}{A number}
+\item{threshold}{Numeric value between 0 and 1 specifying the minimum
+proportion of pixels required for a color to be retained. Colors with
+proportions below this threshold are automatically removed. Default is 0.0
+(retain all colors).}
+
+\item{auto.drop}{Logical. If \code{TRUE}, automatically removes the
+background layer (layer 0) from color counts. Default is \code{TRUE}.}
+
+\item{interactive}{Logical. If \code{TRUE}, enables manual intervention for
+color merging and replacement operations. Saves all states for full
+reproducibility. Default is \code{FALSE}.}
+
+\item{plot}{Logical. If \code{TRUE}, generates diagnostic plots during
+processing. Default is \code{FALSE}.}
+
+\item{pavo}{Logical. If \code{TRUE}, computes color pattern geometry
+statistics using the \pkg{pavo} package. Default is \code{TRUE}.}
+
+\item{logdir}{Character string specifying the directory path for saving
+output files. If provided, saves timestamped .RDS (charisma object) and
+.PDF (diagnostic plots) files. Default is \code{NULL} (no files saved).}
+
+\item{stack_colors}{Logical. If \code{TRUE}, stacks color proportions in
+plots. Default is \code{TRUE}.}
+
+\item{bins}{Integer specifying the number of bins for each RGB channel in the
+histogram method. Default is 4 (resulting in 4^3 = 64 cluster centers).}
+
+\item{cutoff}{Numeric value specifying the Euclidean distance threshold for
+combining similar color clusters. Default is 20.}
+
+\item{k.override}{Integer to force a specific number of color clusters,
+bypassing automatic detection. Default is \code{NULL}.}
+
+\item{clut}{Data frame containing the Color Look-Up Table with HSV boundaries
+for each color class. Default is \code{charisma::clut} (10 human-visible
+colors: black, blue, brown, green, grey, orange, purple, red, white,
+yellow).}
 }
 \value{
-The sum of \code{x} and \code{y}
+A \code{charisma} object (list) containing:
+\item{centers}{RGB cluster centers}
+\item{pixel_assignments}{Pixel-to-cluster mapping}
+\item{classification}{Discrete color labels from CLUT}
+\item{color_mask_LUT}{Mapping of clusters to averaged colors}
+\item{color_mask_LUT_filtered}{Color mapping after threshold applied}
+\item{merge_history}{Record of all merge operations performed}
+\item{replacement_history}{Record of all replacement operations performed}
+\item{merge_states}{List of charisma states after each merge}
+\item{replacement_states}{List of charisma states after each replacement}
+\item{pavo_stats}{Color pattern geometry metrics (if pavo = TRUE)}
+\item{prop_threshold}{Threshold value used}
+\item{path}{Path to original image}
+\item{logdir}{Directory where outputs were saved}
+\item{auto_drop}{Value of auto.drop parameter}
+\item{bins}{Value of bins parameter}
+\item{cutoff}{Value of cutoff parameter}
+\item{clut}{CLUT used for classification}
+\item{stack_colors}{Value of stack_colors parameter}
 }
 \description{
-Add together two numbers
+The primary function of \code{charisma} is to characterize the distribution
+of human-visible color classes present in an image. This function provides
+a standardized and reproducible framework for classifying colors into
+discrete categories using a biologically-inspired Color Look-Up Table (CLUT).
+}
+\details{
+The \code{charisma} pipeline consists of three main stages:
+\enumerate{
+\item \strong{Image preprocessing}: Uses
+\code{\link[recolorize:recolorize2]{recolorize::recolorize2()}} to
+perform spatial-color binning, removing noisy pixels and creating a
+smoothed representation of dominant colors.
+\item \strong{Color classification}: Converts RGB cluster centers to HSV
+color space and matches them against non-overlapping HSV ranges defined
+in the CLUT using \code{charisma::color2label()}.
+\item \strong{Optional manual curation}: In interactive mode, users can
+merge color clusters (e.g., c(2,3)) or replace pixels between clusters
+to refine classifications.
+}
+
+The workflow can be run fully autonomously or with varying degrees of manual
+intervention. All operations are logged for complete reproducibility.
 }
 \examples{
-add(1, 1)
-add(10, 1)
+\dontrun{
+# Basic usage with example image
+img <- system.file("extdata", "Anampses_caeruleopunctatus.png",
+                   package = "charisma")
+result <- charisma(img)
 
+# With threshold to remove minor colors
+result <- charisma(img, threshold = 0.05)
+
+# Interactive mode with manual curation
+result <- charisma(img, interactive = TRUE, threshold = 0.0)
+
+# Save outputs to directory
+out_dir <- file.path(tempdir(), "charisma_outputs")
+result <- charisma(img, threshold = 0.05, logdir = out_dir)
+
+# View results
+plot(result)
+}
+
+}
+\references{
+Schwartz, S.T., Tsai, W.L.E., Karan, E.A., Juhn, M.S., Shultz, A.J.,
+McCormack, J.E., Smith, T.B., and Alfaro, M.E. (2025). charisma: An R package
+to perform reproducible color characterization of digital images for
+biological studies. (In Review).
+
+Weller, H.I., Hiller, A.E., Lord, N.P., and Van Belleghem, S.M. (2024).
+\pkg{recolorize}: An R package for flexible colour segmentation of biological
+images. Ecology Letters, 27(2):e14378.
+}
+\seealso{
+\code{\link{charisma2}} for re-analyzing saved charisma objects,
+\code{\link{color2label}} for RGB to color label conversion,
+\code{\link{validate}} for CLUT validation,
+\code{\link{plot.charisma}} for visualization
 }
