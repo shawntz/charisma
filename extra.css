@@ -1,0 +1,491 @@
+/* Custom CSS for charisma pkgdown site
+ * Leverages colors from charisma-rainbow-full.svg gradient
+ */
+
+/* Import Chelsea Market font for headers/titles */
+@import url('https://fonts.googleapis.com/css2?family=Chelsea+Market&display=swap');
+
+:root {
+  /* Charisma gradient colors from SVG */
+  --charisma-deep-teal: #003049;
+  --charisma-teal: #005f73;
+  --charisma-aqua: #0a9396;
+  --charisma-cream: #e9d8a6;
+  --charisma-peach: #f4a261;
+  --charisma-orange-red: #e76f51;
+  --charisma-plum: #9d174d;
+  --charisma-deep-purple: #3b0f3f;
+  --charisma-dark-outline: #1A1A1C;
+
+  /* Additional accent colors */
+  --charisma-gradient: linear-gradient(
+    135deg,
+    var(--charisma-deep-teal) 0%,
+    var(--charisma-teal) 14%,
+    var(--charisma-aqua) 28%,
+    var(--charisma-cream) 42%,
+    var(--charisma-peach) 57%,
+    var(--charisma-orange-red) 71%,
+    var(--charisma-plum) 85%,
+    var(--charisma-deep-purple) 100%
+  );
+}
+
+/* Apply Chelsea Market font to all headers and titles */
+h1, h2, h3, h4, h5, h6,
+.page-header h1,
+.navbar-brand,
+.card-header,
+.news h2,
+.ref-index th,
+.arguments th {
+  font-family: 'Chelsea Market', cursive !important;
+}
+
+/* Hero gradient background for home page */
+.home .page-header {
+  background: var(--charisma-gradient);
+  color: white;
+  padding: 3rem 0;
+  margin-bottom: 2rem;
+  border-radius: 0.5rem;
+}
+
+.home .page-header h1,
+.home .page-header .lead {
+  color: white !important;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+/* Navbar with plum background color */
+.navbar {
+  background-color: var(--charisma-plum) !important;
+  border-bottom: 4px solid var(--charisma-deep-purple);
+  min-height: 3.5rem;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+}
+
+.navbar .navbar-brand,
+.navbar .nav-link {
+  color: white !important;
+  padding-top: 0.4rem;
+  padding-bottom: 0.4rem;
+}
+
+.navbar .nav-link:hover {
+  color: var(--charisma-cream) !important;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 0.25rem;
+}
+
+.navbar .nav-link.active {
+  color: var(--charisma-cream) !important;
+  font-weight: 600;
+}
+
+/* Dropdown menus - white background with plum hover */
+.navbar .dropdown-menu {
+  background-color: white !important;
+  border: 2px solid var(--charisma-plum);
+  box-shadow: 0 4px 12px rgba(157, 23, 77, 0.15);
+}
+
+.navbar .dropdown-item {
+  color: var(--charisma-plum) !important;
+  font-weight: 500;
+}
+
+.navbar .dropdown-item:hover,
+.navbar .dropdown-item:focus {
+  background-color: var(--charisma-plum) !important;
+  color: white !important;
+}
+
+.navbar .dropdown-divider {
+  border-top-color: rgba(157, 23, 77, 0.2);
+}
+
+/* Search bar - white background */
+.navbar .search,
+.navbar .form-control {
+  background-color: white !important;
+  color: var(--charisma-plum) !important;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+}
+
+.navbar .form-control::placeholder {
+  color: rgba(157, 23, 77, 0.5) !important;
+}
+
+.navbar .form-control:focus {
+  background-color: white !important;
+  color: var(--charisma-plum) !important;
+  border-color: var(--charisma-cream) !important;
+  box-shadow: 0 0 0 0.2rem rgba(233, 216, 166, 0.3) !important;
+}
+
+/* Section headers with gradient underline */
+h1, h2 {
+  position: relative;
+  padding-bottom: 0.5rem;
+}
+
+h1::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: calc(100% - 200px);
+  max-width: 100%;
+  height: 4px;
+  background: var(--charisma-gradient);
+  border-radius: 2px;
+}
+
+/* Remove underline from page header h1 (has logo) */
+.page-header h1::after {
+  display: none;
+}
+
+/* Position logo inline with h1 */
+.page-header > .container {
+  display: block !important;
+}
+
+.page-header h1 {
+  margin: 0 0 1rem 0 !important;
+  padding: 0 !important;
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  vertical-align: middle;
+  line-height: 1;
+}
+
+.page-header p {
+  margin-top: 1rem !important;
+}
+
+.page-header img {
+  float: none !important;
+  margin: 0 !important;
+  display: inline-block;
+  vertical-align: middle;
+  height: 120px !important;
+  width: auto !important;
+  max-width: 120px !important;
+  object-fit: contain !important;
+}
+
+h2::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 60%;
+  height: 3px;
+  background: var(--charisma-gradient);
+  border-radius: 2px;
+}
+
+/* Code blocks with subtle gradient border */
+pre {
+  border-left: 4px solid var(--charisma-aqua);
+  background-color: #f8f9fa;
+  padding: 1rem;
+  border-radius: 0.25rem;
+  position: relative;
+  overflow: visible;
+}
+
+pre::before {
+  content: '';
+  position: absolute;
+  left: -4px;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  background: linear-gradient(
+    180deg,
+    var(--charisma-deep-teal) 0%,
+    var(--charisma-aqua) 50%,
+    var(--charisma-orange-red) 100%
+  );
+}
+
+/* Inline code with themed background */
+code:not(pre code) {
+  background: linear-gradient(
+    135deg,
+    rgba(0, 95, 115, 0.08) 0%,
+    rgba(10, 147, 150, 0.08) 100%
+  );
+  color: var(--charisma-deep-teal);
+  padding: 0.2em 0.4em;
+  border-radius: 0.25rem;
+  font-weight: 500;
+}
+
+/* Buttons with gradient */
+.btn-primary {
+  background: var(--charisma-gradient);
+  border: none;
+  color: white;
+  font-weight: 600;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 48, 73, 0.3);
+  background: var(--charisma-gradient);
+}
+
+/* Links with charisma colors */
+a {
+  color: var(--charisma-teal);
+  transition: color 0.2s;
+}
+
+a:hover {
+  color: var(--charisma-aqua);
+}
+
+/* Function reference table styling */
+.ref-index td:first-child {
+  font-weight: 600;
+  color: var(--charisma-deep-teal);
+}
+
+.ref-index tr:hover {
+  background: linear-gradient(
+    90deg,
+    rgba(10, 147, 150, 0.05) 0%,
+    rgba(244, 162, 97, 0.05) 100%
+  );
+}
+
+/* Sidebar navigation */
+.sidebar {
+  padding-top: 2rem !important;
+}
+
+.sidebar h2:first-of-type {
+  margin-top: 0 !important;
+}
+
+.sidebar .nav-link.active {
+  background: var(--charisma-gradient);
+  color: white !important;
+  border-radius: 0.25rem;
+}
+
+.sidebar .nav-link:hover:not(.active) {
+  background: linear-gradient(
+    90deg,
+    rgba(0, 95, 115, 0.1) 0%,
+    rgba(10, 147, 150, 0.1) 100%
+  );
+  border-radius: 0.25rem;
+}
+
+/* Badges and pills */
+.badge {
+  background: var(--charisma-gradient);
+  color: white;
+  font-weight: 600;
+}
+
+/* Alerts with gradient accents */
+.alert {
+  border-left: 4px solid var(--charisma-aqua);
+}
+
+.alert-info {
+  border-left-color: var(--charisma-teal);
+  background: linear-gradient(
+    90deg,
+    rgba(0, 95, 115, 0.1) 0%,
+    rgba(255, 255, 255, 0) 10%
+  );
+}
+
+.alert-warning {
+  border-left-color: var(--charisma-peach);
+  background: linear-gradient(
+    90deg,
+    rgba(244, 162, 97, 0.1) 0%,
+    rgba(255, 255, 255, 0) 10%
+  );
+}
+
+.alert-danger {
+  border-left-color: var(--charisma-orange-red);
+  background: linear-gradient(
+    90deg,
+    rgba(231, 111, 81, 0.1) 0%,
+    rgba(255, 255, 255, 0) 10%
+  );
+}
+
+/* Footer with gradient */
+.footer {
+  border-top: 4px solid transparent;
+  border-image: var(--charisma-gradient) 1;
+  margin-top: 3rem;
+  padding-top: 2rem;
+}
+
+/* Scrollbar styling (webkit browsers) */
+::-webkit-scrollbar {
+  width: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--charisma-gradient);
+  border-radius: 6px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(
+    180deg,
+    var(--charisma-plum) 0%,
+    var(--charisma-deep-purple) 100%
+  );
+}
+
+/* Card components */
+.card {
+  border: none;
+  border-left: 4px solid var(--charisma-aqua);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 4px 16px rgba(0, 95, 115, 0.15);
+}
+
+.card-header {
+  background: linear-gradient(
+    90deg,
+    rgba(0, 95, 115, 0.05) 0%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  font-weight: 600;
+  color: var(--charisma-deep-teal);
+  border-bottom: 2px solid var(--charisma-aqua);
+}
+
+/* Table of contents */
+.toc .nav-link.active {
+  border-left: 3px solid var(--charisma-aqua);
+  color: var(--charisma-deep-teal);
+  font-weight: 600;
+}
+
+/* Blockquotes */
+blockquote {
+  border-left: 4px solid transparent;
+  border-image: var(--charisma-gradient) 1;
+  padding-left: 1rem;
+  margin-left: 0;
+  font-style: italic;
+  color: var(--charisma-dark-outline);
+}
+
+/* Search bar */
+.search input {
+  border: 2px solid var(--charisma-aqua);
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.search input:focus {
+  border-color: var(--charisma-teal);
+  box-shadow: 0 0 0 0.2rem rgba(0, 95, 115, 0.15);
+  outline: none;
+}
+
+/* Tabbed content */
+.nav-tabs .nav-link.active {
+  border-bottom: 3px solid var(--charisma-aqua);
+  color: var(--charisma-deep-teal);
+  font-weight: 600;
+}
+
+/* Animated gradient for special elements */
+@keyframes charisma-shimmer {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.charisma-shimmer {
+  background: linear-gradient(
+    -45deg,
+    var(--charisma-deep-teal),
+    var(--charisma-aqua),
+    var(--charisma-peach),
+    var(--charisma-plum)
+  );
+  background-size: 400% 400%;
+  animation: charisma-shimmer 15s ease infinite;
+}
+
+/* Logo hover effect */
+.navbar-brand img {
+  transition: transform 0.3s ease;
+}
+
+.navbar-brand:hover img {
+  transform: rotate(360deg) scale(1.1);
+}
+
+/* Function argument tables */
+.arguments td:first-child {
+  color: var(--charisma-deep-teal);
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 600;
+}
+
+/* Examples section highlight */
+.examples {
+  border-left: 4px solid transparent;
+  border-image: var(--charisma-gradient) 1;
+  padding-left: 1rem;
+  background: linear-gradient(
+    90deg,
+    rgba(10, 147, 150, 0.03) 0%,
+    rgba(255, 255, 255, 0) 5%
+  );
+}
+
+/* Version badge */
+.version {
+  background: var(--charisma-gradient);
+  color: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: 1rem;
+  font-weight: 600;
+  display: inline-block;
+}
+
+/* News/changelog items */
+.news h2 {
+  color: var(--charisma-deep-teal);
+}
+
+.news .version {
+  background: var(--charisma-gradient);
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  display: inline-block;
+  margin-bottom: 1rem;
+}
