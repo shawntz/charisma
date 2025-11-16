@@ -1,21 +1,71 @@
 Package: charisma
 Type: Package
-Title: What the Package Does (Title Case)
-Version: 0.1.0
-Author: Who wrote it
-Maintainer: The package maintainer <yourself@somewhere.net>
-Description: More about what it does (maybe more than one line)
-    Use four spaces when indenting paragraphs within the Description.
-License: What license is it under?
+Title: Reproducible Color Characterization of Digital Images for Biological Studies
+Version: 1.0.0
+Authors@R: c(
+    person("Shawn", "Schwartz", email = "shawn.t.schwartz@gmail.com",
+           role = c("aut", "cre", "cph"),
+           comment = c(ORCID = "0000-0001-6444-8451")),
+    person("Whitney", "Tsai", email = "wtsai@nhm.org",
+           role = c("aut"),
+           comment = c(ORCID = "0000-0003-3274-2829")),
+    person("Elizabeth", "Karan", role = c("aut"), 
+           comment = c(ORCID = "0000-0003-1942-0307")),
+    person("Mark", "Juhn", role = c("aut")),
+    person("Allison", "Shultz", email = "ashultz@nhm.org", 
+           role = c("aut"), 
+           comment = c(ORCID = "0000-0002-2089-4086")),
+    person("John", "McCormack", role = c("aut"), 
+           comment = c(ORCID = "0000-0002-0912-1461")),
+    person("Thomas", "Smith", role = c("aut"), 
+           comment = c(ORCID = "0000-0002-5978-6912")),
+    person("Michael", "Alfaro", email = "michaelalfaro@g.ucla.edu", 
+           role = c("aut"), 
+           comment = c(ORCID = "0000-0002-8898-8230"))
+    )
+Description: Provides a standardized and reproducible framework for characterizing
+    and classifying discrete color classes from digital images of biological organisms.
+    The package automatically determines the presence or absence of 10 human-visible
+    color categories (black, blue, brown, green, grey, orange, purple, red, white, yellow)
+    using a biologically-inspired Color Look-Up Table (CLUT) that partitions HSV color space.
+    Supports both fully automated and semi-automated (interactive) workflows with complete
+    provenance tracking for reproducibility. Pre-processes images using the 'recolorize'
+    package (Weller et al. 2024 <doi:10.1111/ele.14378>) for spatial-color binning, and
+    integrates with 'pavo' (Maia et al. 2019 <doi:10.1111/2041-210X.13174>) for color
+    pattern geometry statistics. Designed for high-throughput analysis and seamless
+    integration with downstream evolutionary analyses.
+License: MIT + file LICENSE
+URL: https://github.com/shawntz/charisma, https://shawnschwartz.com/charisma/
+BugReports: https://github.com/shawntz/charisma/issues
 Encoding: UTF-8
 LazyData: true
 Depends:
-  R (>= 2.10),
-  magrittr,
-  plyr,
-  dplyr,
-  tibble,
-  parallel,
-  recolorize
-RoxygenNote: 7.3.1
+    R (>= 4.0.0)
+Imports:
+    magrittr,
+    plyr,
+    dplyr,
+    tibble,
+    purrr,
+    tidyr,
+    parallel,
+    recolorize,
+    imager,
+    abind,
+    jpeg,
+    png,
+    grDevices,
+    graphics,
+    stats,
+    tools,
+    utils
+Suggests:
+    pavo,
+    testthat (>= 3.0.0),
+    knitr,
+    rmarkdown,
+    pkgdown
+VignetteBuilder: knitr
+RoxygenNote: 7.3.3
 Roxygen: list(markdown = TRUE)
+Config/testthat/edition: 3
