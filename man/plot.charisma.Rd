@@ -2,35 +2,96 @@
 % Please edit documentation in R/plot_charisma.R
 \name{plot.charisma}
 \alias{plot.charisma}
-\title{this is a test}
+\title{Plot method for charisma objects}
 \usage{
 \method{plot}{charisma}(
   x,
-  plot.all = T,
-  plot.original = F,
-  plot.recolored = F,
-  plot.masked = F,
-  plot.props = F,
-  plot.pavo.img = F,
-  plot.pavo.classes = F,
+  plot.all = TRUE,
+  plot.original = FALSE,
+  plot.recolored = FALSE,
+  plot.masked = FALSE,
+  plot.props = FALSE,
+  plot.pavo.img = FALSE,
+  plot.pavo.classes = FALSE,
   font.size = 1.75,
   props.x.cex = 1.5,
-  real.bar.colors = T
+  real.bar.colors = TRUE,
+  ...
 )
 }
 \arguments{
-\item{x}{A number}
+\item{x}{A charisma object (output from \code{\link{charisma}} or
+\code{\link{charisma2}}).}
 
-\item{y}{A number}
+\item{plot.all}{Logical. If \code{TRUE}, plots all available visualizations.
+Default is \code{TRUE}.}
+
+\item{plot.original}{Logical. If \code{TRUE}, plots the original image.
+Default is \code{FALSE}.}
+
+\item{plot.recolored}{Logical. If \code{TRUE}, plots the recolored image
+showing discrete color classifications. Default is \code{FALSE}.}
+
+\item{plot.masked}{Logical. If \code{TRUE}, plots the masked image after
+background removal. Default is \code{FALSE}.}
+
+\item{plot.props}{Logical. If \code{TRUE}, plots a bar chart showing the
+proportion of pixels in each color category. Default is \code{FALSE}.}
+
+\item{plot.pavo.img}{Logical. If \code{TRUE}, plots the image used for
+\pkg{pavo} color pattern geometry analysis. Default is \code{FALSE}.
+Only available if pavo analysis was performed.}
+
+\item{plot.pavo.classes}{Logical. If \code{TRUE}, plots the color palette
+from \pkg{pavo} k-means clustering. Default is \code{FALSE}. Only available
+if pavo analysis was performed.}
+
+\item{font.size}{Numeric. Size multiplier for plot text elements. Default
+is \code{1.75}.}
+
+\item{props.x.cex}{Numeric. Size multiplier for x-axis labels in the
+proportions plot. Default is \code{1.5}.}
+
+\item{real.bar.colors}{Logical. If \code{TRUE}, uses actual color values
+for bars in the proportions plot. If \code{FALSE}, uses a default color
+scheme. Default is \code{TRUE}.}
+
+\item{...}{Additional arguments (currently not used).}
 }
 \value{
-The sum of \code{x} and \code{y}
+This function is called for its side effects (creating plots) and
+does not return a value.
 }
 \description{
-Add together two numbers
+This function creates visualizations of color classification results from
+a charisma analysis. It can display the original image, recolored image,
+masked image, color proportions, and pavo color pattern geometry results.
+}
+\details{
+When \code{plot.all = TRUE}, all available plots are displayed in a
+multi-panel layout. Individual plots can be selected by setting the
+corresponding \code{plot.*} parameters to \code{TRUE}.
+
+The function automatically detects whether \pkg{pavo} analysis results are
+present in the charisma object and adjusts the plot layout accordingly.
 }
 \examples{
-add(1, 1)
-add(10, 1)
+\dontrun{
+# Run charisma on an image
+result <- charisma("path/to/image.jpg")
 
+# Plot all results
+plot(result)
+
+# Plot only original and recolored images
+plot(result, plot.all = FALSE, plot.original = TRUE, plot.recolored = TRUE)
+
+# Plot color proportions
+plot(result, plot.all = FALSE, plot.props = TRUE)
+}
+
+}
+\seealso{
+\code{\link{charisma}} for the main classification pipeline,
+\code{\link{charisma2}} for batch processing
 }
