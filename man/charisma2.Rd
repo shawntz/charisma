@@ -2,29 +2,96 @@
 % Please edit documentation in R/charisma2.R
 \name{charisma2}
 \alias{charisma2}
-\title{Add together two numbers}
+\title{Re-analyze and edit saved charisma objects}
 \usage{
 charisma2(
   charisma.obj,
-  interactive = T,
+  interactive = TRUE,
   new.threshold = NULL,
   which.state = c("none", "merge", "replace"),
-  state.index = NULL
+  state.index = NULL,
+  k.override = NULL
 )
 }
 \arguments{
-\item{x}{A number}
+\item{charisma.obj}{A \code{charisma} object to be re-analyzed. Cannot be a
+\code{charisma2} object (attempting to run \code{charisma2} on a
+\code{charisma2} object will produce an error).}
 
-\item{y}{A number}
+\item{interactive}{Logical. If \code{TRUE}, enters interactive mode for
+manual color adjustments. Default is \code{TRUE}.}
+
+\item{new.threshold}{Numeric value between 0 and 1 to apply a different color
+proportion threshold than the original analysis. If \code{NULL}, uses the
+original threshold. Default is \code{NULL}.}
+
+\item{which.state}{Character string specifying which state to revert to.
+Options are \code{"none"} (most recent state), \code{"merge"}
+(specific merge state), or \code{"replace"} (specific replacement state).
+Default is \code{"none"}.}
+
+\item{state.index}{Integer specifying which state index to revert to when
+\code{which.state} is \code{"merge"} or \code{"replace"}. Must be provided
+if \code{which.state} is not \code{"none"}. Default is \code{NULL}.}
+
+\item{k.override}{Integer to force a specific number of color clusters.
+Default is \code{NULL}.}
 }
 \value{
-The sum of \code{x} and \code{y}
+A \code{charisma2} object (also of class \code{charisma}) containing
+the same structure as a \code{charisma} object, with updated states based
+on the specified reversion point and any new operations performed.
 }
 \description{
-Add together two numbers
+The \code{charisma2} function allows users to step through and edit
+previously saved \code{charisma} objects. This function enables rewinding
+to specific merge or replacement states, applying different thresholds, or
+continuing interactive editing from any saved state, ensuring full
+reproducibility of the analysis.
+}
+\details{
+The \code{charisma2} function provides powerful state management
+capabilities:
+\itemize{
+\item \strong{State rewinding}: Jump to any previous merge or replacement
+state
+\item \strong{Re-thresholding}: Apply different color proportion thresholds
+without re-running the entire pipeline
+\item \strong{Continued editing}: Resume interactive editing from saved
+states
+\item \strong{Full provenance}: All operations maintain complete history
+for reproducibility
+}
+
+Note: Interactive adjustment of merge states is disabled if replacement
+states exist, as replacement operations depend on post-merge cluster indices.
 }
 \examples{
-add(1, 1)
-add(10, 1)
+\dontrun{
+# Load a previously saved charisma object
+obj <- readRDS("path/to/charisma_object.RDS")
 
+# Re-enter interactive mode with original threshold
+result <- charisma2(obj, interactive = TRUE)
+
+# Apply a different threshold without interactive mode
+result <- charisma2(obj, interactive = FALSE, new.threshold = 0.10)
+
+# Revert to a specific merge state
+result <- charisma2(obj, which.state = "merge", state.index = 2)
+
+# Revert to a specific replacement state
+result <- charisma2(obj, which.state = "replace", state.index = 1)
+}
+
+}
+\references{
+Schwartz, S.T., Tsai, W.L.E., Karan, E.A., Juhn, M.S., Shultz, A.J.,
+McCormack, J.E., Smith, T.B., and Alfaro, M.E. (2025). charisma: An R package
+to perform reproducible color characterization of digital images for
+biological studies. (In Review).
+}
+\seealso{
+\code{\link{charisma}} for initial color classification,
+\code{\link{plot.charisma}} for visualization
 }
