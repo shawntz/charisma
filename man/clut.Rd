@@ -5,11 +5,11 @@
 \alias{clut}
 \title{Default Color (Labels) Look Up Table (CLUT)}
 \format{
-An object of class \code{"data.frame"} to be passed into
-\code{\link[=charisma]{charisma()}} functions.
+A data frame with color boundary definitions for HSV color space.
+Each row defines the HSV ranges for a specific discrete color category.
 }
 \usage{
-charisma::clut
+clut
 }
 \description{
 This LUT contains all color boundaries which cut up the continuous HSV
@@ -32,9 +32,13 @@ and/or submissions of color LUTS specifically tuned to any given organism or
 stimulus. Leveraging contributions from the community will only help
 \code{charisma} be more useful for everybody who would like to use it!
 }
-\keyword{CLUT}
-\keyword{charisma,}
-\keyword{color}
-\keyword{look}
-\keyword{table,}
-\keyword{up}
+\examples{
+# View the default CLUT
+head(clut)
+
+}
+\seealso{
+\code{\link{charisma}} for the main classification pipeline,
+\code{\link{validate}} for CLUT validation
+}
+\keyword{datasets}
