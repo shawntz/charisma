@@ -1,48 +1,49 @@
+---
+output: github_document
+---
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  out.width = "100%"
+)
+```
 
 # charisma <img src="man/figures/logo.png" align="right" height="150" alt="" />
 
 <!-- badges: start -->
-
-[![CRAN
-status](https://www.r-pkg.org/badges/version/charisma)](https://CRAN.R-project.org/package=charisma)
+[![CRAN status](https://www.r-pkg.org/badges/version/charisma)](https://CRAN.R-project.org/package=charisma)
 [![downloads](http://cranlogs.r-pkg.org/badges/grand-total/charisma?color=brightgreen)](https://cran.r-project.org/package=badger)
-[![Lifecycle:
-stable](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable)
+[![Lifecycle: stable](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable)
 [![R-CMD-check](https://github.com/shawntz/charisma/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/shawntz/charisma/actions/workflows/R-CMD-check.yaml)
-[![air format
-check](https://github.com/shawntz/charisma/actions/workflows/air-format-check.yml/badge.svg)](https://github.com/shawntz/charisma/actions/workflows/air-format-check.yml)
-[![air format
-suggest](https://github.com/shawntz/charisma/actions/workflows/air-format-suggest.yml/badge.svg)](https://github.com/shawntz/charisma/actions/workflows/air-format-suggest.yml)
+[![air format check](https://github.com/shawntz/charisma/actions/workflows/air-format-check.yml/badge.svg)](https://github.com/shawntz/charisma/actions/workflows/air-format-check.yml)
+[![air format suggest](https://github.com/shawntz/charisma/actions/workflows/air-format-suggest.yml/badge.svg)](https://github.com/shawntz/charisma/actions/workflows/air-format-suggest.yml)
 [![spellcheck](https://github.com/shawntz/charisma/actions/workflows/spellcheck.yml/badge.svg)](https://github.com/shawntz/charisma/actions/workflows/spellcheck.yml)
 [![pkgdown](https://github.com/shawntz/charisma/actions/workflows/pkgdown.yml/badge.svg)](https://github.com/shawntz/charisma/actions/workflows/pkgdown.yml)
 <!-- badges: end -->
 
-> **charisma** provides a standardized, reproducible framework for
-> characterizing discrete color classes in digital images of biological
-> organisms.
+
+> **charisma** provides a standardized, reproducible framework for characterizing discrete color classes in digital images of biological organisms.
 
 ## Overview
 
-`charisma` automatically classifies colors in images into 10
-human-visible categories using a biologically-inspired Color Look-Up
-Table (CLUT):
+`charisma` automatically classifies colors in images into 10 human-visible categories using a biologically-inspired Color Look-Up Table (CLUT):
 
-**Black** · **Blue** · **Brown** · **Green** · **Grey** · **Orange** ·
-**Purple** · **Red** · **White** · **Yellow**
+**Black** · **Blue** · **Brown** · **Green** · **Grey** · **Orange** · **Purple** · **Red** · **White** · **Yellow**
 
 ### Key Features
 
-✨ **Fully Reproducible**: Complete provenance tracking of all
-operations
+✨ **Fully Reproducible**: Complete provenance tracking of all operations
 
 🎨 **10 Color Classes**: Biologically-relevant discrete color categories
 
 🔧 **Flexible Workflows**: From fully automated to completely manual
 
-📊 **Evolutionary Integration**: Seamless compatibility with `geiger`,
-`phytools`, `pavo`
+📊 **Evolutionary Integration**: Seamless compatibility with `geiger`, `phytools`, `pavo`
 
 ⚡ **High-Throughput**: Designed for analyzing large image datasets
 
@@ -52,43 +53,39 @@ operations
 
 ### System Dependencies
 
-`charisma` depends on spatial R packages that require system-level
-libraries. Install these first:
+`charisma` depends on spatial R packages that require system-level libraries. Install these first:
 
 **macOS (via Homebrew):**
-
-``` bash
+```bash
 brew install udunits gdal proj geos
 ```
 
 **Ubuntu/Debian:**
-
-``` bash
+```bash
 sudo apt-get install libudunits2-dev libgdal-dev libgeos-dev libproj-dev
 ```
 
 **Fedora/RedHat:**
-
-``` bash
+```bash
 sudo dnf install udunits2-devel gdal-devel geos-devel proj-devel
 ```
 
 ### Development Version (GitHub)
 
-``` r
+```{r, eval = FALSE}
 # install.packages("remotes")
 remotes::install_github("shawntz/charisma")
 ```
 
 ### Stable Version (CRAN)
 
-``` r
+```{r, eval = FALSE}
 install.packages("charisma")  # Coming soon!
 ```
 
 ## Quick Start
 
-``` r
+```{r, eval = FALSE}
 library(charisma)
 
 # Load example image
@@ -125,16 +122,13 @@ The `charisma` pipeline consists of three stages:
 
 ### 1. Image Preprocessing
 
-Uses [`recolorize`](https://github.com/hiweller/recolorize) to perform
-spatial-color binning, removing noisy pixels and creating a smoothed
-representation of dominant colors.
+Uses [`recolorize`](https://github.com/hiweller/recolorize) to perform spatial-color binning, removing noisy pixels and creating a smoothed representation of dominant colors.
 
 ### 2. Color Classification
 
-Converts RGB cluster centers to HSV and matches against the CLUT using
-`color2label()`:
+Converts RGB cluster centers to HSV and matches against the CLUT using `color2label()`:
 
-``` r
+```{r, eval = FALSE}
 color2label(c(255, 0, 0))    # "red"
 color2label(c(0, 0, 255))    # "blue"
 color2label(c(255, 255, 0))  # "yellow"
@@ -148,7 +142,7 @@ In interactive mode:
 - **Replace** pixels between clusters
 - Full operation history maintained for reproducibility
 
-------------------------------------------------------------------------
+---
 
 The `charisma` object contains:
 
@@ -157,17 +151,19 @@ The `charisma` object contains:
 - **Operation history**: Complete log of merges and replacements
 - **Pavo statistics**: Color pattern geometry metrics (optional)
 
-------------------------------------------------------------------------
+---
 
 ## Example Workflows
 
-<img src="man/figures/methods-flowchart.jpeg" width="100%" />
+```{r, echo = FALSE, eval = TRUE}
+knitr::include_graphics("man/figures/methods-flowchart.jpeg")
+```
 
 ## Advanced Features
 
 ### Re-analyze Saved Objects
 
-``` r
+```{r, eval = FALSE}
 # Load previous analysis
 obj <- readRDS("path/to/charisma_object.RDS")
 
@@ -187,7 +183,7 @@ result3 <- charisma2(
 
 ### Custom Color Look-Up Tables
 
-``` r
+```{r, eval = FALSE}
 # Create custom CLUT
 my_clut <- charisma::clut  # Start with default
 # ... modify HSV ranges ...
@@ -201,7 +197,7 @@ result <- charisma(img, clut = my_clut)
 
 ### Evolutionary Analyses
 
-``` r
+```{r, eval = FALSE}
 # Batch process images
 results <- lapply(image_paths, function(img) {
   charisma(img, threshold = 0.05)
@@ -230,10 +226,7 @@ fit_ard <- fitDiscrete(
 
 If you use `charisma` in your research, please cite:
 
-> Schwartz, S.T., Tsai, W.L.E., Karan, E.A., Juhn, M.S., Shultz, A.J.,
-> McCormack, J.E., Smith, T.B., and Alfaro, M.E. (2025). charisma: An R
-> package to perform reproducible color characterization of digital
-> images for biological studies. (In Review).
+> Schwartz, S.T., Tsai, W.L.E., Karan, E.A., Juhn, M.S., Shultz, A.J., McCormack, J.E., Smith, T.B., and Alfaro, M.E. (2025). charisma: An R package to perform reproducible color characterization of digital images for biological studies. (In Review).
 
 ## Getting Help
 
@@ -241,17 +234,14 @@ If you use `charisma` in your research, please cite:
 
 🐛 [Report Issues](https://github.com/shawntz/charisma/issues)
 
-📧 Email: <shawn.t.schwartz@gmail.com>
+📧 Email: shawn.t.schwartz@gmail.com
 
 ## Acknowledgments
 
 `charisma` integrates with:
 
-- [`recolorize`](https://cran.r-project.org/package=recolorize) ([Weller
-  et al. 2024](https://doi.org/10.1111/ele.14378)) - Image preprocessing
-- [`pavo`](https://cran.r-project.org/package=pavo) ([Maia et
-  al. 2019](https://doi.org/10.1111/2041-210X.13174)) - Color pattern
-  geometry
+- [`recolorize`](https://cran.r-project.org/package=recolorize) ([Weller et al. 2024](https://doi.org/10.1111/ele.14378)) - Image preprocessing
+- [`pavo`](https://cran.r-project.org/package=pavo) ([Maia et al. 2019](https://doi.org/10.1111/2041-210X.13174)) - Color pattern geometry
 
 ## License
 
