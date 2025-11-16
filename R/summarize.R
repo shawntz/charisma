@@ -1,11 +1,34 @@
-#' Add together two numbers
+#' Summarize color classification results
 #'
-#' @param x A number
-#' @param y A number
-#' @return The sum of \code{x} and \code{y}
+#' This function takes a charisma object and produces a summary table showing
+#' the proportion of pixels classified into each discrete color category.
+#'
+#' @param charisma_obj A charisma object (output from \code{\link{charisma}}
+#'   or \code{\link{charisma2}}) containing color classification results.
+#'
+#' @return A data frame with one row per image showing the proportion of pixels
+#'   assigned to each color category. Row names are set to the basename of the
+#'   image file path.
+#'
+#' @details
+#' The summary table shows the percentage of pixels classified into each of the
+#' discrete color categories defined in the Color Look-Up Table (CLUT). This
+#' provides a quantitative overview of the color composition of the analyzed
+#' image.
+#'
+#' @seealso
+#' \code{\link{charisma}} for the main classification pipeline,
+#' \code{\link{validate}} for CLUT validation
+#'
 #' @examples
-#' add(1, 1)
-#' add(10, 1)
+#' \dontrun{
+#' # Run charisma on an image
+#' result <- charisma("path/to/image.jpg")
+#'
+#' # Summarize the color classification results
+#' summary_table <- summarize(result)
+#' print(summary_table)
+#' }
 #'
 #' @export
 summarize <- function(charisma_obj) {
