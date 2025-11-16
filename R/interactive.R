@@ -1,4 +1,4 @@
-interactive_session <- function(rc, is.charisma2 = F) {
+interactive_session <- function(rc, is.charisma2 = FALSE) {
   merge.out <- interactive_merge_session(rc, is.charisma2)
   replacement.out <- interactive_replacement_session(merge.out)
 
@@ -13,7 +13,7 @@ interactive_session <- function(rc, is.charisma2 = F) {
   return(out.list)
 }
 
-interactive_merge_session <- function(rc, is.charisma2 = F) {
+interactive_merge_session <- function(rc, is.charisma2 = FALSE) {
   action_map <- c("1" = "yes", "2" = "no")
 
   plot(rc)
@@ -45,8 +45,10 @@ interactive_merge_session <- function(rc, is.charisma2 = F) {
   }
 
   continue_merging <- TRUE
-  merge_input_str <- paste(" * Enter each color pair to merge",
-                           "[c(2,3), c(4,7), ...] or 'all' to merge all to single layer: ")
+  merge_input_str <- paste(
+    " * Enter each color pair to merge",
+    "[c(2,3), c(4,7), ...] or 'all' to merge all to single layer: "
+  )
 
   if (!show_init_message) {
     merge_input <- readline(
@@ -66,8 +68,10 @@ interactive_merge_session <- function(rc, is.charisma2 = F) {
     if (merge_input == 1) {
       colors_to_merge <- readline(merge_input_str)
 
-      if (tolower(colors_to_merge) == 'all' ||
-          tolower(colors_to_merge) == 'a') {
+      if (
+        tolower(colors_to_merge) == "all" ||
+          tolower(colors_to_merge) == "a"
+      ) {
         continue_merging <- FALSE
         new_img <- merge_colors(rc, color.list = NULL)
         merge_objs_history[[current_merge_index]] <- new_img$img
@@ -77,8 +81,7 @@ interactive_merge_session <- function(rc, is.charisma2 = F) {
         current_merge_index <- current_merge_index + 1
         merge_objs_history[[current_merge_index]] <- new_img$img
 
-        merge_pairs_history <- append(merge_pairs_history,
-                                      colors_to_merge)
+        merge_pairs_history <- append(merge_pairs_history, colors_to_merge)
 
         rc <- merge_objs_history[[current_merge_index]]
       }
@@ -120,8 +123,7 @@ interactive_merge_session <- function(rc, is.charisma2 = F) {
         current_merge_index <- current_merge_index + 1
         merge_objs_history[[current_merge_index]] <- new_img$img
 
-        merge_pairs_history <- append(merge_pairs_history,
-                                      colors_to_merge)
+        merge_pairs_history <- append(merge_pairs_history, colors_to_merge)
       }
     } else if (merge_input == 2) {
       continue_merging <- FALSE
@@ -179,15 +181,24 @@ interactive_replacement_session <- function(rc) {
     )
 
     if (!replacement_input %in% names(action_map)) {
-      stop("Invalid input. Please enter 1 for 'yes', 2 for 'no', or 3 for 'undo'.")
+      stop(
+        "Invalid input. Please enter 1 for 'yes', 2 for 'no', or 3 for 'undo'."
+      )
     }
   } else {
-    message(paste("\n", length(replacement_objs_history) - 1,
-                  "previous replacement(s) found",
-                  "(from the provided starting `state.index`)."))
-    print(data.frame(list(from = replacement_from_ids_history,
-                          to = replacement_to_ids_history)) %>%
-            tidyr::drop_na())
+    message(paste(
+      "\n",
+      length(replacement_objs_history) - 1,
+      "previous replacement(s) found",
+      "(from the provided starting `state.index`)."
+    ))
+    print(
+      data.frame(list(
+        from = replacement_from_ids_history,
+        to = replacement_to_ids_history
+      )) %>%
+        tidyr::drop_na()
+    )
     undo_step_one <- TRUE
     message(" ")
   }
@@ -200,14 +211,18 @@ interactive_replacement_session <- function(rc) {
     }
 
     if (!replacement_input %in% names(action_map)) {
-      stop("Invalid input. Please enter 1 for 'yes', 2 for 'no', or 3 for 'undo'.")
+      stop(
+        "Invalid input. Please enter 1 for 'yes', 2 for 'no', or 3 for 'undo'."
+      )
     }
 
     if (replacement_input == 1) {
       color_to_replace <- readline(" * ID of the color to replace: ")
-      replacement_color <- readline(paste(" * ID of the color to replace",
-                                          color_to_replace,
-                                          "with: "))
+      replacement_color <- readline(paste(
+        " * ID of the color to replace",
+        color_to_replace,
+        "with: "
+      ))
 
       new_img <- replace_color(rc, color_to_replace, replacement_color)
 
@@ -215,11 +230,15 @@ interactive_replacement_session <- function(rc) {
 
       replacement_objs_history[[current_replacement_index]] <- new_img$img
 
-      replacement_from_ids_history <- append(replacement_from_ids_history,
-                                             color_to_replace)
+      replacement_from_ids_history <- append(
+        replacement_from_ids_history,
+        color_to_replace
+      )
 
-      replacement_to_ids_history <- append(replacement_to_ids_history,
-                                           replacement_color)
+      replacement_to_ids_history <- append(
+        replacement_to_ids_history,
+        replacement_color
+      )
 
       rc <- replacement_objs_history[[current_replacement_index]]
       plot(rc)
@@ -252,15 +271,16 @@ interactive_replacement_session <- function(rc) {
       replacement_objs_history[[current_replacement_index]] <- new_img$img
       rc <- replacement_objs_history[[current_replacement_index]]
     } else {
-      stop("Invalid input. Please enter 1 for 'yes', 2 for 'no', or 3 for 'undo'.")
+      stop(
+        "Invalid input. Please enter 1 for 'yes', 2 for 'no', or 3 for 'undo'."
+      )
     }
   }
 
   if (length(replacement_from_ids_history) > 0) {
     replacement_history_df <- data.frame(
-      list(from = replacement_from_ids_history,
-           to = replacement_to_ids_history))
-
+      list(from = replacement_from_ids_history, to = replacement_to_ids_history)
+    )
   } else {
     replacement_history_df <- NULL
     replacement_objs_history <- NULL
