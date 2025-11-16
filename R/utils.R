@@ -1,7 +1,11 @@
-charisma_to_img <- function(charisma_obj, out_type = c('jpg', 'jpeg', 'png'),
-                            bg_color = "white",
-                            render_method = c('array', 'raster'),
-                            render_with_threshold = F, filename = "") {
+charisma_to_img <- function(
+  charisma_obj,
+  out_type = c("jpg", "jpeg", "png"),
+  bg_color = "white",
+  render_method = c("array", "raster"),
+  render_with_threshold = FALSE,
+  filename = ""
+) {
   out_type <- tolower(out_type)
   out_type <- match.arg(out_type)
 
@@ -25,9 +29,7 @@ charisma_to_img <- function(charisma_obj, out_type = c('jpg', 'jpeg', 'png'),
 
   # color the background in
   # you won't see this unless you remove the alpha layer:
-  final_cimg <- imager::colorise(final_cimg,
-                                 index_cimg == 0,
-                                 bg_color)
+  final_cimg <- imager::colorise(final_cimg, index_cimg == 0, bg_color)
 
   # color in every color center:
   for (i in 1:nrow(charisma_obj$centers)) {
@@ -36,9 +38,11 @@ charisma_to_img <- function(charisma_obj, out_type = c('jpg', 'jpeg', 'png'),
     } else {
       hex_values <- charisma_obj$color_mask_LUT$hex
     }
-    final_cimg <- imager::colorise(final_cimg,
-                                   index_cimg == i,
-                                   hex_values[i + 1])
+    final_cimg <- imager::colorise(
+      final_cimg,
+      index_cimg == i,
+      hex_values[i + 1]
+    )
   }
 
   # convert to a regular array:
@@ -48,9 +52,7 @@ charisma_to_img <- function(charisma_obj, out_type = c('jpg', 'jpeg', 'png'),
   if (is_transparent) {
     alpha_layer <- charisma_obj$pixel_assignments
     alpha_layer[which(alpha_layer > 0)] <- 1
-    as_array <- abind::abind(as_array,
-                             alpha_layer,
-                             along = 3)
+    as_array <- abind::abind(as_array, alpha_layer, along = 3)
   }
 
   img <- as_array
@@ -59,11 +61,11 @@ charisma_to_img <- function(charisma_obj, out_type = c('jpg', 'jpeg', 'png'),
     img <- grDevices::as.raster(charisma_obj$color_mask)
   }
 
-  if (out_type %in% c('jpg', 'jpeg')) {
+  if (out_type %in% c("jpg", "jpeg")) {
     jpeg::writeJPEG(img, target = filename, quality = 1)
   }
 
-  if (out_type == 'png') {
+  if (out_type == "png") {
     png::writePNG(img, target = filename)
   }
 }
@@ -96,13 +98,20 @@ generate_filename <- function(filepath, check_dir_plus_base = FALSE) {
   print(paste0("dir_to_check: ", dir_to_check))
 
   if (!dir.exists(dir_to_check)) {
-    message(paste("\nCRITICAL MESSAGE:\n", dir_to_check, "\nThis charisma `logdir` (directory) does not exist on this computer.\n>> Please enter a new logdir:"))
+    message(paste(
+      "\nCRITICAL MESSAGE:\n",
+      dir_to_check,
+      "\nThis charisma `logdir` (directory) does not exist on this computer.\n",
+      ">> Please enter a new logdir:"
+    ))
     new_dir <- readline()
     if (new_dir != "") {
       if (dir.exists(new_dir)) {
         dir <- new_dir
       } else {
-        message("Log directory provided does not exist. Creating new directory...")
+        message(
+          "Log directory provided does not exist. Creating new directory..."
+        )
       }
     } else {
       stop("No valid directory provided.")
@@ -134,22 +143,24 @@ get_k <- function(charisma_obj) {
 }
 
 get_lut_colors <- function(clut = charisma::clut) {
-  return(unique(clut[,1]))
+  return(unique(clut[, 1]))
 }
 
 get_lut_hex <- function(clut = charisma::clut) {
   return(dplyr::select(clut, color.name, default.hex))
 }
 
-load_image <- function(img_path, interactive = T, bins = 4, cutoff = 20) {
+load_image <- function(img_path, interactive = TRUE, bins = 4, cutoff = 20) {
   img <- recolorize::readImage(img_path, resize = NULL, rotate = NULL)
 
   recolorize_defaults <- suppressMessages(
     # recolorize::recolorize2(img = img,
-    charisma_recolorize2(img = img,
-                            bins = bins,
-                            cutoff = cutoff,
-                            plotting = FALSE)
+    charisma_recolorize2(
+      img = img,
+      bins = bins,
+      cutoff = cutoff,
+      plotting = FALSE
+    )
   )
 
   if (interactive) {
@@ -174,16 +185,18 @@ merge_colors <- function(img, color.list) {
     parsed_expression <- NULL
   }
 
-  merged <- recolorize::mergeLayers(recolorize_obj = img,
-                                    merge_list = parsed_expression,
-                                    plotting = TRUE)
+  merged <- recolorize::mergeLayers(
+    recolorize_obj = img,
+    merge_list = parsed_expression,
+    plotting = TRUE
+  )
   out.list <- list()
   out.list$img <- merged
   return(out.list)
 }
 
 replace_color <- function(img, color_from, color_to) {
-  if (!is.null(color_from) & !is.null(color_to)) {
+  if (!is.null(color_from) && !is.null(color_to)) {
     img$pixel_assignments[
       which(img$pixel_assignments == as.numeric(color_from))
     ] <- as.numeric(color_to)
