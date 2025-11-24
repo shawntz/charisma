@@ -131,11 +131,7 @@ validate <- function(clut = charisma::clut, simple = TRUE) {
     n_cores <- as.integer(check_ncpus)
   } else {
     # Default: use detectCores() - 1, but cap at 2 during R CMD check
-    n_cores <- parallel::detectCores() - 1
-    # Limit to 2 cores if NOT_CRAN is not set (i.e., during R CMD check)
-    if (Sys.getenv("NOT_CRAN") == "") {
-      n_cores <- min(n_cores, 2L)
-    }
+    n_cores <- min(parallel::detectCores() - 1, 2L)
   }
   n_cores <- max(1L, n_cores)  # Ensure at least 1 core
   message(paste(
