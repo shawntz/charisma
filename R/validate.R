@@ -137,7 +137,7 @@ validate <- function(clut = charisma::clut, simple = TRUE) {
       n_cores <- min(n_cores, 2L)
     }
   }
-  n_cores <- max(1L, n_cores)  # Ensure at least 1 core
+  n_cores <- max(1L, n_cores) # Ensure at least 1 core
   message(paste(
     "Parallelizing CLUT validation with",
     n_cores,
