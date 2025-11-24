@@ -30,7 +30,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          install.packages("rmarkdown")
+          install.packages(c("rmarkdown", "remotes"))
           remotes::install_github("shawntz/charisma")
         shell: Rscript {0}
 
