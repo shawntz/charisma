@@ -8,4 +8,3 @@ test_that("validate returns 0 when CLUT validation passes with no issues", {
   expect_equal(result, 0)
   expect_false(is.data.frame(result))
 })
-
