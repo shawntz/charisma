@@ -31,8 +31,10 @@ jobs:
       - name: Install dependencies
         run: |
           install.packages(c("rmarkdown", "remotes"))
-          remotes::install_github("shawntz/charisma")
+          remotes::install_github(Sys.getenv("REPO"))
         shell: Rscript {0}
+        env:
+          REPO: ${{ github.repository }}
 
       - name: Render vignettes to .md
         run: |
