@@ -133,7 +133,7 @@ validate <- function(clut = charisma::clut, simple = TRUE) {
     # Default: use detectCores() - 1, but cap at 2 during R CMD check
     n_cores <- min(parallel::detectCores() - 1, 2L)
   }
-  n_cores <- max(1L, n_cores)  # Ensure at least 1 core
+  n_cores <- max(1L, n_cores) # Ensure at least 1 core
   message(paste(
     "Parallelizing CLUT validation with",
     n_cores,
