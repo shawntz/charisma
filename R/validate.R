@@ -83,10 +83,10 @@ validate <- function(clut = charisma::clut, simple = TRUE) {
   simple_text <- if (simple) " (simple = TRUE)" else " (simple = FALSE)"
   message(paste0(
     "\n",
-    "Validating entire HSV color space with ", 
-    format(n_coords, big.mark = ","), 
-    " coordinates", 
-    simple_text, 
+    "Validating entire HSV color space with ",
+    format(n_coords, big.mark = ","),
+    " coordinates",
+    simple_text,
     "...\n",
     "This will take a while to run - please wait.\n"
   ))
