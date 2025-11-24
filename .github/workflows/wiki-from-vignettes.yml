@@ -34,11 +34,6 @@ jobs:
           remotes::install_github("shawntz/charisma")
         shell: Rscript {0}
 
-      - name: Check pandoc version
-        run: |
-          rmarkdown::pandoc_version()
-        shell: Rscript {0}
-
       - name: Render vignettes to .md
         run: |
           dir.create("wiki_md", showWarnings = FALSE, recursive = TRUE)
