@@ -78,6 +78,20 @@ validate <- function(clut = charisma::clut, simple = TRUE) {
   img <- data.frame(expand.grid(h, s, v))
   colnames(img) <- c("h", "s", "v")
 
+  # Calculate total number of coordinates
+  n_coords <- nrow(img)
+  simple_text <- if (simple) " (simple = TRUE)" else " (simple = FALSE)"
+  
+  message(paste0(
+    "\n",
+    "Validating entire HSV color space with ", 
+    format(n_coords, big.mark = ","), 
+    " coordinates", 
+    simple_text, 
+    "...\n",
+    "This will take a while to run - please wait.\n"
+  ))
+
   eval_colors <- function(conditional, row) {
     h <- row[1]
     s <- row[2]
