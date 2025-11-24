@@ -124,7 +124,20 @@ validate <- function(clut = charisma::clut, simple = TRUE) {
   }
 
   start_time <- Sys.time()
-  n_cores <- parallel::detectCores() - 1
+  # Respect R CMD check limits (max 2 cores)
+  # Check for R_CHECK_NCPUS environment variable first
+  check_ncpus <- Sys.getenv("R_CHECK_NCPUS", "")
+  if (check_ncpus != "") {
+    n_cores <- as.integer(check_ncpus)
+  } else {
+    # Default: use detectCores() - 1, but cap at 2 during R CMD check
+    n_cores <- parallel::detectCores() - 1
+    # Limit to 2 cores if NOT_CRAN is not set (i.e., during R CMD check)
+    if (Sys.getenv("NOT_CRAN") == "") {
+      n_cores <- min(n_cores, 2L)
+    }
+  }
+  n_cores <- max(1L, n_cores)  # Ensure at least 1 core
   message(paste(
     "Parallelizing CLUT validation with",
     n_cores,
