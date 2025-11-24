@@ -91,7 +91,7 @@
 #' \code{\link{plot.charisma}} for visualization
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' # Basic usage with example image
 #' img <- system.file("extdata", "Anampses_caeruleopunctatus.png",
 #'                    package = "charisma")
@@ -100,15 +100,19 @@
 #' # With threshold to remove minor colors
 #' result <- charisma(img, threshold = 0.05)
 #'
-#' # Interactive mode with manual curation
-#' result <- charisma(img, interactive = TRUE, threshold = 0.0)
-#'
 #' # Save outputs to directory
 #' out_dir <- file.path(tempdir(), "charisma_outputs")
 #' result <- charisma(img, threshold = 0.05, logdir = out_dir)
 #'
 #' # View results
 #' plot(result)
+#' }
+#'
+#' # Interactive mode with manual curation (only runs in interactive sessions)
+#' if (interactive()) {
+#'   img <- system.file("extdata", "Anampses_caeruleopunctatus.png",
+#'                      package = "charisma")
+#'   result <- charisma(img, interactive = TRUE, threshold = 0.0)
 #' }
 #'
 #' @export

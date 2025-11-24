@@ -56,12 +56,9 @@
 #' \code{\link{plot.charisma}} for visualization
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' # Load a previously saved charisma object
 #' obj <- readRDS("path/to/charisma_object.RDS")
-#'
-#' # Re-enter interactive mode with original threshold
-#' result <- charisma2(obj, interactive = TRUE)
 #'
 #' # Apply a different threshold without interactive mode
 #' result <- charisma2(obj, interactive = FALSE, new.threshold = 0.10)
@@ -71,6 +68,12 @@
 #'
 #' # Revert to a specific replacement state
 #' result <- charisma2(obj, which.state = "replace", state.index = 1)
+#' }
+#'
+#' # Re-enter interactive mode with original threshold (only runs in interactive sessions)
+#' if (interactive()) {
+#'   obj <- readRDS("path/to/charisma_object.RDS")
+#'   result <- charisma2(obj, interactive = TRUE)
 #' }
 #'
 #' @export

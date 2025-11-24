@@ -21,7 +21,7 @@
 #' \code{\link{validate}} for CLUT validation
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' # Run charisma on an image
 #' result <- charisma("path/to/image.jpg")
 #'

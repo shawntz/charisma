@@ -42,7 +42,7 @@
 #' \code{\link{color2label}} for color classification
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' # Validate the default CLUT (takes a few minutes)
 #' result <- validate()
 #'
