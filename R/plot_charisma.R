@@ -47,7 +47,7 @@
 #' \code{\link{charisma2}} for batch processing
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' # Run charisma on an image
 #' result <- charisma("path/to/image.jpg")
 #'
