@@ -871,9 +871,7 @@ charisma <- function(
       if (!dir.exists(file.path(logdir, "charisma_objects"))) {
         dir.create(file.path(logdir, "charisma_objects"), recursive = TRUE)
       }
-    }, error = function(e) {
-      warning("Could not create charisma_objects directory")
-    })
+    )
 
     tryCatch(
       {
