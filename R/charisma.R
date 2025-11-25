@@ -884,12 +884,15 @@ charisma <- function(
     })
 
     # save RDS file with error handling
-    tryCatch({
-      message(paste("Writing out charisma object to:", RDS_OUT))
-      saveRDS(output.list, RDS_OUT)
-    }, error = function(e) {
-      warning(paste("Could not save charisma object:", e$message))
-    })
+    tryCatch(
+      {
+        message(paste("Writing out charisma object to:", RDS_OUT))
+        saveRDS(output.list, RDS_OUT)
+      },
+      error = function(e) {
+        warning(paste("Could not save charisma object:", e$message))
+      }
+    )
 
     # save PDF file with error handling
     tryCatch(
