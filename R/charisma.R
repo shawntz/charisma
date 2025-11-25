@@ -785,9 +785,18 @@ charisma <- function(
 
   if (!is.null(logdir)) {
     # handle logdir creation with fallback for non-existent paths
-    logdir_success <- tryCatch({
-      if (!dir.exists(logdir)) {
-        dir.create(logdir, recursive = TRUE)
+    logdir_success <- tryCatch(
+      {
+        if (!dir.exists(logdir)) {
+          dir.create(logdir, recursive = TRUE)
+        }
+        TRUE
+      },
+      error = function(e) {
+        FALSE
+      },
+      warning = function(w) {
+        FALSE
       }
       TRUE
     }, error = function(e) {
