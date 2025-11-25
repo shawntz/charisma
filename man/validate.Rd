@@ -43,7 +43,11 @@ different image datasets. The process can take several minutes even with
 }
 \examples{
 \dontrun{
-# Validate the default CLUT (takes a few minutes)
+# Note: These examples are not run during R CMD check due to CRAN build 
+# limitations. With only 2 cores available during CRAN checks, validation 
+# can exceed 20 minutes.
+
+# Validate the default CLUT (takes several minutes with parallel processing)
 result <- validate()
 
 # Validate a custom CLUT
@@ -51,7 +55,7 @@ my_clut <- charisma::clut  # Start with default
 # ... modify my_clut ...
 result <- validate(clut = my_clut)
 
-# More thorough validation (slower, for final checks)
+# More thorough validation (much slower, recommended for cluster computing)
 result <- validate(simple = FALSE)
 }
 
