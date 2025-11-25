@@ -5,7 +5,6 @@ test_that("validate function exists and has correct parameters", {
   # Check that the function exists
   expect_true(exists("validate"))
   expect_true(is.function(validate))
-  
   # Check that the function has the expected parameters
   validate_formals <- formals(validate)
   expect_true("clut" %in% names(validate_formals))
