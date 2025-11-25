@@ -17,7 +17,6 @@ test_that("validate function exists and has correct parameters", {
 
 test_that("validate function input validation works", {
   # Test that the function properly validates inputs without running full validation
-  
   # Test with invalid CLUT (should error before running validation)
   expect_error(validate(clut = "not_a_dataframe"))
   expect_error(validate(clut = data.frame())) # empty dataframe
