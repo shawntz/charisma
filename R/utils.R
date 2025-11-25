@@ -252,7 +252,6 @@ charisma_readImage <- function(img_path, resize = NULL, rotate = NULL) {
   if (length(img_ext) != 1) {
     stop("Unable to determine file extension for: ", img_path)
   }
-  
   # check if file extension is supported
   if (img_ext %in% c("jpeg", "jpg", "png", "bmp", "tif", "tiff")) {
     img <- imager::load.image(img_path)
