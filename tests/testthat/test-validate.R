@@ -20,8 +20,8 @@ test_that("validate function input validation works", {
   
   # Test with invalid CLUT (should error before running validation)
   expect_error(validate(clut = "not_a_dataframe"))
-  expect_error(validate(clut = data.frame()))  # empty dataframe
-  
+  expect_error(validate(clut = data.frame())) # empty dataframe
+
   # Test with invalid simple parameter
   expect_error(validate(simple = "not_logical"))
 })
