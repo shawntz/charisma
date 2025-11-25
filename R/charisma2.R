@@ -56,22 +56,9 @@
 #' \code{\link{plot.charisma}} for visualization
 #'
 #' @examples
-#' \dontrun{
 #' # Load a previously saved charisma object
 #' obj <- system.file("extdata", "Tangara_fastuosa.RDS", package = "charisma")
 #' obj <- readRDS(obj)
-<<<<<<< Updated upstream
-#'
-#' # Re-enter interactive mode with original threshold
-#' result <- charisma2(obj, interactive = TRUE)
-#'
-#' # Apply a different threshold without interactive mode
-#' result <- charisma2(obj, interactive = FALSE, new.threshold = 0.10)
-=======
-#'
-#' # Apply a different threshold without interactive mode
-#' result <- charisma2(obj, interactive = FALSE, new.threshold = 0.10)
-#' }
 #'
 #' \dontrun{
 #' # Examples that require objects with merge/replacement states
@@ -86,26 +73,7 @@
 #' if (length(obj$replacement_states) >= 1) {
 #'   result <- charisma2(obj, which.state = "replace", state.index = 1)
 #' }
->>>>>>> Stashed changes
-#' }
 #'
-#' \dontrun{
-#' # Examples that require objects with merge/replacement states
-#' # (These examples show the syntax but won't run with the provided test data)
-#'
-#' # Revert to a specific merge state (if merge states exist)
-#' if (length(obj$merge_states) >= 2) {
-#'   result <- charisma2(obj, which.state = "merge", state.index = 2)
-#' }
-#'
-#' # Revert to a specific replacement state (if replacement states exist)
-#' if (length(obj$replacement_states) >= 1) {
-#'   result <- charisma2(obj, which.state = "replace", state.index = 1)
-#' }
-#' }
-#'
-<<<<<<< Updated upstream
-=======
 #' # Re-enter interactive mode with original threshold (only runs in interactive sessions)
 #' if (interactive()) {
 #'   obj <- system.file("extdata", "Tangara_fastuosa.RDS", package = "charisma")
@@ -113,7 +81,6 @@
 #'   result <- charisma2(obj, interactive = TRUE)
 #' }
 #'
->>>>>>> Stashed changes
 #' @export
 charisma2 <- function(
   charisma.obj,
