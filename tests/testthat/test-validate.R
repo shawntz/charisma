@@ -10,7 +10,6 @@ test_that("validate function exists and has correct parameters", {
   validate_formals <- formals(validate)
   expect_true("clut" %in% names(validate_formals))
   expect_true("simple" %in% names(validate_formals))
-  
   # Check default parameter values
   expect_equal(validate_formals$simple, TRUE)
 })
