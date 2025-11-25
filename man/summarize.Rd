@@ -29,7 +29,7 @@ provides a quantitative overview of the color composition of the analyzed
 image.
 }
 \examples{
-\dontrun{
+\donttest{
 # Run charisma on an image
 img <- system.file("extdata", "Tangara_fastuosa_LACM60421.png",
                    package = "charisma")

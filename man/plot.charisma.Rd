@@ -76,7 +76,7 @@ The function automatically detects whether \pkg{pavo} analysis results are
 present in the charisma object and adjusts the plot layout accordingly.
 }
 \examples{
-\dontrun{
+\donttest{
 # Run charisma on an image
 img <- system.file("extdata", "Tangara_fastuosa_LACM60421.png",
                    package = "charisma")
