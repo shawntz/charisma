@@ -1,7 +1,6 @@
 test_that("validate function exists and has correct parameters", {
   # Test that the validate function exists and can be called
   # Note: We don't run the actual validation due to time constraints
-  
   # Check that the function exists
   expect_true(exists("validate"))
   expect_true(is.function(validate))
