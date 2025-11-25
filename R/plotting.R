@@ -1,4 +1,6 @@
 plot_original <- function(charisma_obj, mar = c(0, 0, 5, 0)) {
+  oldpar <- par(no.readonly = TRUE)
+  on.exit(par(oldpar))
   par(mar = mar)
   asp <- dim(charisma_obj$original_img)[1] / dim(charisma_obj$original_img)[2]
   plot(
@@ -15,6 +17,8 @@ plot_original <- function(charisma_obj, mar = c(0, 0, 5, 0)) {
 }
 
 plot_recolored <- function(img, mar = c(0, 0, 5, 0)) {
+  oldpar <- par(no.readonly = TRUE)
+  on.exit(par(oldpar))
   par(mar = mar)
   asp <- dim(img$original_img)[1] / dim(img$original_img)[2]
   plot(
@@ -31,6 +35,8 @@ plot_recolored <- function(img, mar = c(0, 0, 5, 0)) {
 }
 
 plot_masked <- function(img, mar = c(0, 0, 5, 0)) {
+  oldpar <- par(no.readonly = TRUE)
+  on.exit(par(oldpar))
   par(mar = mar)
   asp <- dim(img$original_img)[1] / dim(img$original_img)[2]
   plot(
@@ -52,6 +58,8 @@ plot_props <- function(
   cex = 1.5,
   mar = c(5.5, 8, 5, 0)
 ) {
+  oldpar <- par(no.readonly = TRUE)
+  on.exit(par(oldpar))
   par(mar = mar)
 
   if (length(charisma_obj$dropped_colors) > 0) {
@@ -152,6 +160,8 @@ plot_props <- function(
 }
 
 plot_pavo_input <- function(charisma_obj, imgdat = NULL, mar = c(0, 0, 5, 0)) {
+  oldpar <- par(no.readonly = TRUE)
+  on.exit(par(oldpar))
   par(mar = mar)
   asp <- dim(charisma_obj$original_img)[1] / dim(charisma_obj$original_img)[2]
   plot(
@@ -177,6 +187,8 @@ plot_pavo_pal <- function(
   pal = NULL,
   mar = c(0, 5, 5, 5)
 ) {
+  oldpar <- par(no.readonly = TRUE)
+  on.exit(par(oldpar))
   par(mar = mar)
   asp <- dim(charisma_obj$original_img)[1] / dim(charisma_obj$original_img)[2]
 

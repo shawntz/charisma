@@ -47,7 +47,7 @@
 #' \code{\link{charisma2}} for batch processing
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' # Run charisma on an image
 #' img <- system.file("extdata", "Tangara_fastuosa_LACM60421.png",
 #'                    package = "charisma")
