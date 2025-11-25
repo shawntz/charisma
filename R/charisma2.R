@@ -184,7 +184,7 @@ charisma2 <- function(
             as.character(charisma.obj$path)
           }
         }
-      })
+      )
     }
   }
 
