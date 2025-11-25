@@ -10,13 +10,14 @@ status](https://www.r-pkg.org/badges/version/charisma)](https://CRAN.R-project.o
 [![downloads](http://cranlogs.r-pkg.org/badges/grand-total/charisma?color=brightgreen)](https://cran.r-project.org/package=badger)
 [![Lifecycle:
 stable](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable)
-[![R-CMD-check](https://github.com/shawntz/charisma/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/shawntz/charisma/actions/workflows/R-CMD-check.yaml)
+[![R-CMD-check](https://github.com/shawntz/charisma/actions/workflows/R-CMD-check-build.yml/badge.svg)](https://github.com/shawntz/charisma/actions/workflows/R-CMD-check-build.yml)
 [![air format
 check](https://github.com/shawntz/charisma/actions/workflows/air-format-check.yml/badge.svg)](https://github.com/shawntz/charisma/actions/workflows/air-format-check.yml)
 [![air format
 suggest](https://github.com/shawntz/charisma/actions/workflows/air-format-suggest.yml/badge.svg)](https://github.com/shawntz/charisma/actions/workflows/air-format-suggest.yml)
 [![spellcheck](https://github.com/shawntz/charisma/actions/workflows/spellcheck.yml/badge.svg)](https://github.com/shawntz/charisma/actions/workflows/spellcheck.yml)
 [![pkgdown](https://github.com/shawntz/charisma/actions/workflows/pkgdown.yml/badge.svg)](https://github.com/shawntz/charisma/actions/workflows/pkgdown.yml)
+[![wiki](https://github.com/shawntz/charisma/actions/workflows/wiki-from-vignettes.yml/badge.svg)](https://github.com/shawntz/charisma/actions/workflows/wiki-from-vignettes.yml)
 <!-- badges: end -->
 
 > **charisma** provides a standardized, reproducible framework for

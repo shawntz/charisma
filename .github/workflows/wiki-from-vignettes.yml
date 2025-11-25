@@ -1,0 +1,91 @@
+name: wiki
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "vignettes/**"
+      - "README.md"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pages: write
+
+jobs:
+  update-wiki:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Setup R
+        uses: r-lib/actions/setup-r@v2
+
+      - name: Install pandoc manually
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y pandoc
+
+      - name: Install dependencies
+        run: |
+          install.packages(c("rmarkdown", "remotes"))
+          remotes::install_github(Sys.getenv("REPO"))
+        shell: Rscript {0}
+        env:
+          REPO: ${{ github.repository }}
+
+      - name: Render vignettes to .md
+        run: |
+          dir.create("wiki_md", showWarnings = FALSE, recursive = TRUE)
+          rmd_files <- list.files("vignettes", pattern = "\\.Rmd$", full.names = TRUE)
+          for (f in rmd_files) {
+            # Render to github_document format in the same directory as the Rmd
+            rmarkdown::render(f, output_format = rmarkdown::github_document())
+            
+            # Move the generated .md file to wiki_md directory
+            md_file <- file.path(dirname(f), paste0(tools::file_path_sans_ext(basename(f)), ".md"))
+            target_file <- file.path("wiki_md", paste0(tools::file_path_sans_ext(basename(f)), ".md"))
+            
+            if (file.exists(md_file)) {
+              file.copy(md_file, target_file, overwrite = TRUE)
+              file.remove(md_file) # Clean up the original
+            }
+          }
+        shell: Rscript {0}
+
+      - name: Generate Table of Contents
+        run: |
+          md_files <- list.files("wiki_md", pattern = "\\.md$", full.names = TRUE)
+          toc <- "# 📚 Table of Contents\n\n"
+          for (f in md_files) {
+            lines <- readLines(f, warn = FALSE)
+            if (length(lines) > 0 && nzchar(lines[1])) {
+              title <- gsub("^# ", "", lines[1])  # strip markdown heading
+            } else {
+              title <- tools::file_path_sans_ext(basename(f))  # fallback to filename
+            }
+            filename <- basename(f)
+            toc <- paste0(toc, "- [", title, "](", filename, ")\n")
+          }
+          writeLines(toc, "wiki_md/Table_of_Contents.md")
+        shell: Rscript {0}
+
+      - name: Clone GitHub wiki
+        run: |
+          git clone https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.wiki.git wiki_out
+
+      - name: Copy rendered markdown and README → Home.md
+        run: |
+          cp wiki_md/*.md wiki_out/
+          cp README.md wiki_out/Home.md
+
+      - name: Commit and push to wiki
+        run: |
+          cd wiki_out
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+          git add .
+          git commit -m "update wiki from vignettes and README (triggered by ${{ github.sha }}) [skip ci]" || echo "no changes to commit"
+          git push
