@@ -243,7 +243,6 @@ charisma_readImage <- function(img_path, resize = NULL, rotate = NULL) {
   if (!is.character(img_path)) {
     stop("img_path must be a character string")
   }
-  
   if (length(img_path) != 1) {
     warning("img_path has length > 1, using first element")
     img_path <- img_path[1]
