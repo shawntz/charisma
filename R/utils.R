@@ -155,7 +155,6 @@ load_image <- function(img_path, interactive = TRUE, bins = 4, cutoff = 20) {
   if (!is.character(img_path) || length(img_path) != 1) {
     stop("img_path must be a single character string")
   }
-  
   if (!file.exists(img_path)) {
     stop(paste("Image file not found:", img_path))
   }
