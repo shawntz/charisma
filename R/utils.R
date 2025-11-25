@@ -247,7 +247,6 @@ charisma_readImage <- function(img_path, resize = NULL, rotate = NULL) {
     warning("img_path has length > 1, using first element")
     img_path <- img_path[1]
   }
-  
   # get file extension and ensure it's a single value
   img_ext <- tolower(tools::file_ext(img_path))
   if (length(img_ext) != 1) {
