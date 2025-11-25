@@ -23,7 +23,7 @@ This is a resubmission addressing reviewer feedback from the initial submission.
 ## R CMD check results
 
 ── R CMD check results ───────────────────────────────────────────────────────── charisma 1.0.0 ────
-Duration: 21.5s
+Duration: 35.1s
 
 0 errors ✔ | 0 warnings ✔ | 0 notes ✔
 
