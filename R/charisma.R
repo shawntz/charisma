@@ -798,12 +798,7 @@ charisma <- function(
       warning = function(w) {
         FALSE
       }
-      TRUE
-    }, error = function(e) {
-      FALSE
-    }, warning = function(w) {
-      FALSE
-    })
+    )
 
     # if original logdir fails, create fallback directory
     if (!logdir_success || !dir.exists(logdir)) {
