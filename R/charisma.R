@@ -875,9 +875,14 @@ charisma <- function(
       warning("Could not create charisma_objects directory")
     })
 
-    tryCatch({
-      if (!dir.exists(file.path(logdir, "diagnostic_plots"))) {
-        dir.create(file.path(logdir, "diagnostic_plots"), recursive = TRUE)
+    tryCatch(
+      {
+        if (!dir.exists(file.path(logdir, "diagnostic_plots"))) {
+          dir.create(file.path(logdir, "diagnostic_plots"), recursive = TRUE)
+        }
+      },
+      error = function(e) {
+        warning("Could not create diagnostic_plots directory")
       }
     )
 
