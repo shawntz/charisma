@@ -903,7 +903,7 @@ charisma <- function(
       if (dev.cur() > 1) {
         dev.off()
       }
-    })
+    )
 
     # update the logdir in the output object to reflect the actual used directory
     output.list$logdir <- logdir
