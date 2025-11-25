@@ -892,15 +892,11 @@ charisma <- function(
     })
 
     # save PDF file with error handling
-    tryCatch({
-      message(paste("Writing out charisma plot to:", PDF_OUT))
-      pdf(PDF_OUT, width = 12, height = 9)
-      plot.charisma(output.list, plot.all = TRUE, props.x.cex = 1)
-      dev.off()
-    }, error = function(e) {
-      warning(paste("Could not save charisma plot:", e$message))
-      # make sure to close any open graphics device
-      if (dev.cur() > 1) {
+    tryCatch(
+      {
+        message(paste("Writing out charisma plot to:", PDF_OUT))
+        pdf(PDF_OUT, width = 12, height = 9)
+        plot.charisma(output.list, plot.all = TRUE, props.x.cex = 1)
         dev.off()
       },
       error = function(e) {
