@@ -151,7 +151,7 @@ charisma <- function(
           as.character(img_path$path)
         }
       }
-    })
+    )
 
     # ensure PATH_TO_IMG is a single character string
     if (length(PATH_TO_IMG) > 1) {
