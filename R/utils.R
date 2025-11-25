@@ -158,7 +158,6 @@ load_image <- function(img_path, interactive = TRUE, bins = 4, cutoff = 20) {
   if (!file.exists(img_path)) {
     stop(paste("Image file not found:", img_path))
   }
-  
   img <- charisma_readImage(img_path, resize = NULL, rotate = NULL)
 
   recolorize_defaults <- suppressMessages(
