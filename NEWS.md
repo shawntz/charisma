@@ -34,7 +34,7 @@ First public release of charisma - an R package for reproducible color character
 ### Documentation
 
 * Comprehensive vignette with step-by-step tutorial
-* Example data from marine fish (Anampses caeruleopunctatus)
+* Example data from bird (*Tangara fastuosa*)
 * Tips for museum specimens and automated workflows
 * pkgdown website with full documentation
 
