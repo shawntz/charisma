@@ -867,9 +867,14 @@ charisma <- function(
     }
 
     # create subdirs with error handling
-    tryCatch({
-      if (!dir.exists(file.path(logdir, "charisma_objects"))) {
-        dir.create(file.path(logdir, "charisma_objects"), recursive = TRUE)
+    tryCatch(
+      {
+        if (!dir.exists(file.path(logdir, "charisma_objects"))) {
+          dir.create(file.path(logdir, "charisma_objects"), recursive = TRUE)
+        }
+      },
+      error = function(e) {
+        warning("Could not create charisma_objects directory")
       }
     )
 
