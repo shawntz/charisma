@@ -879,9 +879,7 @@ charisma <- function(
       if (!dir.exists(file.path(logdir, "diagnostic_plots"))) {
         dir.create(file.path(logdir, "diagnostic_plots"), recursive = TRUE)
       }
-    }, error = function(e) {
-      warning("Could not create diagnostic_plots directory")
-    })
+    )
 
     # save RDS file with error handling
     tryCatch(
