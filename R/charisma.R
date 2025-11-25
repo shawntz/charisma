@@ -902,6 +902,13 @@ charisma <- function(
       # make sure to close any open graphics device
       if (dev.cur() > 1) {
         dev.off()
+      },
+      error = function(e) {
+        warning(paste("Could not save charisma plot:", e$message))
+        # make sure to close any open graphics device
+        if (dev.cur() > 1) {
+          dev.off()
+        }
       }
     )
 
