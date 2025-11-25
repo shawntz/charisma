@@ -138,15 +138,18 @@ charisma <- function(
     # input var "img_path" is not actually a path to an image in this case
     # but rather is an object that inherits class `recolorize`
     # therefore, store original path to image first for later saving out
-    PATH_TO_IMG <- tryCatch({
-      eval(img_path$path)
-    }, error = function(e) {
-      # if eval fails, try to use the path directly
-      if (is.character(img_path$path)) {
-        img_path$path
-      } else {
-        # if path is an expression, convert to character
-        as.character(img_path$path)
+    PATH_TO_IMG <- tryCatch(
+      {
+        eval(img_path$path)
+      },
+      error = function(e) {
+        # if eval fails, try to use the path directly
+        if (is.character(img_path$path)) {
+          img_path$path
+        } else {
+          # if path is an expression, convert to character
+          as.character(img_path$path)
+        }
       }
     })
 
