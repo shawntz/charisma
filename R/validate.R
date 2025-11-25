@@ -44,13 +44,19 @@
 #' @examples
 #' \dontrun{
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 #' # Validate the default CLUT (takes a few minutes)
 =======
+=======
+>>>>>>> Stashed changes
 #' # Note: These examples are not run during R CMD check due to CRAN build 
 #' # limitations. With only 2 cores available during CRAN checks, validation 
 #' # can exceed 20 minutes.
 #' 
 #' # Validate the default CLUT (takes several minutes with parallel processing)
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 #' result <- validate()
 #'
