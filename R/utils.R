@@ -258,34 +258,34 @@ charisma_readImage <- function(img_path, resize = NULL, rotate = NULL) {
   } else {
     stop("Image must be either JPG, PNG, TIFF, or BMP")
   }
-  
+
   # apply resize if specified
   if (!is.null(resize)) {
     img <- imager::imresize(img, scale = resize, interpolation = 6)
   }
-  
+
   # apply rotation if specified
   if (!is.null(rotate)) {
     img <- imager::imrotate(img, angle = rotate)
   }
-  
+
   # standard rotation and processing from recolorize
   img <- imager::imrotate(img, -90)
   temp <- array(dim = dim(img)[c(1:2, 4)])
-  temp <- img[, , 1, ]
-  
+  temp <- img[,, 1, ]
+
   if (length(dim(temp)) == 3) {
-    temp[, , ] <- apply(temp, 3, function(mat) {
+    temp[,,] <- apply(temp, 3, function(mat) {
       mat[, ncol(mat):1, drop = FALSE]
     })
   } else if (length(dim(temp)) == 2) {
     temp <- temp[, ncol(temp):1, drop = FALSE]
   }
-  
+
   if (max(temp) > 1) {
     temp <- temp / max(temp)
   }
-  
+
   img <- temp
   rm(temp)
   return(img)
