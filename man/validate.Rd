@@ -43,11 +43,12 @@ different image datasets. The process can take several minutes even with
 }
 \examples{
 \dontrun{
-# Note: These examples are not run during R CMD check due to CRAN build 
-# limitations. With only 2 cores available during CRAN checks, validation 
+# Validate the default CLUT (takes several minutes with parallel processing)
+
+# Note: These examples are not run during R CMD check due to CRAN build
+# limitations. With only 2 cores available during CRAN checks, validation
 # can exceed 20 minutes.
 
-# Validate the default CLUT (takes several minutes with parallel processing)
 result <- validate()
 
 # Validate a custom CLUT

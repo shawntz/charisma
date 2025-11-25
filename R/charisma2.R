@@ -80,6 +80,7 @@
 #'   obj <- readRDS(obj)
 #'   result <- charisma2(obj, interactive = TRUE)
 #' }
+#' }
 #'
 #' @export
 charisma2 <- function(

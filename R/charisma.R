@@ -111,8 +111,6 @@
 #' plot(result)
 #' }
 #'
-<<<<<<< Updated upstream
-=======
 #' # Interactive mode with manual curation (only runs in interactive sessions)
 #' if (interactive()) {
 #'   img <- system.file("extdata", "Tangara_fastuosa_LACM60421.png",
@@ -120,7 +118,6 @@
 #'   result <- charisma(img, interactive = TRUE, threshold = 0.0)
 #' }
 #'
->>>>>>> Stashed changes
 #' @export
 charisma <- function(
   img_path,
@@ -155,7 +152,7 @@ charisma <- function(
         as.character(img_path$path)
       }
     })
-    
+
     # ensure PATH_TO_IMG is a single character string
     if (length(PATH_TO_IMG) > 1) {
       PATH_TO_IMG <- PATH_TO_IMG[1]
@@ -798,19 +795,19 @@ charisma <- function(
     }, warning = function(w) {
       FALSE
     })
-    
+
     # if original logdir fails, create fallback directory
     if (!logdir_success || !dir.exists(logdir)) {
       original_logdir <- logdir
       logdir <- file.path(tempdir(), "charisma_outputs")
-      
+
       message(paste(
         "\nWARNING: Could not create original logdir:",
         original_logdir,
         "\nUsing fallback directory:",
         logdir
       ))
-      
+
       # update output paths to use new logdir
       if (original_img_path_class) {
         RDS_OUT <- file.path(
@@ -855,7 +852,7 @@ charisma <- function(
           )
         )
       }
-      
+
       # create fallback directory
       dir.create(logdir, recursive = TRUE, showWarnings = FALSE)
     }
@@ -898,7 +895,7 @@ charisma <- function(
         dev.off()
       }
     })
-    
+
     # update the logdir in the output object to reflect the actual used directory
     output.list$logdir <- logdir
   }
