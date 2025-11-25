@@ -65,7 +65,6 @@
 #'
 #' # Apply a different threshold without interactive mode
 #' result <- charisma2(obj, interactive = FALSE, new.threshold = 0.10)
-=======
 #'
 #' # Apply a different threshold without interactive mode
 #' result <- charisma2(obj, interactive = FALSE, new.threshold = 0.10)
