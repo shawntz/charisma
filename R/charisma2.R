@@ -173,13 +173,16 @@ charisma2 <- function(
       new.charisma <- charisma.obj$merge_states[[n_merge_states]]
     } else {
       # if no states exist, evaluate the path and create a character string
-      new.charisma <- tryCatch({
-        eval(charisma.obj$path)
-      }, error = function(e) {
-        if (is.character(charisma.obj$path)) {
-          charisma.obj$path
-        } else {
-          as.character(charisma.obj$path)
+      new.charisma <- tryCatch(
+        {
+          eval(charisma.obj$path)
+        },
+        error = function(e) {
+          if (is.character(charisma.obj$path)) {
+            charisma.obj$path
+          } else {
+            as.character(charisma.obj$path)
+          }
         }
       })
     }
