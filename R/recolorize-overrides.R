@@ -334,7 +334,7 @@ charisma_recolorize <- function(
   # if 'img' is a filepath, read in image
   if (is.character(img)) {
     if (file.exists(img)) {
-      img <- readImage(img, resize = resize, rotate = rotate)
+      img <- charisma_readImage(img, resize = resize, rotate = rotate)
     } else {
       stop(paste("Could not find", img))
     }

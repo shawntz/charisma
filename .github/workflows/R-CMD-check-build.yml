@@ -4,7 +4,7 @@ on:
   push:
     branches: main
   pull_request:
-    branches: [ main, release/** ]
+    branches: [main, release/**]
 
 permissions: read-all
 
@@ -16,12 +16,11 @@ jobs:
       fail-fast: false
       matrix:
         config:
-        # Temporarily disable macOS due to segfaults in binary packages on GH Actions
-        # - {os: macos-latest,   r: 'release'}
-        - {os: windows-latest, r: 'release'}
-        - {os: ubuntu-latest,   r: 'devel', http-user-agent: 'release'}
-        - {os: ubuntu-latest,   r: 'release'}
-        - {os: ubuntu-latest,   r: 'oldrel-1'}
+          - { os: macos-latest, r: "release" }
+          - { os: windows-latest, r: "release" }
+          - { os: ubuntu-latest, r: "devel", http-user-agent: "release" }
+          - { os: ubuntu-latest, r: "release" }
+          - { os: ubuntu-latest, r: "oldrel-1" }
 
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}

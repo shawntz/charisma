@@ -110,7 +110,7 @@ intervention. All operations are logged for complete reproducibility.
 \examples{
 \dontrun{
 # Basic usage with example image
-img <- system.file("extdata", "Anampses_caeruleopunctatus.png",
+img <- system.file("extdata", "Tangara_fastuosa_LACM60421.png",
                    package = "charisma")
 result <- charisma(img)
 
@@ -126,6 +126,13 @@ result <- charisma(img, threshold = 0.05, logdir = out_dir)
 
 # View results
 plot(result)
+}
+
+# Interactive mode with manual curation (only runs in interactive sessions)
+if (interactive()) {
+  img <- system.file("extdata", "Tangara_fastuosa_LACM60421.png",
+                     package = "charisma")
+  result <- charisma(img, interactive = TRUE, threshold = 0.0)
 }
 
 }
