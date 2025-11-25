@@ -67,14 +67,9 @@ Note: Interactive adjustment of merge states is disabled if replacement
 states exist, as replacement operations depend on post-merge cluster indices.
 }
 \examples{
-\donttest{
 # Load a previously saved charisma object
 obj <- system.file("extdata", "Tangara_fastuosa.RDS", package = "charisma")
 obj <- readRDS(obj)
-
-# Apply a different threshold without interactive mode
-result <- charisma2(obj, interactive = FALSE, new.threshold = 0.10)
-}
 
 \dontrun{
 # Examples that require objects with merge/replacement states
@@ -89,13 +84,13 @@ if (length(obj$merge_states) >= 2) {
 if (length(obj$replacement_states) >= 1) {
   result <- charisma2(obj, which.state = "replace", state.index = 1)
 }
-}
 
 # Re-enter interactive mode with original threshold (only runs in interactive sessions)
 if (interactive()) {
   obj <- system.file("extdata", "Tangara_fastuosa.RDS", package = "charisma")
   obj <- readRDS(obj)
   result <- charisma2(obj, interactive = TRUE)
+}
 }
 
 }

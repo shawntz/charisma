@@ -56,12 +56,14 @@ proportions for documentation purposes.
 }
 \examples{
 # Create a mosaic from color proportions
+\dontrun{
 colors <- list(
   list(hex = "#FF0000", color = "red", prop = 0.4),
   list(hex = "#00FF00", color = "green", prop = 0.3),
   list(hex = "#0000FF", color = "blue", prop = 0.3)
 )
 mosaic(colors, size = 10, out.path = tempdir())
+}
 
 }
 \seealso{
