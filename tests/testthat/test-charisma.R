@@ -4,7 +4,7 @@ test_that("charisma respects threshold parameter", {
 
   img <- system.file(
     "extdata",
-    "Anampses_caeruleopunctatus.png",
+    "Tangara_fastuosa_LACM60421.png",
     package = "charisma"
   )
 
@@ -38,7 +38,7 @@ test_that("charisma2 rejects charisma2 objects", {
 
   img <- system.file(
     "extdata",
-    "Anampses_caeruleopunctatus.png",
+    "Tangara_fastuosa_LACM60421.png",
     package = "charisma"
   )
 

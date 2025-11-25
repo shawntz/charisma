@@ -93,7 +93,7 @@
 #' @examples
 #' \dontrun{
 #' # Basic usage with example image
-#' img <- system.file("extdata", "Anampses_caeruleopunctatus.png",
+#' img <- system.file("extdata", "Tangara_fastuosa_LACM60421.png",
 #'                    package = "charisma")
 #' result <- charisma(img)
 #'
@@ -111,6 +111,16 @@
 #' plot(result)
 #' }
 #'
+<<<<<<< Updated upstream
+=======
+#' # Interactive mode with manual curation (only runs in interactive sessions)
+#' if (interactive()) {
+#'   img <- system.file("extdata", "Tangara_fastuosa_LACM60421.png",
+#'                      package = "charisma")
+#'   result <- charisma(img, interactive = TRUE, threshold = 0.0)
+#' }
+#'
+>>>>>>> Stashed changes
 #' @export
 charisma <- function(
   img_path,
@@ -134,7 +144,22 @@ charisma <- function(
     # input var "img_path" is not actually a path to an image in this case
     # but rather is an object that inherits class `recolorize`
     # therefore, store original path to image first for later saving out
-    PATH_TO_IMG <- img_path$path
+    PATH_TO_IMG <- tryCatch({
+      eval(img_path$path)
+    }, error = function(e) {
+      # if eval fails, try to use the path directly
+      if (is.character(img_path$path)) {
+        img_path$path
+      } else {
+        # if path is an expression, convert to character
+        as.character(img_path$path)
+      }
+    })
+    
+    # ensure PATH_TO_IMG is a single character string
+    if (length(PATH_TO_IMG) > 1) {
+      PATH_TO_IMG <- PATH_TO_IMG[1]
+    }
     PATH_TO_IMG_SET <- generate_filename(PATH_TO_IMG)
     PATH_TO_IMG <- PATH_TO_IMG_SET$new_filename
     if (!is.null(logdir)) {
@@ -762,26 +787,120 @@ charisma <- function(
   }
 
   if (!is.null(logdir)) {
-    if (!dir.exists(logdir)) {
-      dir.create(logdir)
+    # handle logdir creation with fallback for non-existent paths
+    logdir_success <- tryCatch({
+      if (!dir.exists(logdir)) {
+        dir.create(logdir, recursive = TRUE)
+      }
+      TRUE
+    }, error = function(e) {
+      FALSE
+    }, warning = function(w) {
+      FALSE
+    })
+    
+    # if original logdir fails, create fallback directory
+    if (!logdir_success || !dir.exists(logdir)) {
+      original_logdir <- logdir
+      logdir <- file.path(tempdir(), "charisma_outputs")
+      
+      message(paste(
+        "\nWARNING: Could not create original logdir:",
+        original_logdir,
+        "\nUsing fallback directory:",
+        logdir
+      ))
+      
+      # update output paths to use new logdir
+      if (original_img_path_class) {
+        RDS_OUT <- file.path(
+          logdir,
+          "charisma_objects",
+          paste0(
+            tools::file_path_sans_ext(basename(PATH_TO_IMG)),
+            "_charisma2_",
+            cur_date_time,
+            ".RDS"
+          )
+        )
+        PDF_OUT <- file.path(
+          logdir,
+          "diagnostic_plots",
+          paste0(
+            tools::file_path_sans_ext(basename(PATH_TO_IMG)),
+            "_charisma2_",
+            cur_date_time,
+            ".pdf"
+          )
+        )
+      } else {
+        RDS_OUT <- file.path(
+          logdir,
+          "charisma_objects",
+          paste0(
+            tools::file_path_sans_ext(basename(PATH_TO_IMG)),
+            "_charisma_",
+            cur_date_time,
+            ".RDS"
+          )
+        )
+        PDF_OUT <- file.path(
+          logdir,
+          "diagnostic_plots",
+          paste0(
+            tools::file_path_sans_ext(basename(PATH_TO_IMG)),
+            "_charisma_",
+            cur_date_time,
+            ".pdf"
+          )
+        )
+      }
+      
+      # create fallback directory
+      dir.create(logdir, recursive = TRUE, showWarnings = FALSE)
     }
 
-    # create subdirs
-    if (!dir.exists(file.path(logdir, "charisma_objects"))) {
-      dir.create(file.path(logdir, "charisma_objects"))
-    }
+    # create subdirs with error handling
+    tryCatch({
+      if (!dir.exists(file.path(logdir, "charisma_objects"))) {
+        dir.create(file.path(logdir, "charisma_objects"), recursive = TRUE)
+      }
+    }, error = function(e) {
+      warning("Could not create charisma_objects directory")
+    })
 
-    if (!dir.exists(file.path(logdir, "diagnostic_plots"))) {
-      dir.create(file.path(logdir, "diagnostic_plots"))
-    }
+    tryCatch({
+      if (!dir.exists(file.path(logdir, "diagnostic_plots"))) {
+        dir.create(file.path(logdir, "diagnostic_plots"), recursive = TRUE)
+      }
+    }, error = function(e) {
+      warning("Could not create diagnostic_plots directory")
+    })
 
-    message(paste("Writing out charisma object to:", RDS_OUT))
-    saveRDS(output.list, RDS_OUT)
+    # save RDS file with error handling
+    tryCatch({
+      message(paste("Writing out charisma object to:", RDS_OUT))
+      saveRDS(output.list, RDS_OUT)
+    }, error = function(e) {
+      warning(paste("Could not save charisma object:", e$message))
+    })
 
-    message(paste("Writing out charisma plot to:", PDF_OUT))
-    pdf(PDF_OUT, width = 12, height = 9)
-    plot.charisma(output.list, plot.all = TRUE, props.x.cex = 1)
-    dev.off()
+    # save PDF file with error handling
+    tryCatch({
+      message(paste("Writing out charisma plot to:", PDF_OUT))
+      pdf(PDF_OUT, width = 12, height = 9)
+      plot.charisma(output.list, plot.all = TRUE, props.x.cex = 1)
+      dev.off()
+    }, error = function(e) {
+      warning(paste("Could not save charisma plot:", e$message))
+      # make sure to close any open graphics device
+      if (dev.cur() > 1) {
+        dev.off()
+      }
+    })
+    
+    # update the logdir in the output object to reflect the actual used directory
+    output.list$logdir <- logdir
   }
 
   return(output.list)

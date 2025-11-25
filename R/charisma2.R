@@ -58,21 +58,41 @@
 #' @examples
 #' \dontrun{
 #' # Load a previously saved charisma object
-#' obj <- readRDS("path/to/charisma_object.RDS")
+#' obj <- system.file("extdata", "Tangara_fastuosa.RDS", package = "charisma")
+#' obj <- readRDS(obj)
 #'
 #' # Re-enter interactive mode with original threshold
 #' result <- charisma2(obj, interactive = TRUE)
 #'
 #' # Apply a different threshold without interactive mode
 #' result <- charisma2(obj, interactive = FALSE, new.threshold = 0.10)
-#'
-#' # Revert to a specific merge state
-#' result <- charisma2(obj, which.state = "merge", state.index = 2)
-#'
-#' # Revert to a specific replacement state
-#' result <- charisma2(obj, which.state = "replace", state.index = 1)
 #' }
 #'
+#' \dontrun{
+#' # Examples that require objects with merge/replacement states
+#' # (These examples show the syntax but won't run with the provided test data)
+#'
+#' # Revert to a specific merge state (if merge states exist)
+#' if (length(obj$merge_states) >= 2) {
+#'   result <- charisma2(obj, which.state = "merge", state.index = 2)
+#' }
+#'
+#' # Revert to a specific replacement state (if replacement states exist)
+#' if (length(obj$replacement_states) >= 1) {
+#'   result <- charisma2(obj, which.state = "replace", state.index = 1)
+#' }
+#' }
+#'
+<<<<<<< Updated upstream
+=======
+#' # Re-enter interactive mode with original threshold (only runs in interactive sessions)
+#' if (interactive()) {
+#'   obj <- system.file("extdata", "Tangara_fastuosa.RDS", package = "charisma")
+#'   obj <- readRDS(obj)
+#'   result <- charisma2(obj, interactive = TRUE)
+#' }
+#'
+>>>>>>> Stashed changes
 #' @export
 charisma2 <- function(
   charisma.obj,
@@ -163,7 +183,16 @@ charisma2 <- function(
     } else if (!is.null(charisma.obj$merge_states)) {
       new.charisma <- charisma.obj$merge_states[[n_merge_states]]
     } else {
-      new.charisma <- charisma.obj$path
+      # if no states exist, evaluate the path and create a character string
+      new.charisma <- tryCatch({
+        eval(charisma.obj$path)
+      }, error = function(e) {
+        if (is.character(charisma.obj$path)) {
+          charisma.obj$path
+        } else {
+          as.character(charisma.obj$path)
+        }
+      })
     }
   }
 

@@ -108,17 +108,14 @@ The workflow can be run fully autonomously or with varying degrees of manual
 intervention. All operations are logged for complete reproducibility.
 }
 \examples{
-\dontrun{
+\donttest{
 # Basic usage with example image
-img <- system.file("extdata", "Anampses_caeruleopunctatus.png",
+img <- system.file("extdata", "Tangara_fastuosa_LACM60421.png",
                    package = "charisma")
 result <- charisma(img)
 
 # With threshold to remove minor colors
 result <- charisma(img, threshold = 0.05)
-
-# Interactive mode with manual curation
-result <- charisma(img, interactive = TRUE, threshold = 0.0)
 
 # Save outputs to directory
 out_dir <- file.path(tempdir(), "charisma_outputs")
@@ -126,6 +123,13 @@ result <- charisma(img, threshold = 0.05, logdir = out_dir)
 
 # View results
 plot(result)
+}
+
+# Interactive mode with manual curation (only runs in interactive sessions)
+if (interactive()) {
+  img <- system.file("extdata", "Tangara_fastuosa_LACM60421.png",
+                     package = "charisma")
+  result <- charisma(img, interactive = TRUE, threshold = 0.0)
 }
 
 }
