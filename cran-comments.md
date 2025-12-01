@@ -1,17 +1,23 @@
 ## Resubmission
 
-This is a resubmission addressing reviewer feedback from the initial submission.
+This is a resubmission addressing reviewer feedback.
 
-### Changes made in response to reviewer feedback:
+### Changes made in this resubmission:
+
+1. **Removed redundant `if(interactive())` wrapper from `\dontrun{}` block**:
+   - In `charisma2.Rd`, removed the `if(interactive())` wrapper that was inside `\dontrun{}`, as this combination is redundant. The example now uses only `\dontrun{}` since it cannot be executed during CRAN checks.
+
+2. **Added `on.exit()` to reset `par()` in `mosaic.R`**:
+   - Added `on.exit(par(oldpar), add = TRUE)` immediately after modifying graphical parameters to ensure `par()` is properly restored upon function exit.
+
+### Changes made in previous resubmission:
 
 1. **Updated example documentation**:
 
    - Replaced `\dontrun{}` with `\donttest{}` for examples that can be executed but take longer than 5 seconds (`validate.Rd`, `summarize.Rd`, `plot.charisma.Rd`, `charisma2.Rd`).
    - Unwrapped examples that execute quickly (`charisma.Rd` basic example, `mosaic.Rd`).
-   - Added `if(interactive()){}` wrapper for interactive examples where appropriate.
 
 2. **Fixed graphical parameter handling**:
-   - Added proper `on.exit()` calls immediately after `par()` changes in `mosaic.R` to ensure graphical parameters are restored even if the function exits unexpectedly.
    - Ensured all functions that modify graphical parameters restore them upon exit.
 
 ## Test environments
@@ -22,8 +28,7 @@ This is a resubmission addressing reviewer feedback from the initial submission.
 
 ## R CMD check results
 
-── R CMD check results ───────────────────────────────────────────────────────── charisma 1.0.0 ────
-Duration: 35.1s
+Duration: 50.9s
 
 0 errors ✔ | 0 warnings ✔ | 0 notes ✔
 

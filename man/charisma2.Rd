@@ -85,12 +85,10 @@ if (length(obj$replacement_states) >= 1) {
   result <- charisma2(obj, which.state = "replace", state.index = 1)
 }
 
-# Re-enter interactive mode with original threshold (only runs in interactive sessions)
-if (interactive()) {
-  obj <- system.file("extdata", "Tangara_fastuosa.RDS", package = "charisma")
-  obj <- readRDS(obj)
-  result <- charisma2(obj, interactive = TRUE)
-}
+# Re-enter interactive mode with original threshold
+obj <- system.file("extdata", "Tangara_fastuosa.RDS", package = "charisma")
+obj <- readRDS(obj)
+result <- charisma2(obj, interactive = TRUE)
 }
 
 }

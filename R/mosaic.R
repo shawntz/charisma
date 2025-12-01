@@ -103,7 +103,8 @@ mosaic <- function(
   }
 
   png(full_output_path, width = size * 100, height = size * 100)
-  par(mar = c(0, 0, 0, 0), xaxs = "i", yaxs = "i")
+  oldpar <- par(mar = c(0, 0, 0, 0), xaxs = "i", yaxs = "i")
+  on.exit(par(oldpar), add = TRUE)
   plot(
     NA,
     xlim = c(0, size),
