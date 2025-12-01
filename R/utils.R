@@ -95,7 +95,7 @@ generate_filename <- function(filepath, check_dir_plus_base = FALSE) {
     dir_to_check <- dir
   }
 
-  print(paste0("dir_to_check: ", dir_to_check))
+  # check if directory exists
 
   if (!dir.exists(dir_to_check)) {
     message(paste(
@@ -151,7 +151,14 @@ get_lut_hex <- function(clut = charisma::clut) {
 }
 
 load_image <- function(img_path, interactive = TRUE, bins = 4, cutoff = 20) {
-  img <- recolorize::readImage(img_path, resize = NULL, rotate = NULL)
+  # validate and clean the image path
+  if (!is.character(img_path) || length(img_path) != 1) {
+    stop("img_path must be a single character string")
+  }
+  if (!file.exists(img_path)) {
+    stop(paste("Image file not found:", img_path))
+  }
+  img <- charisma_readImage(img_path, resize = NULL, rotate = NULL)
 
   recolorize_defaults <- suppressMessages(
     # recolorize::recolorize2(img = img,
@@ -228,4 +235,58 @@ summarise_colors <- function(uniq_color_vec, clut = charisma::clut) {
     dplyr::mutate(k = rowSums(.))
 
   return(color_summary)
+}
+
+# custom readImage function to handle path evaluation issues
+charisma_readImage <- function(img_path, resize = NULL, rotate = NULL) {
+  # ensure img_path is a single character string
+  if (!is.character(img_path)) {
+    stop("img_path must be a character string")
+  }
+  if (length(img_path) != 1) {
+    warning("img_path has length > 1, using first element")
+    img_path <- img_path[1]
+  }
+  # get file extension and ensure it's a single value
+  img_ext <- tolower(tools::file_ext(img_path))
+  if (length(img_ext) != 1) {
+    stop("Unable to determine file extension for: ", img_path)
+  }
+  # check if file extension is supported
+  if (img_ext %in% c("jpeg", "jpg", "png", "bmp", "tif", "tiff")) {
+    img <- imager::load.image(img_path)
+  } else {
+    stop("Image must be either JPG, PNG, TIFF, or BMP")
+  }
+
+  # apply resize if specified
+  if (!is.null(resize)) {
+    img <- imager::imresize(img, scale = resize, interpolation = 6)
+  }
+
+  # apply rotation if specified
+  if (!is.null(rotate)) {
+    img <- imager::imrotate(img, angle = rotate)
+  }
+
+  # standard rotation and processing from recolorize
+  img <- imager::imrotate(img, -90)
+  temp <- array(dim = dim(img)[c(1:2, 4)])
+  temp <- img[,, 1, ]
+
+  if (length(dim(temp)) == 3) {
+    temp[,,] <- apply(temp, 3, function(mat) {
+      mat[, ncol(mat):1, drop = FALSE]
+    })
+  } else if (length(dim(temp)) == 2) {
+    temp <- temp[, ncol(temp):1, drop = FALSE]
+  }
+
+  if (max(temp) > 1) {
+    temp <- temp / max(temp)
+  }
+
+  img <- temp
+  rm(temp)
+  return(img)
 }
