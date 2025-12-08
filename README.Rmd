@@ -71,17 +71,17 @@ sudo apt-get install libudunits2-dev libgdal-dev libgeos-dev libproj-dev
 sudo dnf install udunits2-devel gdal-devel geos-devel proj-devel
 ```
 
+### Stable Version (CRAN)
+
+```{r, eval = FALSE}
+install.packages("charisma")
+```
+
 ### Development Version (GitHub)
 
 ```{r, eval = FALSE}
 # install.packages("remotes")
 remotes::install_github("shawntz/charisma")
-```
-
-### Stable Version (CRAN)
-
-```{r, eval = FALSE}
-install.packages("charisma")  # Coming soon!
 ```
 
 ## Quick Start
