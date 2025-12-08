@@ -16,11 +16,14 @@ jobs:
       fail-fast: false
       matrix:
         config:
-          - { os: macos-latest, r: "release" }
-          - { os: windows-latest, r: "release" }
-          - { os: ubuntu-latest, r: "devel", http-user-agent: "release" }
-          - { os: ubuntu-latest, r: "release" }
-          - { os: ubuntu-latest, r: "oldrel-1" }
+        # Temporarily disable macOS due to segfaults in binary packages on GH Actions
+        # - {os: macos-latest,   r: 'release'}
+        - {os: windows-latest, r: 'release'}
+        # NOTE: R-devel temporarily disabled due to Rcpp 1.1.0 incompatibility
+        # with R-devel (R_ext/PrtUtil.h removed). Re-enable when Rcpp is updated.
+        # - {os: ubuntu-latest,   r: 'devel', http-user-agent: 'release'}
+        - {os: ubuntu-latest,   r: 'release'}
+        - {os: ubuntu-latest,   r: 'oldrel-1'}
 
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
