@@ -67,13 +67,13 @@ library(charisma)
 
 ### Step 1: Load an Image
 
-The package includes an example image of a colorful fish (*Anampses
-caeruleopunctatus*):
+The package includes an example image of a colorful bird (*Tangara
+fastuosa*):
 
 ``` r
 img_path <- system.file(
   "extdata",
-  "Anampses_caeruleopunctatus.png",
+  "Tangara_fastuosa_LACM60421.png",
   package = "charisma"
 )
 ```
@@ -212,7 +212,8 @@ Load and re-analyze saved objects:
 
 ``` r
 # Load saved object
-obj <- readRDS("path/to/charisma_object.RDS")
+obj <- system.file("extdata", "Tangara_fastuosa.RDS", package = "charisma")
+obj <- readRDS(obj)
 
 # Re-analyze with different threshold
 result2 <- charisma2(

@@ -153,19 +153,31 @@ present in the charisma object and adjusts the plot layout accordingly.</p>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># \dontrun{</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># \donttest{</span></span></span>
 <span class="r-in"><span><span class="co"># Run charisma on an image</span></span></span>
-<span class="r-in"><span><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu"><a href="charisma.html">charisma</a></span><span class="op">(</span><span class="st">"path/to/image.jpg"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">img</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"Tangara_fastuosa_LACM60421.png"</span>,</span></span>
+<span class="r-in"><span>                   package <span class="op">=</span> <span class="st">"charisma"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu"><a href="charisma.html">charisma</a></span><span class="op">(</span><span class="va">img</span><span class="op">)</span></span></span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>if any are empty, remove them</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Discrete color classes identified: k=7</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> (black, blue, brown, green, grey, orange, yellow)</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Image classification in progress...</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Using single set of coldists for all images.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Plot all results</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">result</span><span class="op">)</span></span></span>
+<span class="r-plt img"><img src="plot.charisma-1.png" alt="" width="700" height="433"></span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in par(oldpar):</span> invalid value specified for graphical parameter "pin"</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Plot only original and recolored images</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">result</span>, plot.all <span class="op">=</span> <span class="cn">FALSE</span>, plot.original <span class="op">=</span> <span class="cn">TRUE</span>, plot.recolored <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-plt img"><img src="plot.charisma-2.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Plot color proportions</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">result</span>, plot.all <span class="op">=</span> <span class="cn">FALSE</span>, plot.props <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="op">}</span> <span class="co"># }</span></span></span>
+<span class="r-plt img"><img src="plot.charisma-3.png" alt="" width="700" height="433"></span>
+<span class="r-in"><span><span class="co"># }</span></span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

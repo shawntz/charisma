@@ -231,25 +231,112 @@ images. Ecology Letters, 27(2):e14378.</p>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># \dontrun{</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># \donttest{</span></span></span>
 <span class="r-in"><span><span class="co"># Basic usage with example image</span></span></span>
-<span class="r-in"><span><span class="va">img</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"Anampses_caeruleopunctatus.png"</span>,</span></span>
+<span class="r-in"><span><span class="va">img</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"Tangara_fastuosa_LACM60421.png"</span>,</span></span>
 <span class="r-in"><span>                   package <span class="op">=</span> <span class="st">"charisma"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu">charisma</span><span class="op">(</span><span class="va">img</span><span class="op">)</span></span></span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>if any are empty, remove them</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Discrete color classes identified: k=7</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> (black, blue, brown, green, grey, orange, yellow)</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>no DISPLAY variable so Tk is not available</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Image classification in progress...</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Using single set of coldists for all images.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># With threshold to remove minor colors</span></span></span>
 <span class="r-in"><span><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu">charisma</span><span class="op">(</span><span class="va">img</span>, threshold <span class="op">=</span> <span class="fl">0.05</span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Interactive mode with manual curation</span></span></span>
-<span class="r-in"><span><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu">charisma</span><span class="op">(</span><span class="va">img</span>, interactive <span class="op">=</span> <span class="cn">TRUE</span>, threshold <span class="op">=</span> <span class="fl">0.0</span><span class="op">)</span></span></span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>if any are empty, remove them</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 3 classes were dropped based on your threshold of 0.05.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Replacement colors for these dropped classes arebeing automatically selected based on the pairwiseEuclidean distances between colors classes in the RGBspace so that `pavo` will receive a complete imagemask for downstream calculations!</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> &gt;&gt; The following color categories will be used for remapping:</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - black</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - blue</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - green</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - grey</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Distances between brown and:</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   * grey =&gt; 61.33</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   * green =&gt; 76.13</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   * blue =&gt; 121.37</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   * black =&gt; 137.26</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ...Replacing brown with grey</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Distances between orange and:</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   * grey =&gt; 131.23</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   * green =&gt; 144.35</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   * blue =&gt; 190.4</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   * black =&gt; 221.06</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ...Replacing orange with grey</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Distances between yellow and:</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   * green =&gt; 168.25</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   * grey =&gt; 170.78</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   * blue =&gt; 231.46</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   * black =&gt; 239.13</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ...Replacing yellow with green</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Discrete color classes identified: k=4</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> (black, blue, green, grey)</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Image classification in progress...</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Using single set of coldists for all images.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Save outputs to directory</span></span></span>
 <span class="r-in"><span><span class="va">out_dir</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"charisma_outputs"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu">charisma</span><span class="op">(</span><span class="va">img</span>, threshold <span class="op">=</span> <span class="fl">0.05</span>, logdir <span class="op">=</span> <span class="va">out_dir</span><span class="op">)</span></span></span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>if any are empty, remove them</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 3 classes were dropped based on your threshold of 0.05.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Replacement colors for these dropped classes arebeing automatically selected based on the pairwiseEuclidean distances between colors classes in the RGBspace so that `pavo` will receive a complete imagemask for downstream calculations!</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> &gt;&gt; The following color categories will be used for remapping:</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - black</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - blue</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - green</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - grey</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Distances between brown and:</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   * grey =&gt; 61.33</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   * green =&gt; 76.13</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   * blue =&gt; 121.36</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   * black =&gt; 137.28</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ...Replacing brown with grey</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Distances between orange and:</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   * grey =&gt; 131.23</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   * green =&gt; 144.35</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   * blue =&gt; 190.4</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   * black =&gt; 221.06</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ...Replacing orange with grey</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Distances between yellow and:</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   * green =&gt; 168.25</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   * grey =&gt; 170.78</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   * blue =&gt; 231.47</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   * black =&gt; 239.13</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ...Replacing yellow with green</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Discrete color classes identified: k=4</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> (black, blue, green, grey)</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Image classification in progress...</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Using single set of coldists for all images.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Writing out charisma object to: /tmp/RtmpwY7zag/charisma_outputs/charisma_objects/Tangara_fastuosa_LACM60421_charisma_12-08-2025_15.31.40.RDS</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Writing out charisma plot to: /tmp/RtmpwY7zag/charisma_outputs/diagnostic_plots/Tangara_fastuosa_LACM60421_charisma_12-08-2025_15.31.40.pdf</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># View results</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">result</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="op">}</span> <span class="co"># }</span></span></span>
+<span class="r-plt img"><img src="charisma-1.png" alt="" width="700" height="433"></span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in par(oldpar):</span> invalid value specified for graphical parameter "pin"</span>
+<span class="r-in"><span><span class="co"># }</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Interactive mode with manual curation (only runs in interactive sessions)</span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/interactive.html" class="external-link">interactive</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span>  <span class="va">img</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"Tangara_fastuosa_LACM60421.png"</span>,</span></span>
+<span class="r-in"><span>                     package <span class="op">=</span> <span class="st">"charisma"</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="va">result</span> <span class="op">&lt;-</span> <span class="fu">charisma</span><span class="op">(</span><span class="va">img</span>, interactive <span class="op">=</span> <span class="cn">TRUE</span>, threshold <span class="op">=</span> <span class="fl">0.0</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

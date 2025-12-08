@@ -113,17 +113,29 @@ for batch processing
 ## Examples
 
 ``` r
-if (FALSE) { # \dontrun{
+# \donttest{
 # Run charisma on an image
-result <- charisma("path/to/image.jpg")
+img <- system.file("extdata", "Tangara_fastuosa_LACM60421.png",
+                   package = "charisma")
+result <- charisma(img)
+#> Warning: if any are empty, remove them
+#> Discrete color classes identified: k=7
+#> (black, blue, brown, green, grey, orange, yellow)
+#> Image classification in progress...
+#> Using single set of coldists for all images.
+#> 
 
 # Plot all results
 plot(result)
 
+#> Error in par(oldpar): invalid value specified for graphical parameter "pin"
+
 # Plot only original and recolored images
 plot(result, plot.all = FALSE, plot.original = TRUE, plot.recolored = TRUE)
 
+
 # Plot color proportions
 plot(result, plot.all = FALSE, plot.props = TRUE)
-} # }
+
+# }
 ```

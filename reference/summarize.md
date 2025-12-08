@@ -45,12 +45,24 @@ for CLUT validation
 ## Examples
 
 ``` r
-if (FALSE) { # \dontrun{
+# \donttest{
 # Run charisma on an image
-result <- charisma("path/to/image.jpg")
+img <- system.file("extdata", "Tangara_fastuosa_LACM60421.png",
+                   package = "charisma")
+result <- charisma(img)
+#> Warning: if any are empty, remove them
+#> Discrete color classes identified: k=7
+#> (black, blue, brown, green, grey, orange, yellow)
+#> Image classification in progress...
+#> Using single set of coldists for all images.
+#> 
 
 # Summarize the color classification results
 summary_table <- summarize(result)
 print(summary_table)
-} # }
+#>                                black white grey brown red orange yellow green
+#> Tangara_fastuosa_LACM60421.png     1     0    1     1   0      1      1     1
+#>                                blue purple k
+#> Tangara_fastuosa_LACM60421.png    1      0 7
+# }
 ```

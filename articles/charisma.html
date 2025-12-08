@@ -147,12 +147,12 @@ system-level libraries. Install these first:</p>
 <div class="section level3">
 <h3 id="step-1-load-an-image">Step 1: Load an Image<a class="anchor" aria-label="anchor" href="#step-1-load-an-image"></a>
 </h3>
-<p>The package includes an example image of a colorful fish
-(<em>Anampses caeruleopunctatus</em>):</p>
+<p>The package includes an example image of a colorful bird (<em>Tangara
+fastuosa</em>):</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">img_path</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span></span>
 <span>  <span class="st">"extdata"</span>,</span>
-<span>  <span class="st">"Anampses_caeruleopunctatus.png"</span>,</span>
+<span>  <span class="st">"Tangara_fastuosa_LACM60421.png"</span>,</span>
 <span>  package <span class="op">=</span> <span class="st">"charisma"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 </div>
@@ -301,7 +301,8 @@ charisma object)</li>
 <p>Load and re-analyze saved objects:</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Load saved object</span></span>
-<span><span class="va">obj</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">readRDS</a></span><span class="op">(</span><span class="st">"path/to/charisma_object.RDS"</span><span class="op">)</span></span>
+<span><span class="va">obj</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"Tangara_fastuosa.RDS"</span>, package <span class="op">=</span> <span class="st">"charisma"</span><span class="op">)</span></span>
+<span><span class="va">obj</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">readRDS</a></span><span class="op">(</span><span class="va">obj</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Re-analyze with different threshold</span></span>
 <span><span class="va">result2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/charisma2.html">charisma2</a></span><span class="op">(</span></span>

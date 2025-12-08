@@ -218,23 +218,110 @@ for visualization
 ## Examples
 
 ``` r
-if (FALSE) { # \dontrun{
+# \donttest{
 # Basic usage with example image
-img <- system.file("extdata", "Anampses_caeruleopunctatus.png",
+img <- system.file("extdata", "Tangara_fastuosa_LACM60421.png",
                    package = "charisma")
 result <- charisma(img)
+#> Warning: if any are empty, remove them
+#> Discrete color classes identified: k=7
+#> (black, blue, brown, green, grey, orange, yellow)
+#> Warning: no DISPLAY variable so Tk is not available
+#> Image classification in progress...
+#> Using single set of coldists for all images.
+#> 
 
 # With threshold to remove minor colors
 result <- charisma(img, threshold = 0.05)
-
-# Interactive mode with manual curation
-result <- charisma(img, interactive = TRUE, threshold = 0.0)
+#> Warning: if any are empty, remove them
+#> 
+#> 3 classes were dropped based on your threshold of 0.05.
+#> 
+#> Replacement colors for these dropped classes arebeing automatically selected based on the pairwiseEuclidean distances between colors classes in the RGBspace so that `pavo` will receive a complete imagemask for downstream calculations!
+#> 
+#> >> The following color categories will be used for remapping:
+#>  - black
+#>  - blue
+#>  - green
+#>  - grey
+#>  
+#> Distances between brown and:
+#>   * grey => 61.33
+#>   * green => 76.13
+#>   * blue => 121.37
+#>   * black => 137.26
+#> ...Replacing brown with grey
+#> Distances between orange and:
+#>   * grey => 131.23
+#>   * green => 144.35
+#>   * blue => 190.4
+#>   * black => 221.06
+#> ...Replacing orange with grey
+#> Distances between yellow and:
+#>   * green => 168.25
+#>   * grey => 170.78
+#>   * blue => 231.46
+#>   * black => 239.13
+#> ...Replacing yellow with green
+#>  
+#> Discrete color classes identified: k=4
+#> (black, blue, green, grey)
+#> Image classification in progress...
+#> Using single set of coldists for all images.
+#> 
 
 # Save outputs to directory
 out_dir <- file.path(tempdir(), "charisma_outputs")
 result <- charisma(img, threshold = 0.05, logdir = out_dir)
+#> Warning: if any are empty, remove them
+#> 
+#> 3 classes were dropped based on your threshold of 0.05.
+#> 
+#> Replacement colors for these dropped classes arebeing automatically selected based on the pairwiseEuclidean distances between colors classes in the RGBspace so that `pavo` will receive a complete imagemask for downstream calculations!
+#> 
+#> >> The following color categories will be used for remapping:
+#>  - black
+#>  - blue
+#>  - green
+#>  - grey
+#>  
+#> Distances between brown and:
+#>   * grey => 61.33
+#>   * green => 76.13
+#>   * blue => 121.36
+#>   * black => 137.28
+#> ...Replacing brown with grey
+#> Distances between orange and:
+#>   * grey => 131.23
+#>   * green => 144.35
+#>   * blue => 190.4
+#>   * black => 221.06
+#> ...Replacing orange with grey
+#> Distances between yellow and:
+#>   * green => 168.25
+#>   * grey => 170.78
+#>   * blue => 231.47
+#>   * black => 239.13
+#> ...Replacing yellow with green
+#>  
+#> Discrete color classes identified: k=4
+#> (black, blue, green, grey)
+#> Image classification in progress...
+#> Using single set of coldists for all images.
+#> 
+#> Writing out charisma object to: /tmp/RtmpwY7zag/charisma_outputs/charisma_objects/Tangara_fastuosa_LACM60421_charisma_12-08-2025_15.31.40.RDS
+#> Writing out charisma plot to: /tmp/RtmpwY7zag/charisma_outputs/diagnostic_plots/Tangara_fastuosa_LACM60421_charisma_12-08-2025_15.31.40.pdf
 
 # View results
 plot(result)
-} # }
+
+#> Error in par(oldpar): invalid value specified for graphical parameter "pin"
+# }
+
+# Interactive mode with manual curation (only runs in interactive sessions)
+if (interactive()) {
+  img <- system.file("extdata", "Tangara_fastuosa_LACM60421.png",
+                     package = "charisma")
+  result <- charisma(img, interactive = TRUE, threshold = 0.0)
+}
 ```

@@ -75,7 +75,7 @@ library(charisma)
 # Load example image
 img <- system.file(
   "extdata", 
-  "Anampses_caeruleopunctatus.png",
+  "Tangara_fastuosa_LACM60421.png",
   package = "charisma"
 )
 
@@ -150,7 +150,8 @@ The `charisma` object contains:
 
 ``` r
 # Load previous analysis
-obj <- readRDS("path/to/charisma_object.RDS")
+obj <- system.file("extdata", "Tangara_fastuosa.RDS", package = "charisma")
+obj <- readRDS(obj)
 
 # Apply different threshold
 result2 <- charisma2(
