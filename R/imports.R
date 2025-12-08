@@ -5,7 +5,7 @@
 #' @importFrom magrittr %>%
 #' @importFrom dplyr group_by mutate ungroup rowwise select transmute
 #' @importFrom tibble rownames_to_column as_tibble
-#' @importFrom recolorize readImage
+#' @importFrom imager load.image imresize imrotate
 #' @importFrom purrr map
 #' @importFrom tidyr drop_na
 NULL

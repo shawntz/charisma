@@ -40,14 +40,12 @@
 #'
 #' @examples
 #' # Create a mosaic from color proportions
-#' \dontrun{
 #' colors <- list(
 #'   list(hex = "#FF0000", color = "red", prop = 0.4),
 #'   list(hex = "#00FF00", color = "green", prop = 0.3),
 #'   list(hex = "#0000FF", color = "blue", prop = 0.3)
 #' )
 #' mosaic(colors, size = 10, out.path = tempdir())
-#' }
 #'
 #' @export
 mosaic <- function(
@@ -105,7 +103,8 @@ mosaic <- function(
   }
 
   png(full_output_path, width = size * 100, height = size * 100)
-  par(mar = c(0, 0, 0, 0), xaxs = "i", yaxs = "i")
+  oldpar <- par(mar = c(0, 0, 0, 0), xaxs = "i", yaxs = "i")
+  on.exit(par(oldpar), add = TRUE)
   plot(
     NA,
     xlim = c(0, size),

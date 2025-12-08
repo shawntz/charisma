@@ -43,7 +43,12 @@
 #'
 #' @examples
 #' \dontrun{
-#' # Validate the default CLUT (takes a few minutes)
+#' # Validate the default CLUT (takes several minutes with parallel processing)
+#'
+#' # Note: These examples are not run during R CMD check due to CRAN build
+#' # limitations. With only 2 cores available during CRAN checks, validation
+#' # can exceed 20 minutes.
+#'
 #' result <- validate()
 #'
 #' # Validate a custom CLUT
@@ -51,7 +56,7 @@
 #' # ... modify my_clut ...
 #' result <- validate(clut = my_clut)
 #'
-#' # More thorough validation (slower, for final checks)
+#' # More thorough validation (much slower, recommended for cluster computing)
 #' result <- validate(simple = FALSE)
 #' }
 #'
@@ -77,6 +82,19 @@ validate <- function(clut = charisma::clut, simple = TRUE) {
 
   img <- data.frame(expand.grid(h, s, v))
   colnames(img) <- c("h", "s", "v")
+
+  # Calculate total number of coordinates
+  n_coords <- nrow(img)
+  simple_text <- if (simple) " (simple = TRUE)" else " (simple = FALSE)"
+  message(paste0(
+    "\n",
+    "Validating entire HSV color space with ",
+    format(n_coords, big.mark = ","),
+    " coordinates",
+    simple_text,
+    "...\n",
+    "This will take a while to run - please wait.\n"
+  ))
 
   eval_colors <- function(conditional, row) {
     h <- row[1]
@@ -111,7 +129,16 @@ validate <- function(clut = charisma::clut, simple = TRUE) {
   }
 
   start_time <- Sys.time()
-  n_cores <- parallel::detectCores() - 1
+  # Respect R CMD check limits (max 2 cores)
+  # Check for R_CHECK_NCPUS environment variable first
+  check_ncpus <- Sys.getenv("R_CHECK_NCPUS", "")
+  if (check_ncpus != "") {
+    n_cores <- as.integer(check_ncpus)
+  } else {
+    # Default: use detectCores() - 1, but cap at 2 during R CMD check
+    n_cores <- min(parallel::detectCores() - 1, 2L)
+  }
+  n_cores <- max(1L, n_cores) # Ensure at least 1 core
   message(paste(
     "Parallelizing CLUT validation with",
     n_cores,
