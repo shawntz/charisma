@@ -309,8 +309,8 @@ result <- charisma(img, threshold = 0.05, logdir = out_dir)
 #> Image classification in progress...
 #> Using single set of coldists for all images.
 #> 
-#> Writing out charisma object to: /tmp/RtmpkSfWS0/charisma_outputs/charisma_objects/Tangara_fastuosa_LACM60421_charisma_12-08-2025_15.34.27.RDS
-#> Writing out charisma plot to: /tmp/RtmpkSfWS0/charisma_outputs/diagnostic_plots/Tangara_fastuosa_LACM60421_charisma_12-08-2025_15.34.27.pdf
+#> Writing out charisma object to: /tmp/RtmpBrgVJm/charisma_outputs/charisma_objects/Tangara_fastuosa_LACM60421_charisma_12-08-2025_19.45.38.RDS
+#> Writing out charisma plot to: /tmp/RtmpBrgVJm/charisma_outputs/diagnostic_plots/Tangara_fastuosa_LACM60421_charisma_12-08-2025_19.45.38.pdf
 
 # View results
 plot(result)
