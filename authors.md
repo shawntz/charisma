@@ -26,7 +26,7 @@
 ## Citation
 
 Source:
-[`DESCRIPTION`](https://github.com/shawntz/charisma/blob/main/DESCRIPTION)
+[`DESCRIPTION`](https://github.com/shawntz/charisma/blob/v1.0.0/DESCRIPTION)
 
 Schwartz S, Tsai W, Karan E, Juhn M, Shultz A, McCormack J, Smith T,
 Alfaro M (2025). *charisma: Reproducible Color Characterization of
