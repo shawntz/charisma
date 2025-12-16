@@ -22,6 +22,20 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v4
 
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            libtiff-dev \
+            libpng-dev \
+            libjpeg-dev \
+            libcurl4-openssl-dev \
+            libudunits2-dev \
+            gdal-bin \
+            libgdal-dev \
+            pkg-config \
+            libxml2-dev
+
       - name: Setup R
         uses: r-lib/actions/setup-r@v2
 
