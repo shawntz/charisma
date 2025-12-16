@@ -82,6 +82,6 @@ colors <- list(
   list(hex = "#0000FF", color = "blue", prop = 0.3)
 )
 mosaic(colors, size = 10, out.path = tempdir())
-#> /tmp/RtmpyFZMi1/charisma_mosaic_hex-FF0000_color-red_prop-0.4_hex-00FF00_color-green_prop-0.3_hex-0000FF_color-blue_prop-0.3.png
-#> [1] "/tmp/RtmpyFZMi1/charisma_mosaic_hex-FF0000_color-red_prop-0.4_hex-00FF00_color-green_prop-0.3_hex-0000FF_color-blue_prop-0.3.png"
+#> /tmp/RtmpONFxeA/charisma_mosaic_hex-FF0000_color-red_prop-0.4_hex-00FF00_color-green_prop-0.3_hex-0000FF_color-blue_prop-0.3.png
+#> [1] "/tmp/RtmpONFxeA/charisma_mosaic_hex-FF0000_color-red_prop-0.4_hex-00FF00_color-green_prop-0.3_hex-0000FF_color-blue_prop-0.3.png"
 ```
