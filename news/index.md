@@ -2,6 +2,8 @@
 
 ## charisma 1.0.0
 
+CRAN release: 2025-12-08
+
 ### Initial CRAN Release
 
 First public release of charisma - an R package for reproducible color
