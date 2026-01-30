@@ -189,7 +189,10 @@ result3 <- charisma2(
 ### Custom Color Look-Up Tables
 
 ``` r
-# Create custom CLUT
+# Launch the interactive CLUT editor in your browser
+launch_clut_editor()
+
+# Or create custom CLUT programmatically
 my_clut <- charisma::clut  # Start with default
 # ... modify HSV ranges ...
 
@@ -199,6 +202,11 @@ validate(clut = my_clut)
 # Use in analysis
 result <- charisma(img, clut = my_clut)
 ```
+
+For specialized image datasets, you may need custom color boundaries
+beyond the default CLUT. Use `launch_clut_editor()` to open an
+interactive web-based editor where you can visually create and test
+custom color definitions.
 
 ### Evolutionary Analyses
 
