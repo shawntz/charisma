@@ -32,10 +32,6 @@ While the default CLUT provided by \code{charisma} works well for most
 biological specimens (birds, fish, etc.), you may need custom color boundaries
 for specific image datasets. The CLUT editor makes it easy to create and test
 custom color definitions without writing R code.
-
-After creating a custom CLUT in the editor, you can export it and use it
-with \code{charisma} by loading it as a data frame and passing it to the
-\code{clut} parameter:
 }
 \examples{
 \dontrun{

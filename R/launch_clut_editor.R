@@ -24,10 +24,6 @@
 #' for specific image datasets. The CLUT editor makes it easy to create and test
 #' custom color definitions without writing R code.
 #'
-#' After creating a custom CLUT in the editor, you can export it and use it
-#' with \code{charisma} by loading it as a data frame and passing it to the
-#' \code{clut} parameter:
-#'
 #' @seealso
 #' \code{\link{charisma}} for using custom CLUTs,
 #' \code{\link{validate}} for validating CLUT completeness,
@@ -51,7 +47,7 @@ launch_clut_editor <- function(url = "https://charisma-clut-editor.vercel.app") 
     stop("url must be a single character string")
   }
 
-  # Check if URL is accessible (basic validation)
+  # Check if URL has valid HTTP(S) format (basic validation)
   if (!grepl("^https?://", url)) {
     warning("URL does not appear to be a valid HTTP(S) URL")
   }
