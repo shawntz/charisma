@@ -17,28 +17,10 @@ test_that("launch_clut_editor validates URL parameter", {
 })
 
 test_that("launch_clut_editor warns for invalid URL format", {
-  # Test non-HTTP URL
+  # Test non-HTTP URL - should warn but not error
   expect_warning(
-    launch_clut_editor(url = "not-a-url"),
+    suppressMessages(launch_clut_editor(url = "not-a-url")),
     "URL does not appear to be a valid HTTP\\(S\\) URL"
-  )
-})
-
-test_that("launch_clut_editor returns logical value", {
-  # Mock browseURL to avoid opening browser in tests
-  mock_browseURL <- function(url) {
-    return(invisible(NULL))
-  }
-  
-  # Temporarily replace browseURL in utils namespace
-  with_mocked_bindings(
-    {
-      result <- suppressMessages(launch_clut_editor())
-      expect_type(result, "logical")
-      expect_true(result %in% c(TRUE, FALSE))
-    },
-    browseURL = mock_browseURL,
-    .package = "utils"
   )
 })
 

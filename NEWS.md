@@ -1,3 +1,17 @@
+# charisma 1.0.1 (development version)
+
+## New Features
+
+* Added `launch_clut_editor()` function to open an interactive web-based CLUT editor
+  - Launch a Vercel-deployed web application for creating and editing custom Color Look-Up Tables
+  - Visual interface for editing HSV color boundaries
+  - Useful for specialized image datasets requiring custom color definitions
+
+## Documentation
+
+* Updated README with information about the CLUT editor
+* Added CLUT editor to pkgdown reference documentation
+
 # charisma 1.0.0
 
 ## Initial CRAN Release
