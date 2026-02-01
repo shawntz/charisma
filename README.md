@@ -161,7 +161,7 @@ The `charisma` object contains:
 
 ## Example Workflows
 
-<img src="man/figures/methods-flowchart.jpeg" width="100%" />
+<img src="man/figures/methods-flowchart.jpeg" alt="" width="100%" />
 
 ## Advanced Features
 
@@ -187,6 +187,35 @@ result3 <- charisma2(
 ```
 
 ### Custom Color Look-Up Tables
+
+Create and customize CLUTs using the interactive [CLUT
+Editor](https://charisma.shawnschwartz.com/app):
+
+``` r
+# Launch the CLUT Editor in your browser
+launch_clut_editor()
+
+# Or use the local version bundled with the package
+launch_clut_editor(online = FALSE)
+```
+
+<!-- TODO: Add screenshot of CLUT Editor interface -->
+
+<!-- ![CLUT Editor Interface](man/figures/clut-editor-interface.png) -->
+
+The CLUT Editor provides:
+
+- Visual editing of HSV color space boundaries
+- Real-time coverage statistics (gaps and overlaps)
+- Multiple visualization modes: hue slices, 3D cone, 3D scatter, hue
+  wheel
+- Export to R code or JSON
+
+<!-- TODO: Add screenshot of CLUT Editor 3D visualization -->
+
+<!-- ![CLUT Editor 3D Visualization](man/figures/clut-editor-3d.png) -->
+
+After designing your CLUT, validate and use it:
 
 ``` r
 # Create custom CLUT
