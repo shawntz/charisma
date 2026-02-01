@@ -29,14 +29,14 @@ Source:
 [`DESCRIPTION`](https://github.com/shawntz/charisma/blob/main/DESCRIPTION)
 
 Schwartz S, Tsai W, Karan E, Juhn M, Shultz A, McCormack J, Smith T,
-Alfaro M (2025). *charisma: Reproducible Color Characterization of
+Alfaro M (2026). *charisma: Reproducible Color Characterization of
 Digital Images for Biological Studies*. R package version 1.0.0,
 <https://github.com/shawntz/charisma>.
 
     @Manual{,
       title = {charisma: Reproducible Color Characterization of Digital Images for Biological Studies},
       author = {Shawn Schwartz and Whitney Tsai and Elizabeth Karan and Mark Juhn and Allison Shultz and John McCormack and Thomas Smith and Michael Alfaro},
-      year = {2025},
+      year = {2026},
       note = {R package version 1.0.0},
       url = {https://github.com/shawntz/charisma},
     }
