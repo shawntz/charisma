@@ -196,7 +196,7 @@ CLUT Editor Interface
 
 CLUT Editor 3D Visualization
 
-After designing your custom CLUT, validate and use it:
+#### After designing your custom CLUT, validate and use it:
 
 ``` r
 # Create custom CLUT
