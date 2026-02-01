@@ -207,7 +207,7 @@ launch_clut_editor(online = FALSE)
 ![CLUT Editor 3D Visualization](man/figures/clut-editor-3d.png)
 
 
-After designing your custom CLUT, validate and use it:
+#### After designing your custom CLUT, validate and use it:
 
 ```{r, eval = FALSE}
 # Create custom CLUT
