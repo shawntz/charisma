@@ -180,6 +180,10 @@ launch_clut_editor()
 launch_clut_editor(online = FALSE)
 ```
 
+![CLUT Editor Interface](reference/figures/clut-editor-interface.png)
+
+CLUT Editor Interface
+
 The CLUT Editor provides:
 
 - Visual editing of HSV color space boundaries
@@ -187,6 +191,10 @@ The CLUT Editor provides:
 - Multiple visualization modes: hue slices, 3D cone, 3D scatter, hue
   wheel
 - Export to R code or JSON
+
+![CLUT Editor 3D Visualization](reference/figures/clut-editor-3d.png)
+
+CLUT Editor 3D Visualization
 
 After designing your CLUT, validate and use it:
 
