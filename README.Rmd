@@ -194,8 +194,7 @@ launch_clut_editor()
 launch_clut_editor(online = FALSE)
 ```
 
-<!-- TODO: Add screenshot of CLUT Editor interface -->
-<!-- ![CLUT Editor Interface](man/figures/clut-editor-interface.png) -->
+![CLUT Editor Interface](man/figures/clut-editor-interface.png)
 
 The CLUT Editor provides:
 
@@ -204,8 +203,7 @@ The CLUT Editor provides:
 - Multiple visualization modes: hue slices, 3D cone, 3D scatter, hue wheel
 - Export to R code or JSON
 
-<!-- TODO: Add screenshot of CLUT Editor 3D visualization -->
-<!-- ![CLUT Editor 3D Visualization](man/figures/clut-editor-3d.png) -->
+![CLUT Editor 3D Visualization](man/figures/clut-editor-3d.png)
 
 After designing your CLUT, validate and use it:
 

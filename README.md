@@ -199,9 +199,11 @@ launch_clut_editor()
 launch_clut_editor(online = FALSE)
 ```
 
-<!-- TODO: Add screenshot of CLUT Editor interface -->
-
-<!-- ![CLUT Editor Interface](man/figures/clut-editor-interface.png) -->
+<figure>
+<img src="man/figures/clut-editor-interface.png"
+alt="CLUT Editor Interface" />
+<figcaption aria-hidden="true">CLUT Editor Interface</figcaption>
+</figure>
 
 The CLUT Editor provides:
 
@@ -211,9 +213,11 @@ The CLUT Editor provides:
   wheel
 - Export to R code or JSON
 
-<!-- TODO: Add screenshot of CLUT Editor 3D visualization -->
-
-<!-- ![CLUT Editor 3D Visualization](man/figures/clut-editor-3d.png) -->
+<figure>
+<img src="man/figures/clut-editor-3d.png"
+alt="CLUT Editor 3D Visualization" />
+<figcaption aria-hidden="true">CLUT Editor 3D Visualization</figcaption>
+</figure>
 
 After designing your CLUT, validate and use it:
 
