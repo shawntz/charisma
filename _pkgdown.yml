@@ -15,8 +15,7 @@ template:
   includes:
     in_header: |
       <link rel="stylesheet" href="extra.css">
-      <script async src="https://cdn.seline.com/seline.js"
-      data-token="2162fe5e9da2b07"></script>
+      <script async src="https://cdn.seline.com/seline.js" data-token="472494d6abd3898"></script>
 
 navbar:
   structure:
