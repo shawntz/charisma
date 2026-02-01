@@ -19,7 +19,7 @@ template:
 
 navbar:
   structure:
-    left: [intro, reference, articles, tutorials, news]
+    left: [intro, reference, articles, clut_editor, news]
     right: [search, github]
   components:
     home: ~
@@ -34,6 +34,10 @@ navbar:
       menu:
         - text: Getting Started
           href: articles/charisma.html
+    clut_editor:
+      text: CLUT Editor
+      href: app/index.html
+      icon: fa-palette
     news:
       text: Changelog
       href: news/index.html
@@ -66,8 +70,12 @@ reference:
     contents:
       - plot.charisma
       - mosaic
+  - title: CLUT Editor
+    desc: Interactive tool for creating and customizing Color Look-Up Tables
+    contents:
+      - launch_clut_editor
   - title: Data
-    desc: Default Color Look-Up Table (CLUT) for color classification
+    desc: Default Color Lookup Table (CLUT) for color classification
     contents:
       - clut
 
