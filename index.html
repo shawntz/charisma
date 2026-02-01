@@ -57,6 +57,7 @@ categories using a biologically-inspired approach.
 <li><a class="dropdown-item" href="articles/charisma.html">Getting Started</a></li>
   </ul>
 </li>
+<li class="nav-item"><a class="nav-link" href="app/index.html"><span class="fa fa-palette"></span> CLUT Editor</a></li>
 <li class="nav-item"><a class="nav-link" href="news/index.html">Changelog</a></li>
       </ul>
 <ul class="navbar-nav">
@@ -205,7 +206,7 @@ categories using a biologically-inspired approach.
 <div class="section level2">
 <h2 id="example-workflows">Example Workflows<a class="anchor" aria-label="anchor" href="#example-workflows"></a>
 </h2>
-<p><img src="reference/figures/methods-flowchart.jpeg" width="100%"></p>
+<p><img src="reference/figures/methods-flowchart.jpeg" alt="" width="100%"></p>
 </div>
 <div class="section level2">
 <h2 id="advanced-features">Advanced Features<a class="anchor" aria-label="anchor" href="#advanced-features"></a>
@@ -234,7 +235,24 @@ categories using a biologically-inspired approach.
 <div class="section level3">
 <h3 id="custom-color-look-up-tables">Custom Color Look-Up Tables<a class="anchor" aria-label="anchor" href="#custom-color-look-up-tables"></a>
 </h3>
+<p>Create and customize CLUTs using the interactive <a href="https://charisma.shawnschwartz.com/app" class="external-link">CLUT Editor</a>:</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Launch the CLUT Editor in your browser</span></span>
+<span><span class="fu"><a href="reference/launch_clut_editor.html">launch_clut_editor</a></span><span class="op">(</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Or use the local version bundled with the package</span></span>
+<span><span class="fu"><a href="reference/launch_clut_editor.html">launch_clut_editor</a></span><span class="op">(</span>online <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
+<!-- TODO: Add screenshot of CLUT Editor interface -->
+<!-- ![CLUT Editor Interface](man/figures/clut-editor-interface.png) -->
+<p>The CLUT Editor provides:</p>
+<ul>
+<li>Visual editing of HSV color space boundaries</li>
+<li>Real-time coverage statistics (gaps and overlaps)</li>
+<li>Multiple visualization modes: hue slices, 3D cone, 3D scatter, hue wheel</li>
+<li>Export to R code or JSON</li>
+</ul>
+<!-- TODO: Add screenshot of CLUT Editor 3D visualization --><!-- ![CLUT Editor 3D Visualization](man/figures/clut-editor-3d.png) --><p>After designing your CLUT, validate and use it:</p>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Create custom CLUT</span></span>
 <span><span class="va">my_clut</span> <span class="op">&lt;-</span> <span class="fu">charisma</span><span class="fu">::</span><span class="va"><a href="reference/clut.html">clut</a></span>  <span class="co"># Start with default</span></span>
 <span><span class="co"># ... modify HSV ranges ...</span></span>
@@ -248,7 +266,7 @@ categories using a biologically-inspired approach.
 <div class="section level3">
 <h3 id="evolutionary-analyses">Evolutionary Analyses<a class="anchor" aria-label="anchor" href="#evolutionary-analyses"></a>
 </h3>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Batch process images</span></span>
 <span><span class="va">results</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="va">image_paths</span>, <span class="kw">function</span><span class="op">(</span><span class="va">img</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="fu"><a href="reference/charisma.html">charisma</a></span><span class="op">(</span><span class="va">img</span>, threshold <span class="op">=</span> <span class="fl">0.05</span><span class="op">)</span></span>

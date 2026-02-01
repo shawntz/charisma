@@ -30,9 +30,16 @@ Functions for plotting and displaying results
 - [`mosaic()`](https://shawnschwartz.com/charisma/reference/mosaic.md) :
   Create a color mosaic visualization from color proportions
 
+## CLUT Editor
+
+Interactive tool for creating and customizing Color Look-Up Tables
+
+- [`launch_clut_editor()`](https://shawnschwartz.com/charisma/reference/launch_clut_editor.md)
+  : Launch the CLUT Editor
+
 ## Data
 
-Default Color Look-Up Table (CLUT) for color classification
+Default Color Lookup Table (CLUT) for color classification
 
 - [`clut`](https://shawnschwartz.com/charisma/reference/clut.md) :
   Default Color (Labels) Look Up Table (CLUT)

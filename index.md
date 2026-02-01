@@ -169,6 +169,27 @@ result3 <- charisma2(
 
 ### Custom Color Look-Up Tables
 
+Create and customize CLUTs using the interactive [CLUT
+Editor](https://charisma.shawnschwartz.com/app):
+
+``` r
+# Launch the CLUT Editor in your browser
+launch_clut_editor()
+
+# Or use the local version bundled with the package
+launch_clut_editor(online = FALSE)
+```
+
+The CLUT Editor provides:
+
+- Visual editing of HSV color space boundaries
+- Real-time coverage statistics (gaps and overlaps)
+- Multiple visualization modes: hue slices, 3D cone, 3D scatter, hue
+  wheel
+- Export to R code or JSON
+
+After designing your CLUT, validate and use it:
+
 ``` r
 # Create custom CLUT
 my_clut <- charisma::clut  # Start with default

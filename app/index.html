@@ -1,0 +1,1306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>charisma | CLUT Editor</title>
+    <script async src="https://cdn.seline.com/seline.js" data-token="472494d6abd3898"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --background: #ffffff;
+            --foreground: #0f172a;
+            --muted: #f1f5f9;
+            --muted-foreground: #64748b;
+            --border: #e2e8f0;
+            --card: #ffffff;
+            --card-foreground: #0f172a;
+            --primary: #0f172a;
+            --primary-foreground: #f8fafc;
+            --secondary: #f1f5f9;
+            --secondary-foreground: #0f172a;
+            --accent: #f1f5f9;
+            --accent-foreground: #0f172a;
+            --destructive: #ef4444;
+            --ring: #94a3b8;
+            --radius: 0.5rem;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: var(--background);
+            color: var(--foreground);
+            min-height: 100vh;
+            line-height: 1.5;
+        }
+
+        /* Header */
+        .header {
+            border-bottom: 1px solid var(--border);
+            padding: 1rem 2rem;
+            background: var(--card);
+        }
+        .header-content {
+            max-width: 1600px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        .logo-text {
+            font-size: 1.25rem;
+            font-weight: 600;
+            letter-spacing: -0.025em;
+        }
+        .logo-badge {
+            font-size: 0.75rem;
+            padding: 0.125rem 0.5rem;
+            background: var(--muted);
+            color: var(--muted-foreground);
+            border-radius: 9999px;
+            font-weight: 500;
+        }
+        .subtitle {
+            font-size: 0.875rem;
+            color: var(--muted-foreground);
+        }
+
+        /* Main Layout */
+        .main {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 1.5rem 2rem;
+            display: grid;
+            grid-template-columns: 320px 1fr;
+            gap: 1.5rem;
+        }
+
+        /* Card Component */
+        .card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+        }
+        .card-header {
+            padding: 1rem 1.25rem;
+            border-bottom: 1px solid var(--border);
+        }
+        .card-title {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--foreground);
+        }
+        .card-description {
+            font-size: 0.75rem;
+            color: var(--muted-foreground);
+            margin-top: 0.25rem;
+        }
+        .card-content {
+            padding: 1rem 1.25rem;
+        }
+
+        /* Color List */
+        .color-list {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        .color-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.625rem 0.75rem;
+            border-radius: calc(var(--radius) - 2px);
+            cursor: pointer;
+            transition: background 0.15s;
+            border: 1px solid transparent;
+        }
+        .color-item:hover {
+            background: var(--muted);
+        }
+        .color-item.selected {
+            background: var(--muted);
+            border-color: var(--ring);
+        }
+        .color-item.hidden-color {
+            opacity: 0.5;
+        }
+        .color-swatch {
+            width: 24px;
+            height: 24px;
+            border-radius: 4px;
+            border: 1px solid var(--border);
+            flex-shrink: 0;
+        }
+        .color-info {
+            flex: 1;
+            min-width: 0;
+        }
+        .color-name {
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+        .color-ranges {
+            font-size: 0.625rem;
+            color: var(--muted-foreground);
+            font-family: ui-monospace, monospace;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .color-actions {
+            display: flex;
+            gap: 0.25rem;
+        }
+
+        /* Buttons */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.875rem;
+            font-weight: 500;
+            border-radius: calc(var(--radius) - 2px);
+            transition: all 0.15s;
+            cursor: pointer;
+            border: none;
+            font-family: inherit;
+        }
+        .btn-primary {
+            background: var(--primary);
+            color: var(--primary-foreground);
+            padding: 0.5rem 1rem;
+        }
+        .btn-primary:hover {
+            background: #1e293b;
+        }
+        .btn-secondary {
+            background: var(--secondary);
+            color: var(--secondary-foreground);
+            padding: 0.5rem 1rem;
+        }
+        .btn-secondary:hover {
+            background: #e2e8f0;
+        }
+        .btn-ghost {
+            background: transparent;
+            color: var(--muted-foreground);
+            padding: 0.375rem;
+        }
+        .btn-ghost:hover {
+            background: var(--muted);
+            color: var(--foreground);
+        }
+        .btn-icon {
+            width: 28px;
+            height: 28px;
+            padding: 0;
+        }
+        .btn-full {
+            width: 100%;
+        }
+
+        /* Form Elements */
+        .form-group {
+            margin-bottom: 1rem;
+        }
+        .form-group:last-child {
+            margin-bottom: 0;
+        }
+        .form-label {
+            display: block;
+            font-size: 0.75rem;
+            font-weight: 500;
+            color: var(--foreground);
+            margin-bottom: 0.375rem;
+        }
+        .form-input, .form-textarea {
+            width: 100%;
+            padding: 0.5rem 0.75rem;
+            font-size: 0.875rem;
+            border: 1px solid var(--border);
+            border-radius: calc(var(--radius) - 2px);
+            background: var(--background);
+            color: var(--foreground);
+            font-family: inherit;
+            transition: border-color 0.15s, box-shadow 0.15s;
+        }
+        .form-input:focus, .form-textarea:focus {
+            outline: none;
+            border-color: var(--ring);
+            box-shadow: 0 0 0 2px rgba(148, 163, 184, 0.2);
+        }
+        .form-textarea {
+            font-family: ui-monospace, monospace;
+            font-size: 0.75rem;
+            resize: vertical;
+        }
+        .form-hint {
+            font-size: 0.625rem;
+            color: var(--muted-foreground);
+            margin-top: 0.25rem;
+        }
+        .form-color {
+            height: 36px;
+            padding: 2px;
+            cursor: pointer;
+        }
+
+        /* Stats */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+        }
+        .stat-item {
+            text-align: center;
+        }
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 600;
+            line-height: 1;
+        }
+        .stat-value.success { color: #16a34a; }
+        .stat-value.warning { color: #ea580c; }
+        .stat-label {
+            font-size: 0.75rem;
+            color: var(--muted-foreground);
+            margin-top: 0.25rem;
+        }
+        .progress-bar {
+            height: 4px;
+            background: var(--muted);
+            border-radius: 9999px;
+            overflow: hidden;
+            margin-top: 1rem;
+        }
+        .progress-fill {
+            height: 100%;
+            background: var(--primary);
+            transition: width 0.3s;
+        }
+
+        /* Tabs */
+        .tabs {
+            display: flex;
+            gap: 0.25rem;
+            background: var(--muted);
+            padding: 0.25rem;
+            border-radius: var(--radius);
+        }
+        .tab-btn {
+            flex: 1;
+            padding: 0.5rem 0.75rem;
+            font-size: 0.75rem;
+            font-weight: 500;
+            background: transparent;
+            border: none;
+            border-radius: calc(var(--radius) - 4px);
+            color: var(--muted-foreground);
+            cursor: pointer;
+            transition: all 0.15s;
+            font-family: inherit;
+        }
+        .tab-btn:hover {
+            color: var(--foreground);
+        }
+        .tab-btn.active {
+            background: var(--card);
+            color: var(--foreground);
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+        }
+        .tab-content {
+            display: none;
+            padding-top: 1rem;
+        }
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Visualization */
+        .viz-container {
+            background: var(--muted);
+            border-radius: calc(var(--radius) - 2px);
+            overflow: hidden;
+        }
+        #threeDContainer, #scatterContainer {
+            width: 100%;
+            height: 450px;
+        }
+        #hueWheel {
+            display: block;
+            margin: 0 auto;
+        }
+
+        /* Hue Slices */
+        .hue-slices {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            justify-content: center;
+        }
+        .slice-container {
+            text-align: center;
+        }
+        .slice-container canvas {
+            border-radius: 4px;
+        }
+        .slice-label {
+            font-size: 0.625rem;
+            color: var(--muted-foreground);
+            margin-top: 0.25rem;
+            font-family: ui-monospace, monospace;
+        }
+
+        /* Legend */
+        .legend {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            justify-content: center;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border);
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 0.375rem;
+            font-size: 0.75rem;
+            color: var(--muted-foreground);
+        }
+        .legend-color {
+            width: 12px;
+            height: 12px;
+            border-radius: 2px;
+            border: 1px solid var(--border);
+        }
+
+        /* Controls */
+        .controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            padding: 0.75rem;
+            background: var(--muted);
+            border-radius: calc(var(--radius) - 2px);
+        }
+        .control-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.75rem;
+            color: var(--muted-foreground);
+        }
+        .control-item input[type="checkbox"] {
+            width: 14px;
+            height: 14px;
+            accent-color: var(--primary);
+        }
+        .control-item input[type="range"] {
+            width: 80px;
+            accent-color: var(--primary);
+        }
+
+        /* Export Buttons */
+        .export-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.5rem;
+        }
+
+        /* Modal */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+        .modal-overlay.active {
+            display: flex;
+        }
+        .modal {
+            background: var(--card);
+            border-radius: var(--radius);
+            max-width: 700px;
+            width: 90%;
+            max-height: 80vh;
+            overflow: hidden;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+        }
+        .modal-header {
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .modal-title {
+            font-weight: 600;
+        }
+        .modal-body {
+            padding: 1.5rem;
+            overflow-y: auto;
+            max-height: calc(80vh - 130px);
+        }
+        .modal-body pre {
+            background: var(--muted);
+            padding: 1rem;
+            border-radius: calc(var(--radius) - 2px);
+            font-size: 0.75rem;
+            overflow-x: auto;
+            font-family: ui-monospace, monospace;
+        }
+        .modal-footer {
+            padding: 1rem 1.5rem;
+            border-top: 1px solid var(--border);
+            display: flex;
+            gap: 0.5rem;
+            justify-content: flex-end;
+        }
+
+        /* Warning badges */
+        .warning-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.375rem;
+            padding: 0.375rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            margin-top: 0.75rem;
+        }
+        .warning-badge.gap {
+            background: #fef3c7;
+            color: #92400e;
+        }
+        .warning-badge.overlap {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        /* Helper text */
+        .help-text {
+            font-size: 0.75rem;
+            color: var(--muted-foreground);
+            margin-top: 0.75rem;
+        }
+
+        /* Scrollbar styling */
+        .color-list::-webkit-scrollbar {
+            width: 6px;
+        }
+        .color-list::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .color-list::-webkit-scrollbar-thumb {
+            background: var(--border);
+            border-radius: 3px;
+        }
+        .color-list::-webkit-scrollbar-thumb:hover {
+            background: var(--ring);
+        }
+
+        /* Section spacing */
+        .section-gap {
+            margin-top: 1rem;
+        }
+
+        /* Right column */
+        .right-column {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">
+                <span class="logo-text"><a href="https://charisma.shawnschwartz.com" target="_blank" style="text-decoration: none; color: #000;">charisma</a></span>
+                <span class="logo-badge">Color Lookup Table (CLUT) Editor</span>
+            </div>
+            <span class="subtitle">Define HSV color categories for reproducible color naming</span>
+        </div>
+    </header>
+
+    <main class="main">
+        <aside class="left-column">
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">Color Categories</div>
+                    <div class="card-description">Click to edit ranges</div>
+                </div>
+                <div class="card-content">
+                    <div class="color-list" id="colorList"></div>
+                    <button class="btn btn-secondary btn-full section-gap" onclick="addNewColor()">+ Add Category</button>
+                </div>
+            </div>
+
+            <div class="card section-gap" id="editorPanel" style="display: none;">
+                <div class="card-header">
+                    <div class="card-title">Edit: <span id="editingColorName"></span></div>
+                </div>
+                <div class="card-content">
+                    <div class="form-group">
+                        <label class="form-label">Name</label>
+                        <input type="text" class="form-input" id="colorNameInput" placeholder="e.g., red">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Default Color</label>
+                        <input type="color" class="form-input form-color" id="colorHexInput">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Hue (0-360)</label>
+                        <textarea class="form-textarea" id="hueRangeInput" rows="2" placeholder="e.g., 0::15|340::360"></textarea>
+                        <div class="form-hint">Format: start::end | for OR, comma for AND</div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Saturation (0-100)</label>
+                        <textarea class="form-textarea" id="satRangeInput" rows="2" placeholder="e.g., 50::100"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Value (0-100)</label>
+                        <textarea class="form-textarea" id="valRangeInput" rows="2" placeholder="e.g., 50::100"></textarea>
+                    </div>
+                    <button class="btn btn-primary btn-full" onclick="saveColor()">Save Changes</button>
+                </div>
+            </div>
+
+            <div class="card section-gap">
+                <div class="card-header">
+                    <div class="card-title">Export / Import</div>
+                </div>
+                <div class="card-content">
+                    <div class="export-grid">
+                        <button class="btn btn-primary" onclick="exportToR()">R Code</button>
+                        <button class="btn btn-secondary" onclick="exportRDA()">Download .R</button>
+                        <button class="btn btn-secondary" onclick="exportJSON()">Export JSON</button>
+                        <button class="btn btn-secondary" onclick="document.getElementById('importFile').click()">Import JSON</button>
+                    </div>
+                    <input type="file" id="importFile" style="display:none" accept=".json" onchange="importJSON(event)">
+                </div>
+            </div>
+        </aside>
+
+        <div class="right-column">
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">Coverage Statistics</div>
+                </div>
+                <div class="card-content">
+                    <div id="coverageStats"></div>
+                    <div id="warnings"></div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-content">
+                    <div class="tabs">
+                        <button class="tab-btn active" onclick="switchTab('slices')">Hue Slices</button>
+                        <button class="tab-btn" onclick="switchTab('cone')">3D Cone</button>
+                        <button class="tab-btn" onclick="switchTab('scatter')">3D Scatter</button>
+                        <button class="tab-btn" onclick="switchTab('hue')">Hue Wheel</button>
+                    </div>
+
+                    <div class="tab-content active" id="slicesTab">
+                        <div class="hue-slices" id="hueSlices"></div>
+                        <div class="legend" id="colorLegend"></div>
+                        <p class="help-text">S-V planes at different hue angles. Each cell shows category ownership.</p>
+                    </div>
+
+                    <div class="tab-content" id="coneTab">
+                        <div class="controls">
+                            <label class="control-item">
+                                <input type="checkbox" id="showConeColors" checked onchange="updateCone()">
+                                <span>Category Colors</span>
+                            </label>
+                            <label class="control-item">
+                                <input type="checkbox" id="showTrueHSV" onchange="updateCone()">
+                                <span>True HSV</span>
+                            </label>
+                            <label class="control-item">
+                                <input type="checkbox" id="showHiddenMarkers" checked onchange="updateCone()">
+                                <span>Hidden Regions</span>
+                            </label>
+                            <label class="control-item">
+                                <span>Resolution</span>
+                                <input type="range" id="coneRes" min="5" max="15" value="10" onchange="updateCone()">
+                            </label>
+                            <label class="control-item">
+                                <span>Point Size</span>
+                                <input type="range" id="conePointSize" min="2" max="8" value="4" onchange="updateCone()">
+                            </label>
+                        </div>
+                        <div class="viz-container">
+                            <div id="threeDContainer"></div>
+                        </div>
+                        <p class="help-text">Drag to rotate, scroll to zoom. HSV cone with V as height, S as radius.</p>
+                    </div>
+
+                    <div class="tab-content" id="scatterTab">
+                        <div class="controls">
+                            <label class="control-item">
+                                <input type="checkbox" id="showFullSpace" checked onchange="updateScatter()">
+                                <span>Full HSV Space</span>
+                            </label>
+                            <label class="control-item">
+                                <input type="checkbox" id="showCategoryPoints" checked onchange="updateScatter()">
+                                <span>Category Points</span>
+                            </label>
+                            <label class="control-item">
+                                <span>Density</span>
+                                <input type="range" id="scatterDensity" min="8" max="20" value="12" onchange="updateScatter()">
+                            </label>
+                        </div>
+                        <div class="viz-container">
+                            <div id="scatterContainer"></div>
+                        </div>
+                        <p class="help-text">3D scatter: H=X, S=Y, V=Z. Small dots show full space, large dots show categories.</p>
+                    </div>
+
+                    <div class="tab-content" id="hueTab">
+                        <div class="viz-container" style="padding: 1.5rem; background: var(--background);">
+                            <canvas id="hueWheel" width="400" height="400"></canvas>
+                        </div>
+                        <p class="help-text">Hue coverage at maximum saturation and value.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div class="modal-overlay" id="rOutputModal">
+        <div class="modal">
+            <div class="modal-header">
+                <span class="modal-title">R Data Frame Code</span>
+                <button class="btn btn-ghost btn-icon" onclick="closeModal()">×</button>
+            </div>
+            <div class="modal-body">
+                <pre id="rCodeOutput"></pre>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeModal()">Close</button>
+                <button class="btn btn-primary" onclick="copyRCode()">Copy to Clipboard</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script>
+        let colorCategories = [
+            { name: 'black', hex: '#000000', h: '0::360', s: '0::100', v: '0::30', visible: true },
+            { name: 'white', hex: '#FFFFFF', h: '0::360', s: '0::19', v: '82::100', visible: true },
+            { name: 'grey', hex: '#808080', h: '0::360,0::360,0::360,0::360', s: '0::25,0::19,0::19,0::15', v: '31::40,41::60,61::75,76::81', visible: true },
+            { name: 'brown', hex: '#964B00', h: '0::54|320::360,0::54|300::360,16::54,20::40,20::40,36::40', s: '26::100,20::100,20::100,16::80,20::80,20::50', v: '31::40,41::60,61::75,76::81,82::84,85::90', visible: true },
+            { name: 'red', hex: '#FF0000', h: '0::15|300::360,0::19|300::360,0::19|300::360', s: '20::100,16::100,20::100', v: '61::75,76::81,82::100', visible: true },
+            { name: 'orange', hex: '#FFA500', h: '20::40,20::35,20::35,36::40,36::40', s: '81::100,20::80,81::100,20::50,51::80', v: '76::85,85::100,82::100,91::100,85::100', visible: true },
+            { name: 'yellow', hex: '#FFFF00', h: '41::61,36::40,41::61', s: '16::100,81::100,20::100', v: '76::81,86::100,82::100', visible: true },
+            { name: 'green', hex: '#00FF00', h: '55::165,55::165,55::165,62::165,62::165', s: '26::100,20::100,20::100,16::100,20::100', v: '31::40,41::60,61::75,76::81,82::100', visible: true },
+            { name: 'blue', hex: '#0000FF', h: '166::255,166::255,166::255,166::255,166::255', s: '26::100,20::100,20::100,16::100,20::100', v: '31::40,41::60,61::75,76::81,82::100', visible: true },
+            { name: 'purple', hex: '#800080', h: '256::319,256::299,256::299,256::299,256::299', s: '26::100,20::100,20::100,16::100,20::100', v: '31::40,41::60,61::75,76::81,82::100', visible: true }
+        ];
+
+        let selectedColorIndex = null;
+        let coneScene, coneCamera, coneRenderer;
+        let scatterScene, scatterCamera, scatterRenderer;
+        let coneCamDist = 3, coneRotY = 0.5, coneRotX = 0.4;
+        let scatterCamDist = 4, scatterRotY = 0.5, scatterRotX = 0.3;
+
+        function hsvToRgb(h, s, v) {
+            h = h / 360; s = s / 100; v = v / 100;
+            let r, g, b;
+            const i = Math.floor(h * 6);
+            const f = h * 6 - i;
+            const p = v * (1 - s);
+            const q = v * (1 - f * s);
+            const t = v * (1 - (1 - f) * s);
+            switch (i % 6) {
+                case 0: r = v; g = t; b = p; break;
+                case 1: r = q; g = v; b = p; break;
+                case 2: r = p; g = v; b = t; break;
+                case 3: r = p; g = q; b = v; break;
+                case 4: r = t; g = p; b = v; break;
+                case 5: r = v; g = p; b = q; break;
+            }
+            return { r, g, b };
+        }
+
+        function parseRangeString(rangeStr) {
+            if (!rangeStr || rangeStr.trim() === '') return [];
+            const ranges = [];
+            for (const part of rangeStr.split('|')) {
+                const match = part.trim().match(/(\d+)::(\d+)/);
+                if (match) ranges.push([parseInt(match[1]), parseInt(match[2])]);
+            }
+            return ranges;
+        }
+
+        function inRanges(value, ranges) {
+            for (const [start, end] of ranges) {
+                if (value >= start && value <= end) return true;
+            }
+            return false;
+        }
+
+        function parseComplexRanges(hStr, sStr, vStr) {
+            const hParts = hStr.split(',').map(s => s.trim());
+            const sParts = sStr.split(',').map(s => s.trim());
+            const vParts = vStr.split(',').map(s => s.trim());
+            const conditions = [];
+            const maxParts = Math.max(hParts.length, sParts.length, vParts.length);
+            for (let i = 0; i < maxParts; i++) {
+                const hRange = parseRangeString(hParts[Math.min(i, hParts.length-1)]);
+                const sRange = parseRangeString(sParts[Math.min(i, sParts.length-1)]);
+                const vRange = parseRangeString(vParts[Math.min(i, vParts.length-1)]);
+                if (hRange.length && sRange.length && vRange.length) {
+                    conditions.push({ h: hRange, s: sRange, v: vRange });
+                }
+            }
+            return conditions;
+        }
+
+        function pointBelongsToColor(h, s, v, color) {
+            for (const cond of parseComplexRanges(color.h, color.s, color.v)) {
+                if (inRanges(h, cond.h) && inRanges(s, cond.s) && inRanges(v, cond.v)) return true;
+            }
+            return false;
+        }
+
+        function getColorsAtPoint(h, s, v) {
+            const colors = [];
+            for (let i = 0; i < colorCategories.length; i++) {
+                if (!colorCategories[i].visible) continue;
+                if (pointBelongsToColor(h, s, v, colorCategories[i])) colors.push(i);
+            }
+            return colors;
+        }
+
+        function toggleVisibility(index, event) {
+            event.stopPropagation();
+            colorCategories[index].visible = !colorCategories[index].visible;
+            renderColorList();
+            updateVisualization();
+        }
+
+        function renderColorList() {
+            const list = document.getElementById('colorList');
+            list.innerHTML = '';
+            colorCategories.forEach((color, index) => {
+                const item = document.createElement('div');
+                item.className = 'color-item' + (selectedColorIndex === index ? ' selected' : '') + (!color.visible ? ' hidden-color' : '');
+                item.onclick = () => selectColor(index);
+                item.innerHTML = `
+                    <div class="color-swatch" style="background:${color.hex}"></div>
+                    <div class="color-info">
+                        <div class="color-name">${color.name}</div>
+                        <div class="color-ranges">H: ${color.h.substring(0, 30)}${color.h.length > 30 ? '...' : ''}</div>
+                    </div>
+                    <div class="color-actions">
+                        <button class="btn btn-ghost btn-icon" onclick="toggleVisibility(${index}, event)" title="${color.visible ? 'Hide' : 'Show'}">
+                            ${color.visible ? '👁' : '○'}
+                        </button>
+                        <button class="btn btn-ghost btn-icon" onclick="event.stopPropagation();deleteColor(${index})" title="Delete">×</button>
+                    </div>
+                `;
+                list.appendChild(item);
+            });
+        }
+
+        function selectColor(index) {
+            selectedColorIndex = index;
+            const color = colorCategories[index];
+            document.getElementById('editorPanel').style.display = 'block';
+            document.getElementById('editingColorName').textContent = color.name;
+            document.getElementById('colorNameInput').value = color.name;
+            document.getElementById('colorHexInput').value = color.hex;
+            document.getElementById('hueRangeInput').value = color.h;
+            document.getElementById('satRangeInput').value = color.s;
+            document.getElementById('valRangeInput').value = color.v;
+            renderColorList();
+        }
+
+        function saveColor() {
+            if (selectedColorIndex === null) return;
+            colorCategories[selectedColorIndex] = {
+                ...colorCategories[selectedColorIndex],
+                name: document.getElementById('colorNameInput').value,
+                hex: document.getElementById('colorHexInput').value,
+                h: document.getElementById('hueRangeInput').value,
+                s: document.getElementById('satRangeInput').value,
+                v: document.getElementById('valRangeInput').value
+            };
+            renderColorList();
+            updateVisualization();
+        }
+
+        function addNewColor() {
+            colorCategories.push({ name: 'new_color', hex: '#888888', h: '0::360', s: '0::100', v: '0::100', visible: true });
+            selectColor(colorCategories.length - 1);
+            updateVisualization();
+        }
+
+        function deleteColor(index) {
+            colorCategories.splice(index, 1);
+            if (selectedColorIndex === index) {
+                selectedColorIndex = null;
+                document.getElementById('editorPanel').style.display = 'none';
+            } else if (selectedColorIndex > index) selectedColorIndex--;
+            renderColorList();
+            updateVisualization();
+        }
+
+        function updateVisualization() {
+            updateCoverageStats();
+            updateHueSlices();
+            updateHueWheel();
+            updateCone();
+            updateScatter();
+            updateLegend();
+        }
+
+        function updateCoverageStats() {
+            let total = 0, covered = 0, overlap = 0;
+            for (let h = 0; h < 360; h += 5) {
+                for (let s = 0; s <= 100; s += 5) {
+                    for (let v = 0; v <= 100; v += 5) {
+                        total++;
+                        const colors = [];
+                        for (let i = 0; i < colorCategories.length; i++) {
+                            if (pointBelongsToColor(h, s, v, colorCategories[i])) colors.push(i);
+                        }
+                        if (colors.length > 0) covered++;
+                        if (colors.length > 1) overlap++;
+                    }
+                }
+            }
+            const cov = (covered / total * 100).toFixed(1);
+            const ovl = (overlap / total * 100).toFixed(1);
+            document.getElementById('coverageStats').innerHTML = `
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <div class="stat-value ${cov >= 99 ? 'success' : 'warning'}">${cov}%</div>
+                        <div class="stat-label">Coverage</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value ${ovl == 0 ? 'success' : 'warning'}">${ovl}%</div>
+                        <div class="stat-label">Overlap</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">${total.toLocaleString()}</div>
+                        <div class="stat-label">Sampled</div>
+                    </div>
+                </div>
+                <div class="progress-bar"><div class="progress-fill" style="width:${cov}%"></div></div>
+            `;
+            let warn = '';
+            if (cov < 100) warn += `<span class="warning-badge gap">⚠ ${(100-cov).toFixed(1)}% uncovered</span> `;
+            if (ovl > 0) warn += `<span class="warning-badge overlap">⚠ ${ovl}% overlap</span>`;
+            document.getElementById('warnings').innerHTML = warn;
+        }
+
+        function updateHueSlices() {
+            const container = document.getElementById('hueSlices');
+            container.innerHTML = '';
+            [0, 30, 60, 90, 120, 150, 180, 210, 240, 270, 300, 330].forEach(hue => {
+                const wrapper = document.createElement('div');
+                wrapper.className = 'slice-container';
+                const canvas = document.createElement('canvas');
+                canvas.width = canvas.height = 80;
+                const ctx = canvas.getContext('2d');
+                for (let si = 0; si < 10; si++) {
+                    for (let vi = 0; vi < 10; vi++) {
+                        const s = si * 10 + 5, v = (9 - vi) * 10 + 5;
+                        const colors = getColorsAtPoint(hue, s, v);
+                        ctx.fillStyle = colors.length === 0 ? '#e2e8f0' : colors.length === 1 ? colorCategories[colors[0]].hex : '#06b6d4';
+                        ctx.fillRect(si * 8, vi * 8, 8, 8);
+                    }
+                }
+                const label = document.createElement('div');
+                label.className = 'slice-label';
+                label.textContent = `H=${hue}`;
+                wrapper.appendChild(canvas);
+                wrapper.appendChild(label);
+                container.appendChild(wrapper);
+            });
+        }
+
+        function updateHueWheel() {
+            const canvas = document.getElementById('hueWheel');
+            const ctx = canvas.getContext('2d');
+            const cx = 200, cy = 200, r = 180;
+            ctx.clearRect(0, 0, 400, 400);
+            for (let a = 0; a < 360; a++) {
+                const colors = getColorsAtPoint(a, 100, 100);
+                ctx.beginPath();
+                ctx.moveTo(cx, cy);
+                ctx.arc(cx, cy, r, (a - 90) * Math.PI / 180, (a + 1 - 90) * Math.PI / 180);
+                ctx.fillStyle = colors.length === 0 ? '#e2e8f0' : colors.length === 1 ? colorCategories[colors[0]].hex : '#06b6d4';
+                ctx.fill();
+            }
+            ctx.beginPath();
+            ctx.arc(cx, cy, 30, 0, Math.PI * 2);
+            ctx.fillStyle = '#ffffff';
+            ctx.fill();
+        }
+
+        function updateLegend() {
+            const legend = document.getElementById('colorLegend');
+            legend.innerHTML = '';
+            colorCategories.filter(c => c.visible).forEach(c => {
+                legend.innerHTML += `<div class="legend-item"><div class="legend-color" style="background:${c.hex}"></div><span>${c.name}</span></div>`;
+            });
+            legend.innerHTML += `<div class="legend-item"><div class="legend-color" style="background:#e2e8f0"></div><span>uncovered</span></div>`;
+            legend.innerHTML += `<div class="legend-item"><div class="legend-color" style="background:#06b6d4"></div><span>overlap</span></div>`;
+        }
+
+        // ========== 3D CONE ==========
+        function initCone() {
+            const container = document.getElementById('threeDContainer');
+            if (!container || container.children.length > 0) return;
+
+            coneScene = new THREE.Scene();
+            coneScene.background = new THREE.Color(0xf1f5f9);
+            coneCamera = new THREE.PerspectiveCamera(50, container.clientWidth / (container.clientHeight || 500), 0.1, 100);
+            coneRenderer = new THREE.WebGLRenderer({ antialias: true });
+            coneRenderer.setSize(container.clientWidth || 800, container.clientHeight || 500);
+            container.appendChild(coneRenderer.domElement);
+
+            let drag = false, prev = {x:0, y:0};
+            container.onmousedown = e => { drag = true; prev = {x: e.clientX, y: e.clientY}; };
+            container.onmousemove = e => {
+                if (!drag) return;
+                coneRotY += (e.clientX - prev.x) * 0.01;
+                coneRotX += (e.clientY - prev.y) * 0.01;
+                coneRotX = Math.max(-1.5, Math.min(1.5, coneRotX));
+                prev = {x: e.clientX, y: e.clientY};
+            };
+            container.onmouseup = container.onmouseleave = () => drag = false;
+            container.onwheel = e => { e.preventDefault(); coneCamDist = Math.max(1.5, Math.min(6, coneCamDist + e.deltaY * 0.003)); };
+
+            (function animate() {
+                requestAnimationFrame(animate);
+                coneCamera.position.set(
+                    coneCamDist * Math.sin(coneRotY) * Math.cos(coneRotX),
+                    coneCamDist * Math.sin(coneRotX),
+                    coneCamDist * Math.cos(coneRotY) * Math.cos(coneRotX)
+                );
+                coneCamera.lookAt(0, 0, 0);
+                coneRenderer.render(coneScene, coneCamera);
+            })();
+        }
+
+        function updateCone() {
+            if (!coneScene) return;
+            while (coneScene.children.length) coneScene.remove(coneScene.children[0]);
+
+            const showColors = document.getElementById('showConeColors')?.checked ?? true;
+            const showTrueHSV = document.getElementById('showTrueHSV')?.checked ?? false;
+            const showHidden = document.getElementById('showHiddenMarkers')?.checked ?? true;
+            const res = parseInt(document.getElementById('coneRes')?.value ?? 10);
+            const pointSize = parseFloat(document.getElementById('conePointSize')?.value ?? 4) / 100;
+            const step = Math.max(3, 18 - res);
+
+            const positions = [], colors = [];
+            for (let h = 0; h < 360; h += step) {
+                for (let v = 0; v <= 100; v += step) {
+                    for (let s = 0; s <= 100; s += step) {
+                        if (showColors) {
+                            const cats = getColorsAtPoint(h, s, v);
+                            if (cats.length === 0) continue;
+                            const theta = h * Math.PI / 180;
+                            const maxR = v / 100;
+                            const r = (s / 100) * maxR;
+                            positions.push(r * Math.cos(theta), v / 100 - 0.5, r * Math.sin(theta));
+                            if (showTrueHSV) {
+                                const rgb = hsvToRgb(h, s, v);
+                                colors.push(rgb.r, rgb.g, rgb.b);
+                            } else {
+                                const c = new THREE.Color(colorCategories[cats[0]].hex);
+                                colors.push(c.r, c.g, c.b);
+                            }
+                        } else {
+                            const theta = h * Math.PI / 180;
+                            const maxR = v / 100;
+                            const r = (s / 100) * maxR;
+                            positions.push(r * Math.cos(theta), v / 100 - 0.5, r * Math.sin(theta));
+                            const rgb = hsvToRgb(h, s, v);
+                            colors.push(rgb.r, rgb.g, rgb.b);
+                        }
+                    }
+                }
+            }
+
+            if (positions.length > 0) {
+                const geo = new THREE.BufferGeometry();
+                geo.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
+                geo.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
+                coneScene.add(new THREE.Points(geo, new THREE.PointsMaterial({
+                    size: pointSize,
+                    vertexColors: true,
+                    sizeAttenuation: true
+                })));
+            }
+
+            if (showColors && showHidden) {
+                const hiddenStep = step * 3;
+                for (let i = 0; i < colorCategories.length; i++) {
+                    if (colorCategories[i].visible) continue;
+                    const hiddenPos = [], hiddenCol = [];
+                    for (let h = 0; h < 360; h += hiddenStep) {
+                        for (let v = 0; v <= 100; v += hiddenStep) {
+                            for (let s = 0; s <= 100; s += hiddenStep) {
+                                if (pointBelongsToColor(h, s, v, colorCategories[i])) {
+                                    const theta = h * Math.PI / 180;
+                                    const maxR = v / 100;
+                                    const r = (s / 100) * maxR;
+                                    hiddenPos.push(r * Math.cos(theta), v / 100 - 0.5, r * Math.sin(theta));
+                                    if (showTrueHSV) {
+                                        const rgb = hsvToRgb(h, s, v);
+                                        hiddenCol.push(rgb.r, rgb.g, rgb.b);
+                                    } else {
+                                        const catColor = new THREE.Color(colorCategories[i].hex);
+                                        hiddenCol.push(catColor.r, catColor.g, catColor.b);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    if (hiddenPos.length > 0) {
+                        const hiddenGeo = new THREE.BufferGeometry();
+                        hiddenGeo.setAttribute('position', new THREE.Float32BufferAttribute(hiddenPos, 3));
+                        hiddenGeo.setAttribute('color', new THREE.Float32BufferAttribute(hiddenCol, 3));
+                        coneScene.add(new THREE.Points(hiddenGeo, new THREE.PointsMaterial({
+                            size: pointSize * 0.5,
+                            vertexColors: true,
+                            sizeAttenuation: true,
+                            transparent: true,
+                            opacity: 0.4
+                        })));
+                    }
+                }
+            }
+            addConeAxes();
+        }
+
+        function addConeAxes() {
+            const vAxisGeo = new THREE.BufferGeometry();
+            const vPos = [], vCol = [];
+            for (let i = 0; i <= 20; i++) {
+                const t = i / 20;
+                vPos.push(0, t - 0.5, 0);
+                vCol.push(t, t, t);
+            }
+            vAxisGeo.setAttribute('position', new THREE.Float32BufferAttribute(vPos, 3));
+            vAxisGeo.setAttribute('color', new THREE.Float32BufferAttribute(vCol, 3));
+            coneScene.add(new THREE.Line(vAxisGeo, new THREE.LineBasicMaterial({ vertexColors: true, linewidth: 2 })));
+
+            const hueCircle = new THREE.BufferGeometry();
+            const hPos = [], hCol = [];
+            for (let i = 0; i <= 72; i++) {
+                const angle = (i / 72) * Math.PI * 2;
+                hPos.push(Math.cos(angle), 0.5, Math.sin(angle));
+                const rgb = hsvToRgb((i / 72) * 360, 100, 100);
+                hCol.push(rgb.r, rgb.g, rgb.b);
+            }
+            hueCircle.setAttribute('position', new THREE.Float32BufferAttribute(hPos, 3));
+            hueCircle.setAttribute('color', new THREE.Float32BufferAttribute(hCol, 3));
+            coneScene.add(new THREE.Line(hueCircle, new THREE.LineBasicMaterial({ vertexColors: true, linewidth: 2 })));
+
+            const sAxisGeo = new THREE.BufferGeometry();
+            const sPos = [], sCol = [];
+            for (let i = 0; i <= 10; i++) {
+                const t = i / 10;
+                sPos.push(t, 0.5, 0);
+                const rgb = hsvToRgb(0, t * 100, 100);
+                sCol.push(rgb.r, rgb.g, rgb.b);
+            }
+            sAxisGeo.setAttribute('position', new THREE.Float32BufferAttribute(sPos, 3));
+            sAxisGeo.setAttribute('color', new THREE.Float32BufferAttribute(sCol, 3));
+            coneScene.add(new THREE.Line(sAxisGeo, new THREE.LineBasicMaterial({ vertexColors: true, linewidth: 2 })));
+
+            const hueAngles = [
+                { h: 0, color: 0xff0000 }, { h: 60, color: 0xffff00 }, { h: 120, color: 0x00ff00 },
+                { h: 180, color: 0x00ffff }, { h: 240, color: 0x0000ff }, { h: 300, color: 0xff00ff }
+            ];
+            hueAngles.forEach(({ h, color }) => {
+                const angle = h * Math.PI / 180;
+                const marker = new THREE.Mesh(new THREE.SphereGeometry(0.04, 8, 8), new THREE.MeshBasicMaterial({ color }));
+                marker.position.set(Math.cos(angle) * 1.1, 0.5, Math.sin(angle) * 1.1);
+                coneScene.add(marker);
+            });
+
+            const tipMarker = new THREE.Mesh(new THREE.SphereGeometry(0.03, 8, 8), new THREE.MeshBasicMaterial({ color: 0x000000 }));
+            tipMarker.position.set(0, -0.5, 0);
+            coneScene.add(tipMarker);
+
+            const topMarker = new THREE.Mesh(new THREE.SphereGeometry(0.03, 8, 8), new THREE.MeshBasicMaterial({ color: 0xffffff }));
+            topMarker.position.set(0, 0.5, 0);
+            coneScene.add(topMarker);
+        }
+
+        // ========== 3D SCATTER ==========
+        function initScatter() {
+            const container = document.getElementById('scatterContainer');
+            if (!container || container.children.length > 0) return;
+
+            scatterScene = new THREE.Scene();
+            scatterScene.background = new THREE.Color(0xf1f5f9);
+            scatterCamera = new THREE.PerspectiveCamera(50, container.clientWidth / (container.clientHeight || 500), 0.1, 100);
+            scatterRenderer = new THREE.WebGLRenderer({ antialias: true });
+            scatterRenderer.setSize(container.clientWidth || 800, container.clientHeight || 500);
+            container.appendChild(scatterRenderer.domElement);
+
+            let drag = false, prev = {x:0, y:0};
+            container.onmousedown = e => { drag = true; prev = {x: e.clientX, y: e.clientY}; };
+            container.onmousemove = e => {
+                if (!drag) return;
+                scatterRotY += (e.clientX - prev.x) * 0.01;
+                scatterRotX += (e.clientY - prev.y) * 0.01;
+                scatterRotX = Math.max(-1.5, Math.min(1.5, scatterRotX));
+                prev = {x: e.clientX, y: e.clientY};
+            };
+            container.onmouseup = container.onmouseleave = () => drag = false;
+            container.onwheel = e => { e.preventDefault(); scatterCamDist = Math.max(2, Math.min(8, scatterCamDist + e.deltaY * 0.003)); };
+
+            (function animate() {
+                requestAnimationFrame(animate);
+                scatterCamera.position.set(
+                    scatterCamDist * Math.sin(scatterRotY) * Math.cos(scatterRotX),
+                    scatterCamDist * Math.sin(scatterRotX),
+                    scatterCamDist * Math.cos(scatterRotY) * Math.cos(scatterRotX)
+                );
+                scatterCamera.lookAt(0, 0, 0);
+                scatterRenderer.render(scatterScene, scatterCamera);
+            })();
+        }
+
+        function updateScatter() {
+            if (!scatterScene) return;
+            while (scatterScene.children.length) scatterScene.remove(scatterScene.children[0]);
+
+            const showFull = document.getElementById('showFullSpace')?.checked ?? true;
+            const showCats = document.getElementById('showCategoryPoints')?.checked ?? true;
+            const density = parseInt(document.getElementById('scatterDensity')?.value ?? 12);
+            const step = Math.max(5, 25 - density);
+
+            const box = new THREE.BoxGeometry(2, 2, 2);
+            scatterScene.add(new THREE.LineSegments(new THREE.EdgesGeometry(box), new THREE.LineBasicMaterial({ color: 0x94a3b8 })));
+
+            if (showFull) {
+                const pos = [], col = [];
+                for (let h = 0; h < 360; h += step) {
+                    for (let s = 0; s <= 100; s += step) {
+                        for (let v = 10; v <= 100; v += step) {
+                            pos.push((h/360)*2-1, (s/100)*2-1, (v/100)*2-1);
+                            const rgb = hsvToRgb(h, s, v);
+                            col.push(rgb.r, rgb.g, rgb.b);
+                        }
+                    }
+                }
+                const geo = new THREE.BufferGeometry();
+                geo.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3));
+                geo.setAttribute('color', new THREE.Float32BufferAttribute(col, 3));
+                scatterScene.add(new THREE.Points(geo, new THREE.PointsMaterial({ size: 0.03, vertexColors: true, transparent: true, opacity: 0.6 })));
+            }
+
+            if (showCats) {
+                const pos = [], col = [];
+                for (let h = 0; h < 360; h += step) {
+                    for (let s = 0; s <= 100; s += step) {
+                        for (let v = 0; v <= 100; v += step) {
+                            const cats = getColorsAtPoint(h, s, v);
+                            if (cats.length === 0) continue;
+                            pos.push((h/360)*2-1, (s/100)*2-1, (v/100)*2-1);
+                            const c = new THREE.Color(colorCategories[cats[0]].hex);
+                            col.push(c.r, c.g, c.b);
+                        }
+                    }
+                }
+                const geo = new THREE.BufferGeometry();
+                geo.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3));
+                geo.setAttribute('color', new THREE.Float32BufferAttribute(col, 3));
+                scatterScene.add(new THREE.Points(geo, new THREE.PointsMaterial({ size: 0.08, vertexColors: true })));
+            }
+
+            const hAxis = new THREE.BufferGeometry();
+            const hPos = [], hCol = [];
+            for (let i = 0; i <= 20; i++) {
+                hPos.push(-1 + i*0.1, -1.1, -1.1);
+                const rgb = hsvToRgb(i*18, 100, 100);
+                hCol.push(rgb.r, rgb.g, rgb.b);
+            }
+            hAxis.setAttribute('position', new THREE.Float32BufferAttribute(hPos, 3));
+            hAxis.setAttribute('color', new THREE.Float32BufferAttribute(hCol, 3));
+            scatterScene.add(new THREE.Line(hAxis, new THREE.LineBasicMaterial({ vertexColors: true })));
+        }
+
+        function switchTab(name) {
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+            event.target.classList.add('active');
+            document.getElementById(name + 'Tab').classList.add('active');
+            if (name === 'cone') setTimeout(() => { initCone(); updateCone(); }, 50);
+            if (name === 'scatter') setTimeout(() => { initScatter(); updateScatter(); }, 50);
+        }
+
+        function exportToR() {
+            document.getElementById('rCodeOutput').textContent = generateRCode();
+            document.getElementById('rOutputModal').classList.add('active');
+        }
+
+        function generateRCode() {
+            const names = colorCategories.map(c => `"${c.name}"`).join(', ');
+            const hexes = colorCategories.map(c => `"${c.hex}"`).join(', ');
+            const hs = colorCategories.map(c => `"${c.h}"`).join(',\n    ');
+            const ss = colorCategories.map(c => `"${c.s}"`).join(',\n    ');
+            const vs = colorCategories.map(c => `"${c.v}"`).join(',\n    ');
+            return `clut <- data.frame(\n  color.name = c(${names}),\n  default.hex = c(${hexes}),\n  h = c(\n    ${hs}\n  ),\n  s = c(\n    ${ss}\n  ),\n  v = c(\n    ${vs}\n  ),\n  stringsAsFactors = FALSE\n)\nsave(clut, file = "clut.rda")`;
+        }
+
+        function copyRCode() { navigator.clipboard.writeText(document.getElementById('rCodeOutput').textContent); }
+        function closeModal() { document.getElementById('rOutputModal').classList.remove('active'); }
+
+        function exportRDA() {
+            const blob = new Blob([generateRCode()], { type: 'text/plain' });
+            const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'clut_generator.R'; a.click();
+        }
+
+        function exportJSON() {
+            const blob = new Blob([JSON.stringify(colorCategories, null, 2)], { type: 'application/json' });
+            const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'color_categories.json'; a.click();
+        }
+
+        function importJSON(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = e => {
+                try {
+                    colorCategories = JSON.parse(e.target.result).map(c => ({ ...c, visible: c.visible !== false }));
+                    selectedColorIndex = null;
+                    document.getElementById('editorPanel').style.display = 'none';
+                    renderColorList();
+                    updateVisualization();
+                } catch (err) { alert('Invalid JSON'); }
+            };
+            reader.readAsText(file);
+        }
+
+        window.onload = () => { renderColorList(); updateVisualization(); };
+    </script>
+</body>
+</html>
