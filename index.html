@@ -244,7 +244,9 @@ categories using a biologically-inspired approach.
 <span><span class="fu"><a href="reference/launch_clut_editor.html">launch_clut_editor</a></span><span class="op">(</span>online <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
 <figure><img src="reference/figures/clut-editor-interface.png" alt="CLUT Editor Interface"><figcaption aria-hidden="true">
 CLUT Editor Interface
-</figcaption></figure><p>The CLUT Editor provides:</p>
+</figcaption></figure><div class="section level4">
+<h4 id="the-clut-editor-provides">The CLUT Editor provides:<a class="anchor" aria-label="anchor" href="#the-clut-editor-provides"></a>
+</h4>
 <ul>
 <li>Visual editing of HSV color space boundaries</li>
 <li>Real-time coverage statistics (gaps and overlaps)</li>
@@ -253,7 +255,7 @@ CLUT Editor Interface
 </ul>
 <figure><img src="reference/figures/clut-editor-3d.png" alt="CLUT Editor 3D Visualization"><figcaption aria-hidden="true">
 CLUT Editor 3D Visualization
-</figcaption></figure><p>After designing your CLUT, validate and use it:</p>
+</figcaption></figure><p>After designing your custom CLUT, validate and use it:</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Create custom CLUT</span></span>
 <span><span class="va">my_clut</span> <span class="op">&lt;-</span> <span class="fu">charisma</span><span class="fu">::</span><span class="va"><a href="reference/clut.html">clut</a></span>  <span class="co"># Start with default</span></span>
@@ -264,6 +266,7 @@ CLUT Editor 3D Visualization
 <span></span>
 <span><span class="co"># Use in analysis</span></span>
 <span><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/charisma.html">charisma</a></span><span class="op">(</span><span class="va">img</span>, clut <span class="op">=</span> <span class="va">my_clut</span><span class="op">)</span></span></code></pre></div>
+</div>
 </div>
 <div class="section level3">
 <h3 id="evolutionary-analyses">Evolutionary Analyses<a class="anchor" aria-label="anchor" href="#evolutionary-analyses"></a>
