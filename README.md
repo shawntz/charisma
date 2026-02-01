@@ -205,7 +205,7 @@ alt="CLUT Editor Interface" />
 <figcaption aria-hidden="true">CLUT Editor Interface</figcaption>
 </figure>
 
-The CLUT Editor provides:
+#### The CLUT Editor provides:
 
 - Visual editing of HSV color space boundaries
 - Real-time coverage statistics (gaps and overlaps)
@@ -219,7 +219,7 @@ alt="CLUT Editor 3D Visualization" />
 <figcaption aria-hidden="true">CLUT Editor 3D Visualization</figcaption>
 </figure>
 
-After designing your CLUT, validate and use it:
+After designing your custom CLUT, validate and use it:
 
 ``` r
 # Create custom CLUT
