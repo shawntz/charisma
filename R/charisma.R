@@ -916,5 +916,13 @@ charisma <- function(
     output.list$logdir <- logdir
   }
 
+  if (!interactive) {
+    warning(paste(
+      "Image lighting and quality may vary. Before using results in downstream",
+      "analyses, check color class outputs, and adjust the CLUT as necessary",
+      "to capture the appropriate color classes in your image dataset."
+    ))
+  }
+
   return(output.list)
 }
