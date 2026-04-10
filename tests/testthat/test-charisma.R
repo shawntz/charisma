@@ -62,3 +62,27 @@ test_that("charisma2 rejects non-charisma objects", {
   not_charisma <- list(a = 1, b = 2)
   expect_error(charisma2(not_charisma), "should be a `charisma` object")
 })
+
+test_that("charisma emits warning when interactive = FALSE", {
+  skip_if_not_installed("recolorize")
+  skip_if_not_installed("imager")
+
+  img <- system.file(
+    "extdata",
+    "Tangara_fastuosa_LACM60421.png",
+    package = "charisma"
+  )
+
+  skip_if(img == "", "Example image not found")
+
+  expect_warning(
+    charisma(
+      img,
+      threshold = 0.0,
+      interactive = FALSE,
+      plot = FALSE,
+      pavo = FALSE
+    ),
+    "Image lighting and quality may vary"
+  )
+})
