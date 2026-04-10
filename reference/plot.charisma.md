@@ -124,6 +124,7 @@ result <- charisma(img)
 #> Image classification in progress...
 #> Using single set of coldists for all images.
 #> 
+#> Warning: Image lighting and quality may vary. Before using results in downstream analyses, check color class outputs, and adjust the CLUT as necessary to capture the appropriate color classes in your image dataset.
 
 # Plot all results
 plot(result)

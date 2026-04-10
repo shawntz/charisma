@@ -230,6 +230,7 @@ result <- charisma(img)
 #> Image classification in progress...
 #> Using single set of coldists for all images.
 #> 
+#> Warning: Image lighting and quality may vary. Before using results in downstream analyses, check color class outputs, and adjust the CLUT as necessary to capture the appropriate color classes in your image dataset.
 
 # With threshold to remove minor colors
 result <- charisma(img, threshold = 0.05)
@@ -260,7 +261,7 @@ result <- charisma(img, threshold = 0.05)
 #> Distances between yellow and:
 #>   * green => 168.25
 #>   * grey => 170.78
-#>   * blue => 231.46
+#>   * blue => 231.47
 #>   * black => 239.13
 #> ...Replacing yellow with green
 #>  
@@ -269,6 +270,7 @@ result <- charisma(img, threshold = 0.05)
 #> Image classification in progress...
 #> Using single set of coldists for all images.
 #> 
+#> Warning: Image lighting and quality may vary. Before using results in downstream analyses, check color class outputs, and adjust the CLUT as necessary to capture the appropriate color classes in your image dataset.
 
 # Save outputs to directory
 out_dir <- file.path(tempdir(), "charisma_outputs")
@@ -286,10 +288,10 @@ result <- charisma(img, threshold = 0.05, logdir = out_dir)
 #>  - grey
 #>  
 #> Distances between brown and:
-#>   * grey => 61.33
+#>   * grey => 61.34
 #>   * green => 76.13
-#>   * blue => 121.36
-#>   * black => 137.28
+#>   * blue => 121.37
+#>   * black => 137.26
 #> ...Replacing brown with grey
 #> Distances between orange and:
 #>   * grey => 131.23
@@ -309,8 +311,9 @@ result <- charisma(img, threshold = 0.05, logdir = out_dir)
 #> Image classification in progress...
 #> Using single set of coldists for all images.
 #> 
-#> Writing out charisma object to: /tmp/RtmpxVHzbL/charisma_outputs/charisma_objects/Tangara_fastuosa_LACM60421_charisma_02-01-2026_00.59.53.RDS
-#> Writing out charisma plot to: /tmp/RtmpxVHzbL/charisma_outputs/diagnostic_plots/Tangara_fastuosa_LACM60421_charisma_02-01-2026_00.59.53.pdf
+#> Writing out charisma object to: /tmp/RtmpmbLiOU/charisma_outputs/charisma_objects/Tangara_fastuosa_LACM60421_charisma_04-10-2026_05.53.27.RDS
+#> Writing out charisma plot to: /tmp/RtmpmbLiOU/charisma_outputs/diagnostic_plots/Tangara_fastuosa_LACM60421_charisma_04-10-2026_05.53.27.pdf
+#> Warning: Image lighting and quality may vary. Before using results in downstream analyses, check color class outputs, and adjust the CLUT as necessary to capture the appropriate color classes in your image dataset.
 
 # View results
 plot(result)
