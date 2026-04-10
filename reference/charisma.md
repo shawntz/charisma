@@ -311,8 +311,8 @@ result <- charisma(img, threshold = 0.05, logdir = out_dir)
 #> Image classification in progress...
 #> Using single set of coldists for all images.
 #> 
-#> Writing out charisma object to: /tmp/RtmpmbLiOU/charisma_outputs/charisma_objects/Tangara_fastuosa_LACM60421_charisma_04-10-2026_05.53.27.RDS
-#> Writing out charisma plot to: /tmp/RtmpmbLiOU/charisma_outputs/diagnostic_plots/Tangara_fastuosa_LACM60421_charisma_04-10-2026_05.53.27.pdf
+#> Writing out charisma object to: /tmp/Rtmp4CihqS/charisma_outputs/charisma_objects/Tangara_fastuosa_LACM60421_charisma_04-10-2026_05.56.01.RDS
+#> Writing out charisma plot to: /tmp/Rtmp4CihqS/charisma_outputs/diagnostic_plots/Tangara_fastuosa_LACM60421_charisma_04-10-2026_05.56.01.pdf
 #> Warning: Image lighting and quality may vary. Before using results in downstream analyses, check color class outputs, and adjust the CLUT as necessary to capture the appropriate color classes in your image dataset.
 
 # View results
