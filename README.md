@@ -17,6 +17,7 @@ check](https://github.com/shawntz/charisma/actions/workflows/air-format-check.ym
 suggest](https://github.com/shawntz/charisma/actions/workflows/air-format-suggest.yml/badge.svg)](https://github.com/shawntz/charisma/actions/workflows/air-format-suggest.yml)
 [![spellcheck](https://github.com/shawntz/charisma/actions/workflows/spellcheck.yml/badge.svg)](https://github.com/shawntz/charisma/actions/workflows/spellcheck.yml)
 [![pkgdown](https://github.com/shawntz/charisma/actions/workflows/pkgdown.yml/badge.svg)](https://github.com/shawntz/charisma/actions/workflows/pkgdown.yml)
+[![DOI](https://zenodo.org/badge/234609295.svg)](https://doi.org/10.5281/zenodo.19491930)
 <!-- badges: end -->
 
 > **charisma** provides a standardized, reproducible framework for
